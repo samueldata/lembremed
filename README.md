@@ -1,2 +1,2 @@
-# lembrimed
+# LembreMEd
 Projeto Integrador Univesp
