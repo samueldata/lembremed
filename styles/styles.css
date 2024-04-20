@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: auto;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+header {
+    background-color: #004d40;
+    color: white;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-container img {
+    max-width: 56px; /* Ou o tamanho que você preferir */
+    height: auto; /* Mantém a proporção da imagem */
+}
+
+.brand-container {
+    display: flex; /* Isso vai alinhar o ícone e o texto lado a lado */
+    align-items: center; /* Isso vai centralizar verticalmente o ícone com o texto */
+    gap: 10px; /* Isso adiciona um espaço entre o ícone e o texto */
+}
+
+.brand-container .logo-icon {
+    height: 50px; /* Ajuste a altura conforme necessário */
+    width: auto; /* Isso vai manter a proporção do ícone */
+}
+
+.brand-container h1 {
+    font-size: 24px; /* Ajuste o tamanho da fonte conforme necessário */
+    margin: 0; /* Isso remove a margem padrão do h1 */
+    color: white; /* Ajuste a cor conforme necessário */
+}
+
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+main {
+    background: url('../assets/img/background/background.jpeg') no-repeat center center;
+    background-size: cover;
+    padding-top: 20px;
+}
+
+.feature-title {
+    width: 100%; /* Ocupa a largura total da seção */
+    text-align: center; /* Centraliza o texto dentro do contêiner */
+    margin-bottom: 1em; /* Espaço abaixo do título para separá-lo dos cards */
+}
+
+.medicamentos-control {
+    display: flex;
+    /* flex-direction: column; Isso coloca os elementos em uma coluna em vez de linha */
+    flex-wrap: wrap; /* Permite que os cards se organizem em várias linhas conforme necessário */
+    justify-content: space-around; /* Espaça os cards uniformemente */
+    align-items: center; /* Isso alinha todos os itens filhos (título e features) no centro horizontalmente */
+    padding: 20px;
+    background-color: #ffffff;
+    border-top: solid 10px #004d40;
+    margin-top: 50vh; /* Ajuste conforme necessário */
+    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+.medicamentos-control h2 {
+    font-size: 2em;        /* Tamanho da fonte */
+    color: #004d40;       /* Cor do texto */
+    margin-bottom: 1em;   /* Espaço abaixo do título */
+    text-align: center;   /* Centraliza o texto horizontalmente */
+}
+
+
+.medicamentos-control .feature {
+    flex: 1 1 200px; /* Cresce, encolhe e base de 200px */
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    margin: 10px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    max-width: 300px; /* Largura máxima para cada card */
+}
+
+.medicamentos-control .feature img {
+    width: 100px;
+    margin-right: 20px;
+}
+
+.feature img {
+    margin-right: 1em;
+    width: 50px; /* Ajuste conforme necessário */
+}
+
+.feature p {
+    color: #333;
+    padding: 0;
+    font-size: 1em;
+}
+
+footer {
+    background-color: #00251a;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    /* position: fixed; */
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0; /* Remove a margem padrão do parágrafo */
+    padding: 0 20px; /* Adiciona algum espaço dos lados se necessário */
+    font-size: 0.9em; /* Ajuste o tamanho da fonte conforme necessário */
+}
