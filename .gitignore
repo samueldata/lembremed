@@ -1,1 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Arquivos de banco de dados SQLite
+*.sqlite3
+*.db
+
+# Arquivos de mídia carregados pelo usuário
+media/
+
+# Ambientes virtuais
 venv/
+ENV/
+
+# Arquivos de configuração do PyCharm
+.idea/
+
+# Arquivos de configuração do VS Code
+.vscode/
+
