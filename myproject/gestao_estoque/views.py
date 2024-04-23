@@ -1,3 +1,8 @@
+# gestao_estoque/views.py
 from django.shortcuts import render
 
-# Create your views here.
+def index(request):
+
+    return render(request, 'gestao_estoque/index.html')
+
+
