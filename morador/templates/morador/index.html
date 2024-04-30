@@ -20,8 +20,9 @@
                         <br />CPF: {{ morador.cpf }}
                         <br />Dt. Nasc.: {{ morador.dt_nascimento|date:"d/m/Y" }}
                         <br /><span class="btn btn-primary" onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar</span>
-                        <a href="#" onclick="if (confirm('confirma a exclusao deste morador?')) { document.location = 'excluir/{{ morador.cpf }}'; }">Excluir</a>
-                        <a href="/medicamentos/{{ morador.cpf }}">Medicamentos</a>
+                        <span class="btn btn-primary" onclick="if (confirm('confirma a exclusao deste morador?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ profissional.nome }}'); }">Excluir</span>
+                        <span class="btn btn-primary" onclick="document.location='/medicamentos/{{ morador.cpf }}'">Medicamentos</span>
+                        
                     </li>
                 {% endfor %}
             </ul>

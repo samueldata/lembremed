@@ -1,0 +1,28 @@
+
+<form id="form_profissional" action="salvar/" method="post">
+
+    {% csrf_token %}
+
+
+
+    {% if profissional %}
+        <input type="hidden" name="cpf" value="{{ profissional.cpf }}" />
+        <input type="hidden" name="edit" value="1" />
+        CPF: <input type="text" value="{{ profissional.cpf }}" disabled />
+
+    {% else %}
+        CPF: <input name="cpf" type="text" value="" />
+    {% endif %}
+    
+    <br />Nome: <input name="nome" type="text" value="{{ profissional.nome }}"  />
+    <br />Coren: <input name="coren" type="text" value="{{ profissional.coren }}"  />
+    <br />Senha: <input name="senha" type="password" value="{{ profissional.senha }}"  />
+    
+
+    <input type="submit" value="Salvar" />
+</form>
+
+<script>
+    //Troca o submit para enviar no popup
+    document.getElementById('form_profissional').addEventListener('submit', envia_e_recarregar);
+</script>
