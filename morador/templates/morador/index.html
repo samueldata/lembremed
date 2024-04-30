@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}LembreMED - Moradores{% endblock %}
+
+
+{% block content %}
+<script src="{% static 'popup.js' %}" ></script>
+<main>
+    <section class="medicamentos-control">
+        <div class="feature-title">
+            <h2>MORADORES</h2>
+        </div>
+        {% if lista_moradores %}
+            <ul>
+                {% for morador in lista_moradores %}
+                    <li>
+                        Nome: {{ morador.nome }}
+                        <br />CPF: {{ morador.cpf }}
+                        <br />Dt. Nasc.: {{ morador.dt_nascimento|date:"d/m/Y" }}
+                        <br /><span class="btn btn-primary" onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar</span>
+                        <a href="#" onclick="if (confirm('confirma a exclusao deste morador?')) { document.location = 'excluir/{{ morador.cpf }}'; }">Excluir</a>
+                        <a href="/medicamentos/{{ morador.cpf }}">Medicamentos</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            Nenhum morador
+        {% endif %}
+     
+    <input type="button" value="Cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar morador');" />
+
+    </section>
+</main>
+{% endblock %}
