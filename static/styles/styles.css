@@ -19,13 +19,14 @@ body {
 }
 
 header {
-    background-color: #004d40;
+    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
     color: white;
     padding: 10px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 
 .brand-container img {
     margin-left: 10px;
@@ -64,6 +65,8 @@ header {
 nav ul {
     list-style-type: none;
     display: flex;
+    margin-bottom: 0px;
+
 }
 
 nav li {
@@ -74,6 +77,23 @@ nav a {
     color: white;
     text-decoration: none;
     font-weight: bold;
+    /* text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); Melhora a legibilidade */
+    padding: 10px 15px; /* Adiciona espaço ao redor do texto */
+    border-radius: 20px; /* Arredonda os cantos do botão */
+    background-color: rgb(42 134 121); /* Fundo semi-transparente */
+    transition: background-color 0.3s; /* Suaviza a transição de cor */
+}
+
+nav a:hover, nav a:focus {
+    background-color: rgb(217,234,211); /* Cor mais sólida ao passar o mouse */
+    color: white; /* Mantém a cor do texto */
+    text-decoration: none; /* Remove qualquer sublinhado */
+}
+
+
+
+nav a.active {
+    color: #26a69a; /* Cor de destaque para a página atual */
 }
 
 main {
@@ -108,7 +128,9 @@ main {
     box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
     clip-path: fill-box;
     max-width: 1200px;
-    
+    width: 100%; /* Garante que a caixa ajuste-se à largura disponível até 1200px */
+    margin-left: auto; /* Empurra a caixa para a direita automaticamente */
+    margin-right: 20px; /* Mantém uma margem da direita */
 }
 
 
@@ -259,7 +281,7 @@ main {
 
 
 footer {
-    background-color: #00251a;
+    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
     color: white;
     text-align: center;
     padding: 20px 0;
