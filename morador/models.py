@@ -6,8 +6,14 @@ class Morador(models.Model):
     nome = models.CharField(max_length=50)
     dt_nascimento = models.DateField()
 
+class Instituicao(models.Model):
+    cnpj = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=50)
+    senha = models.CharField(max_length=50)
+
 class Profissional(models.Model):
     cpf = models.IntegerField(primary_key=True)
+    #cnpj_instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50)
     coren = models.IntegerField()
     senha = models.CharField(max_length=50)
