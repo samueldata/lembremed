@@ -1,0 +1,300 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: auto;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    /* Cor de fundo mais clara */
+    color: #333;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+header {
+    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
+    color: white;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.brand-container img {
+    margin-left: 10px;
+    max-width: 30px;
+    /* Ou o tamanho que você preferir */
+    height: auto;
+    /* Mantém a proporção da imagem */
+}
+
+.brand-container {
+    display: flex;
+    /* Isso vai alinhar o ícone e o texto lado a lado */
+    align-items: center;
+    /* Isso vai centralizar verticalmente o ícone com o texto */
+    gap: 10px;
+    /* Isso adiciona um espaço entre o ícone e o texto */
+}
+
+.brand-container .logo-icon {
+    height: 50px;
+    /* Ajuste a altura conforme necessário */
+    width: auto;
+    /* Isso vai manter a proporção do ícone */
+}
+
+.brand-container h1 {
+    font-size: 24px;
+    /* Ajuste o tamanho da fonte conforme necessário */
+    margin: 0;
+    /* Isso remove a margem padrão do h1 */
+    color: white;
+    /* Ajuste a cor conforme necessário */
+}
+
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    margin-bottom: 0px;
+
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    /* text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); Melhora a legibilidade */
+    padding: 10px 15px; /* Adiciona espaço ao redor do texto */
+    border-radius: 20px; /* Arredonda os cantos do botão */
+    background-color: rgb(42 134 121); /* Fundo semi-transparente */
+    transition: background-color 0.3s; /* Suaviza a transição de cor */
+}
+
+nav a:hover, nav a:focus {
+    background-color: rgb(217,234,211); /* Cor mais sólida ao passar o mouse */
+    color: white; /* Mantém a cor do texto */
+    text-decoration: none; /* Remove qualquer sublinhado */
+}
+
+
+
+nav a.active {
+    color: #26a69a; /* Cor de destaque para a página atual */
+}
+
+main {
+    background: url("background.jpeg") no-repeat center center;
+    background-size: cover;
+    padding-top: 20px;
+}
+
+.feature-title {
+    width: 100%;
+    /* Ocupa a largura total da seção */
+    text-align: center;
+    /* Centraliza o texto dentro do contêiner */
+    margin-bottom: 1em;
+    /* Espaço abaixo do título para separá-lo dos cards */
+}
+
+.medicamentos-control {
+    display: flex;
+    /* flex-direction: column; Isso coloca os elementos em uma coluna em vez de linha */
+    flex-wrap: wrap;
+    /* Permite que os cards se organizem em várias linhas conforme necessário */
+    justify-content: center;
+    /* Espaça os cards uniformemente */
+    /* align-items: center; */
+    /* Isso alinha todos os itens filhos (título e features) no centro horizontalmente */
+    padding: 20px;
+    background-color: #ffffff;
+    border-top: solid 10px #004d40;
+    margin-top: 50vh;
+    /* Ajuste conforme necessário */
+    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
+    clip-path: fill-box;
+    max-width: 1200px;
+    width: 100%; /* Garante que a caixa ajuste-se à largura disponível até 1200px */
+    margin-left: auto; /* Empurra a caixa para a direita automaticamente */
+    margin-right: 20px; /* Mantém uma margem da direita */
+}
+
+
+.medicamentos-control h2 {
+    font-size: 2em;
+    /* Tamanho da fonte */
+    color: #004d40;
+    /* Cor do texto */
+    margin-bottom: 1em;
+    /* Espaço abaixo do título */
+    text-align: center;
+    /* Centraliza o texto horizontalmente */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+.medicamentos-control .feature {
+    flex: 1 1 200px;
+    /* Cresce, encolhe e base de 200px */
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    display: flex;
+    align-items: normal;
+    max-width: 500px;
+    /* Largura máxima para cada card */
+}
+
+.medicamentos-control .feature img {
+    /* width: 100px;
+    margin-right: 20px; */
+    display: flex;
+    align-items: normal;
+    margin-bottom: 13%;
+}
+
+.feature img {
+    margin-right: 1em;
+    width: 50px;
+    /* Ajuste conforme necessário */
+}
+
+.feature p {
+    color: #333;
+    padding: 0;
+    font-size: 1em;
+}
+
+.moradores-filter {
+    display: flex;
+    align-items: normal;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box; /* Inclui o padding na largura total */
+}
+
+.filter-icon {
+    height: 48px; /* Ajuste conforme a altura desejada, incluindo o padding */
+    margin-right: 10px; /* Espaço entre o ícone e a barra de entrada */
+}
+
+.moradores-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* Centraliza na página */
+    padding: 20px;
+    background-color: #fff;
+    /* Fundo branco para a seção */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.section-title {
+    text-align: center;
+    color: #004d40;
+    margin-bottom: 20px;
+}
+
+.moradores-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.morador-card {
+    width: auto;
+    background: #e3f2fd;
+    /* Fundo azul claro */
+    margin: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.morador-info p {
+    margin: 5px 0;
+}
+
+.morador-actions {
+    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.morador-actions button,
+.morador-actions a {
+    padding: 10px 15px;
+    margin-right: 10px;
+    background-color: #26a69a;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.morador-actions button:hover,
+.morador-actions a:hover {
+    background-color: #00796b;
+}
+
+.btn-cadastrar {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #004d40;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-cadastrar:hover {
+    background-color: #00251a;
+}
+
+
+footer {
+    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    /* position: fixed; */
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    /* Remove a margem padrão do parágrafo */
+    padding: 0 20px;
+    /* Adiciona algum espaço dos lados se necessário */
+    font-size: 0.9em;
+    /* Ajuste o tamanho da fonte conforme necessário */
+}

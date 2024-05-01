@@ -1,0 +1,18 @@
+{% load static %}
+<header>
+    <div class="brand-container">
+        <a href="/" class="brand-container">
+            <img src="{% static 'logo.png' %}" alt="LembreMED Logo">
+        </a>
+        <h1>LembreMED</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">HOME</a></li>
+            <li><a href="{% url 'morador_listar' %}">MORADORES</a></li>
+            <li><a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a></li>
+            <li><a href="">LOGIN</a></li>
+            <li><a href="">SAIR</a></li>
+        </ul>
+    </nav>
+</header>

@@ -1,0 +1,26 @@
+
+<form id="form_morador" action="salvar/" method="post">
+
+    {% csrf_token %}
+
+
+
+    {% if morador %}
+        <input type="hidden" name="cpf" value="{{ morador.cpf }}" />
+        <input type="hidden" name="edit" value="1" />
+        CPF: <input type="text" value="{{ morador.cpf }}" disabled />
+
+    {% else %}
+        CPF: <input name="cpf" type="text" value="{{ morador.cpf }}" />
+    {% endif %}
+    
+    <br />Nome: <input name="nome" type="text" value="{{ morador.nome }}"  />
+    <br />Dt Nascimento: <input name="dt_nascimento" type="date" value="{{ morador.dt_nascimento|date:"Y-m-d" }}" />
+
+    <input type="submit" value="Salvar" />
+</form>
+
+<script>
+    //Troca o submit para enviar no popup
+    document.getElementById('form_morador').addEventListener('submit', envia_e_recarregar);
+</script>

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}LembreMED - Moradores{% endblock %}
+
+
+{% block content %}
+<script src="{% static 'popup.js' %}"></script>
+<main style="padding: 20px;">
+    <section class="moradores-container">
+        <h2 class="section-title">MORADORES</h2>
+        <div class="moradores-filter">
+            <img class="filter-icon" src="{% static 'filter_7420963.png' %}" alt="Buscar">
+            <input type="text" id="searchInput" placeholder="Buscar por nome ou CPF..." onkeyup="filterMoradores()"
+                style="width: 100%; padding: 10px; margin-bottom: 20px;">
+        </div>
+        {% if lista_moradores %}
+        <div class="moradores-cards">
+            {% for morador in lista_moradores %}
+            <div class="morador-card">
+                <div class="morador-info">
+                    <p>Nome: <strong>{{ morador.nome }}</strong></p>
+                    <p>CPF: {{ morador.cpf }}</p>
+                    <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
+                </div>
+                <div class="morador-actions">
+                    <div class="morador-actions">
+                        <button
+                            onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar
+                            Morador</button>
+                        <button
+                            onclick="if (confirm('confirma a exclusão deste morador?')) { document.location = 'excluir/{{ morador.cpf }}'; }">Excluir</button>
+                    </div>
+                    <div class="morador-actions">
+                        <a href="/medicamentos/{{ morador.cpf }}">Medicamentos</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>Não temos nenhum morador cadastrado no nosso sistema ainda :(</p>
+        {% endif %}
+        <button class="btn-cadastrar"
+            onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar morador');">Cadastrar Novo
+            Morador</button>
+    </section>
+</main>
+<script src="{% static 'filter.js' %}"></script>
+{% endblock %}

@@ -61,7 +61,7 @@ nav a {
 }
 
 main {
-    background: url('../assets/img/background/background.jpeg') no-repeat center center;
+    background: url('../assets/background.jpeg') no-repeat center center;
     background-size: cover;
     padding-top: 20px;
 }
