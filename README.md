@@ -64,6 +64,13 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
 
 👩‍💻 Graciela Oliveira
 
+
 👩‍💻 Amanda Bertolini Queçada
 
 👨‍💻 Samuel Leite da Silva
+
+# Autores
+
+<a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/2f9676fc-55be-437c-88a5-54b096eef5da" width="115"></a><br><sub>Eduardo Pires de Brito</sub>
+
+
