@@ -4,34 +4,32 @@
 
 {% block title %}LembreMED - Profissionais{% endblock %}
 
-
 {% block content %}
-<main>
-    <section class="medicamentos-control">
-        <div class="feature-title">
-            <h2>PROFISSIONAIS</h2>
-        </div>
+<main class="main-content">
+    <section class="profissionais-container">
+        <h2 class="section-title">PROFISSIONAIS</h2>
         {% if lista_profissionais %}
-            <ul>
+            <div class="profissionais-cards">
                 {% for profissional in lista_profissionais %}
-                    <li>
-                        Nome: {{ profissional.nome }}
-                        <br />CPF: {{ profissional.cpf }}
-                        <br />Coren: {{ profissional.coren}}
-                        <br />CNPJ da Insituicao: {{ profissional.cnpj_intituicao }}
-                        <br /><span class="btn btn-primary" onclick="carregar_pagina_popup('editar/{{ profissional.cpf }}', 'GET', {}, 'Alterar {{ profissional.nome }}')">Editar</span>
-                        <span class="btn btn-primary" onclick="if (confirm('confirma a exclusao deste profissional?')) { carregar_pagina_popuploading('excluir/{{ profissional.cpf }}', 'GET', {}, 'Excluindo {{ profissional.nome }}'); }">Excluir</span>
-                        
-                        
-                    </li>
+                    <div class="profissional-card">
+                        <div class="profissional-info">
+                            <p>Nome: <strong>{{ profissional.nome }}</strong></p>
+                            <p>CPF: {{ profissional.cpf }}</p>
+                            <p>Coren: {{ profissional.coren }}</p>
+                            <p>CNPJ da Instituição: {{ profissional.cnpj_instituicao }}</p>
+                        </div>
+                        <div class="profissional-actions">
+                            <button onclick="carregar_pagina_popup('editar/{{ profissional.cpf }}', 'GET', {}, 'Alterar {{ profissional.nome }}')">Editar Profissional</button>
+                            <button onclick="if (confirm('confirma a exclusão deste profissional?')) { document.location = 'excluir/{{ profissional.cpf }}'; }">Excluir</button>
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         {% else %}
-            Nenhum profissional
+            <p class="no-profissionais">Nenhum profissional cadastrado no nosso sistema ainda :(</p>
         {% endif %}
-     
-    <input type="button" value="Cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar profissional');" />
 
+        <button class="btn-cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar profissional');">Cadastrar Novo Profissional</button>
     </section>
 </main>
 {% endblock %}

@@ -96,12 +96,23 @@ nav a.active {
     color: #26a69a; /* Cor de destaque para a página atual */
 }
 
+.nav-user {
+    text-align: right;
+    padding-right: 25px;
+    padding-bottom: 13px;
+}
+
 main {
     background: url("background.jpeg") no-repeat center center;
     background-size: cover;
     padding-top: 20px;
 }
-
+.main-content {
+    padding: 20px;
+}
+.no-profissionais {
+    text-align: center;
+}
 .feature-title {
     width: 100%;
     /* Ocupa a largura total da seção */
@@ -199,7 +210,7 @@ main {
     margin-right: 10px; /* Espaço entre o ícone e a barra de entrada */
 }
 
-.moradores-container {
+.moradores-container, .profissionais-container {
     max-width: 1200px;
     margin: 0 auto;
     /* Centraliza na página */
@@ -216,14 +227,14 @@ main {
     margin-bottom: 20px;
 }
 
-.moradores-cards {
+.moradores-cards, .profissionais-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     flex-direction: column;
 }
 
-.morador-card {
+.morador-card, .profissional-card {
     width: auto;
     background: #e3f2fd;
     /* Fundo azul claro */
@@ -237,7 +248,7 @@ main {
     margin: 5px 0;
 }
 
-.morador-actions {
+.morador-actions, .profissional-actions {
     text-align: center;
     margin-top: 20px;
     display: flex;
@@ -246,7 +257,7 @@ main {
 }
 
 .morador-actions button,
-.morador-actions a {
+.morador-actions a, .profissional-actions button, .profissional-actions a {
     padding: 10px 15px;
     margin-right: 10px;
     background-color: #26a69a;
