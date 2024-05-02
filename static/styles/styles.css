@@ -96,12 +96,23 @@ nav a.active {
     color: #26a69a; /* Cor de destaque para a página atual */
 }
 
+.nav-user {
+    text-align: right;
+    padding-right: 25px;
+    padding-bottom: 13px;
+}
+
 main {
     background: url("background.jpeg") no-repeat center center;
     background-size: cover;
     padding-top: 20px;
 }
-
+.main-content {
+    padding: 20px;
+}
+.no-profissionais {
+    text-align: center;
+}
 .feature-title {
     width: 100%;
     /* Ocupa a largura total da seção */
@@ -194,12 +205,52 @@ main {
     box-sizing: border-box; /* Inclui o padding na largura total */
 }
 
+.form-custom {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.form-custom .form-group {
+    margin-bottom: 15px;
+}
+
+.form-custom .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-custom .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-custom .btn-primary {
+    background-color: #004d40;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: block;  /* Facilita o alinhamento no formulário */
+    width: 100%;
+    margin-top: 10px;
+}
+
+.form-custom .btn-primary:hover {
+    background-color: #00251a;
+}
+
 .filter-icon {
     height: 48px; /* Ajuste conforme a altura desejada, incluindo o padding */
     margin-right: 10px; /* Espaço entre o ícone e a barra de entrada */
 }
 
-.moradores-container {
+.moradores-container, .profissionais-container {
     max-width: 1200px;
     margin: 0 auto;
     /* Centraliza na página */
@@ -216,14 +267,14 @@ main {
     margin-bottom: 20px;
 }
 
-.moradores-cards {
+.moradores-cards, .profissionais-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     flex-direction: column;
 }
 
-.morador-card {
+.morador-card, .profissional-card {
     width: auto;
     background: #e3f2fd;
     /* Fundo azul claro */
@@ -237,7 +288,7 @@ main {
     margin: 5px 0;
 }
 
-.morador-actions {
+.morador-actions, .profissional-actions {
     text-align: center;
     margin-top: 20px;
     display: flex;
@@ -246,7 +297,7 @@ main {
 }
 
 .morador-actions button,
-.morador-actions a {
+.morador-actions a, .profissional-actions button, .profissional-actions a {
     padding: 10px 15px;
     margin-right: 10px;
     background-color: #26a69a;

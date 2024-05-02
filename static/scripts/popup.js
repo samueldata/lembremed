@@ -17,14 +17,13 @@ function carregar_pagina_popup(purl, pmethod, pdata, ptitulo) {
 
 function carregar_pagina_popuploading(purl, pmethod, pdata, ptitulo) {
     abrir_popup(ptitulo, '');
-    
     $.ajax({
         type: pmethod,
         url: purl,
         data: pdata,
         success: function(msg) {
             location.reload();
-        },
+        }
     });
 }
 

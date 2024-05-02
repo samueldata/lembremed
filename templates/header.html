@@ -1,31 +1,42 @@
 {% load static %}
 <header>
-    <div class="brand-container">
-        <a href="/" class="brand-container">
-            <img src="{% static 'logo.png' %}" alt="LembreMED Logo">
-        </a>
-        <h1>LembreMED</h1>
+  <div class="brand-container">
+    <a href="/" class="brand-container"><img src="{% static 'logo.png' %}" alt="LembreMED Logo" /></a>
+    <h1>LembreMED</h1>
+  </div>
+  <nav>
+    <div class="nav-user">
+      {% if user.is_authenticated %}
+        Olá, {{ user.username }}!
+      {% endif %}
     </div>
-    <nav>
-        {% if user.is_authenticated %}
-           Olá {{ user.username }}!
+    <div class="nav-buttons">
+      <ul>
+        <li>
+          <a href="{% url 'index' %}">HOME</a>
+        </li>
+        <li>
+          <a href="{% url 'morador_listar' %}">MORADORES</a>
+        </li>
+        {% if perms.lembremed.pode_gerenciar_profissional %}
+          <li>
+            <a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a>
+          </li>
         {% endif %}
 
-        <ul>
-            <li><a href="{% url 'index' %}">HOME</a></li>
-            <li><a href="{% url 'morador_listar' %}">MORADORES</a></li>
-            {% if perms.lembremed.pode_gerenciar_profissional %}
-                <li><a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a></li>
-            {% endif %}
-
-            {% if user.is_authenticated %}
-                <li><a href="#" onclick="alert($('#logout_form')[0].submit())">SAIR</a></li>
-                <form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
-                    {% csrf_token %}
-                </form>
-            {% else %}
-                <li><a href="{% url 'login' %}">LOGIN</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+        {% if user.is_authenticated %}
+          <li>
+            <a href="#" onclick="alert($('#logout_form')[0].submit())">SAIR</a>
+          </li>
+          <form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
+            {% csrf_token %}
+          </form>
+        {% else %}
+          <li>
+            <a href="{% url 'login' %}">LOGIN</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
 </header>
