@@ -205,6 +205,46 @@ main {
     box-sizing: border-box; /* Inclui o padding na largura total */
 }
 
+.form-custom {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.form-custom .form-group {
+    margin-bottom: 15px;
+}
+
+.form-custom .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-custom .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-custom .btn-primary {
+    background-color: #004d40;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: block;  /* Facilita o alinhamento no formulário */
+    width: 100%;
+    margin-top: 10px;
+}
+
+.form-custom .btn-primary:hover {
+    background-color: #00251a;
+}
+
 .filter-icon {
     height: 48px; /* Ajuste conforme a altura desejada, incluindo o padding */
     margin-right: 10px; /* Espaço entre o ícone e a barra de entrada */

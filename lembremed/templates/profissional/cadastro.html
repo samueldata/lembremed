@@ -1,29 +1,38 @@
-
-<form id="form_profissional" action="salvar/" method="post">
-
+<form id="form_profissional" action="salvar/" method="post" class="form-custom">
     {% csrf_token %}
-
-
-
     {% if profissional %}
-        <input type="hidden" name="cpf" value="{{ profissional.cpf }}" />
-        <input type="hidden" name="edit" value="1" />
-        CPF: <input type="text" value="{{ profissional.cpf }}" disabled />
-
+        <input type="hidden" name="cpf" value="{{ profissional.cpf }}">
+        <input type="hidden" name="edit" value="1">
+        <div class="form-group">
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" value="{{ profissional.cpf }}" disabled class="form-control">
+        </div>
     {% else %}
-        CPF: <input name="cpf" type="text" value="" />
+        <div class="form-group">
+            <label for="cpf">CPF:</label>
+            <input name="cpf" type="text" id="cpf" value="" class="form-control">
+        </div>
     {% endif %}
-    
-    <br />Nome: <input name="nome" type="text" value="{{ profissional.nome }}"  />
-    <br />Coren: <input name="coren" type="text" value="{{ profissional.coren }}"  />
-    <br />e-mail: <input name="email" type="text" value="{{ user.email }}"  />
-    <br />Senha: <input name="senha" type="password" value="{{ user.senha }}"  />
-    
-
-    <input type="submit" value="Salvar" />
+    <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input name="nome" type="text" id="nome" value="{{ profissional.nome }}" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="coren">Coren:</label>
+        <input name="coren" type="text" id="coren" value="{{ profissional.coren }}" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="email">E-mail:</label>
+        <input name="email" type="text" id="email" value="{{ user.email }}" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="senha">Senha:</label>
+        <input name="senha" type="password" id="senha" value="{{ user.senha }}" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
 <script>
-    //Troca o submit para enviar no popup
+    // Troca o submit para enviar no popup
     document.getElementById('form_profissional').addEventListener('submit', envia_e_recarregar);
 </script>
