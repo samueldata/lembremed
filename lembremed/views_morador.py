@@ -2,10 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Morador
 
-#pagina inicial do lembremed
-def index(request):
-    return HttpResponse("index")
-
 #Pagina principal dos moradores
 #Lista todos os moradores
 def morador_listar(request):

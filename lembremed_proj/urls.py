@@ -18,10 +18,10 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import TemplateView  # Importa TemplateView para servir sua landing page
 
-
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'), 
     path('admin/', admin.site.urls),
-    path('morador/', include('morador.urls')),
-    path('profissional/', include('profissional.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('morador/', include('lembremed.urls_morador')),
+    path('profissional/', include('lembremed.urls_profissional')),
 ]

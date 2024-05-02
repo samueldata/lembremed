@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'morador.apps.MoradorConfig',
-    'profissional.apps.ProfissionalConfig',
+    'lembremed.apps.LembremedConfig',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +58,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
             os.path.join(BASE_DIR, 'static'),  # Ajuste aqui para o caminho absoluto correto
+            os.path.join(BASE_DIR, 'venv/Lib/site-packages/django/contrib/auth/templates')
 
         ],
         'APP_DIRS': True,
@@ -129,3 +129,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = '/'
+
+# Jogando os emails no console pra testar as funcionalidades
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
