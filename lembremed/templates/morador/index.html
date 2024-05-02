@@ -6,7 +6,6 @@
 
 
 {% block content %}
-<script src="{% static 'popup.js' %}"></script>
 <main style="padding: 20px;">
     <section class="moradores-container">
         <h2 class="section-title">MORADORES</h2>
@@ -32,9 +31,12 @@
                         <button
                             onclick="if (confirm('confirma a exclusão deste morador?')) { document.location = 'excluir/{{ morador.cpf }}'; }">Excluir</button>
                     </div>
-                    <div class="morador-actions">
-                        <a href="/medicamentos/{{ morador.cpf }}">Medicamentos</a>
-                    </div>
+                    
+                    {% if perms.lembremed.pode_medicar_morador %}
+                        <div class="morador-actions">
+                            <a href="/medicamentos/{{ morador.cpf }}">Medicamentos</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}

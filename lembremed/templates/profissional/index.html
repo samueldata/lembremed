@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}LembreMED - Profissionais{% endblock %}
+
+
+{% block content %}
+<main>
+    <section class="medicamentos-control">
+        <div class="feature-title">
+            <h2>PROFISSIONAIS</h2>
+        </div>
+        {% if lista_profissionais %}
+            <ul>
+                {% for profissional in lista_profissionais %}
+                    <li>
+                        Nome: {{ profissional.nome }}
+                        <br />CPF: {{ profissional.cpf }}
+                        <br />Coren: {{ profissional.coren}}
+                        <br />CNPJ da Insituicao: {{ profissional.cnpj_intituicao }}
+                        <br /><span class="btn btn-primary" onclick="carregar_pagina_popup('editar/{{ profissional.cpf }}', 'GET', {}, 'Alterar {{ profissional.nome }}')">Editar</span>
+                        <span class="btn btn-primary" onclick="if (confirm('confirma a exclusao deste profissional?')) { carregar_pagina_popuploading('excluir/{{ profissional.cpf }}', 'GET', {}, 'Excluindo {{ profissional.nome }}'); }">Excluir</span>
+                        
+                        
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            Nenhum profissional
+        {% endif %}
+     
+    <input type="button" value="Cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar profissional');" />
+
+    </section>
+</main>
+{% endblock %}
