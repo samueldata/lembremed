@@ -1,22 +1,26 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from morador.models import Profissional
-
-#pagina inicial do lembremed
-def index(request):
-    return HttpResponse("index")
+from lembremed.models import Profissional, UserProfissional
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
+from django.contrib.auth.decorators import permission_required
 
 #Pagina principal dos profissionais
 #Lista todos os profissionais
+@permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_listar(request):
     profissionais = Profissional.objects.all()
     context = {'lista_profissionais': profissionais}
+    print(profissionais.count())
     return render(request, 'profissional/index.html', context)
 
 def profissional_editar(request, pcpf):
     profissional = Profissional.objects.filter(cpf=pcpf)[0]
-    #return HttpResponse(profissional.nome)
-    context = {'profissional': profissional}
+    user_profissional = UserProfissional.objects.get(profissional=profissional)
+    context = {
+        'profissional': profissional,
+        'user': user_profissional.user,
+        }
     return render(request, 'profissional/cadastro.html', context)
 
 def profissional_cadastrar(request):
@@ -28,6 +32,7 @@ def profissional_salvar(request):
         # Pegando a variável POST
         pcpf = request.POST.get('cpf')
         pnome = request.POST.get('nome')
+        pemail = request.POST.get('email')
         pcoren = request.POST.get('coren')
         #pcnpj_instituicao = request.POST.get('cnpj_instituicao')
         psenha = request.POST.get('senha')
@@ -38,12 +43,29 @@ def profissional_salvar(request):
             profissional.nome = pnome
             profissional.coren = pcoren
             #profissional.cnpj_instituicao = pcnpj_instituicao
-            profissional.senha = psenha
+            profissional.save()
+
+            user_profissional = UserProfissional.objects.get(profissional=profissional)
+            user = user_profissional.user
+            user.email = pemail
+            if (psenha):
+                user.set_password(psenha)
+            user.save()
 
         else:
-            profissional = Profissional(cpf=pcpf, nome=pnome, coren=pcoren, senha=psenha)
+            profissional = Profissional.objects.create(cpf=pcpf, nome=pnome, coren=pcoren)
+            
+            user = get_user_model().objects.create_user(username=pcpf, email=pemail, password=psenha)
+            user.user_permissions.add(Permission.objects.get(codename='pode_gerenciar_morador'))
+            user.user_permissions.add(Permission.objects.get(codename='pode_medicar_morador'))
+            user.save()
 
-        profissional.save()
+            user_profissional = UserProfissional(user=user, profissional=profissional)
+            user_profissional.save()
+
+        
+
+        # Após criar o usuário, atribua o papel associado
 
         return HttpResponse("profissional salvo com sucesso")
     else:
