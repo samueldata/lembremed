@@ -71,24 +71,22 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
 # Autores
 
 <div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/2f9676fc-55be-437c-88a5-54b096eef5da" width="115" height="115" ></a><br><sub>Eduardo Brito</sub>
+  <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/2f9676fc-55be-437c-88a5-54b096eef5da" width="115" height="140" ></a><br><sub>Eduardo Brito</sub>
 </div>
 
 <div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/giovanabcunha"><img src= "https://github.com/samueldata/lembremed/assets/163072898/214fad6f-59b6-4fd7-88ca-a50c21860aa2" width="115" height="115"></a><br><sub>Giovana Cunha</sub>
+  <a href="https://github.com/giovanabcunha"><img src= "https://github.com/samueldata/lembremed/assets/163072898/214fad6f-59b6-4fd7-88ca-a50c21860aa2" width="115" height="140"></a><br><sub>Giovana Cunha</sub>
 </div>
 
 <div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/crfurquim"><img src="https://github.com/samueldata/lembremed/assets/163072898/f81a3bb7-c664-484c-b01e-9d84906a5eb6" width="115" height="115"></a><br><sub>Christian Furquim</sub>
+  <a href="https://github.com/crfurquim"><img src="https://github.com/samueldata/lembremed/assets/163072898/f81a3bb7-c664-484c-b01e-9d84906a5eb6" width="115" height="140"></a><br><sub>Christian Furquim</sub>
 </div>
 
 <div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/CarolinaLuchetta"><img src="https://github.com/samueldata/lembremed/assets/163072898/dab9e17e-7160-4760-8791-59dfded7debb" width="115" height="115"></a><br><sub>Cuchetta</sub>
+  <a href="https://github.com/CarolinaLuchetta"><img src="https://github.com/samueldata/lembremed/assets/163072898/dab9e17e-7160-4760-8791-59dfded7debb" width="115" height="140"></a><br><sub>Carolina Luchetta</sub>
 </div>
 
-<div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/CarolinaLuchetta"><img src="https://github.com/samueldata/lembremed/assets/163072898/dab9e17e-7160-4760-8791-59dfded7debb" width="115" height="115"></a><br><sub>Cuchetta</sub>
-</div>
+
 
 
 
