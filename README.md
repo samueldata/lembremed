@@ -70,6 +70,8 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
 
 # Autores
 
+**Conheça os incríveis desenvolvedores que contribuíram para este projeto:**
+
 <div style="float: left; margin-right: 10px;">
   <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/2f9676fc-55be-437c-88a5-54b096eef5da" width="115" height="140" ></a><br><sub>Eduardo Brito</sub>
 </div>
@@ -101,8 +103,4 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
 <div style="float: left; margin-right: 10px;">
   <a href="https://github.com/samueldata"><img src="" width="115" height="140"></a><br><sub>Samuel Leite</sub>
 </div>
-
-
-
-
 
