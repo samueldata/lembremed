@@ -70,6 +70,8 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
 
 # Autores
 
+**Conheça os incríveis desenvolvedores que contribuíram para este projeto:**
+
 <div style="float: left; margin-right: 10px;">
   <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/2f9676fc-55be-437c-88a5-54b096eef5da" width="115" height="140" ></a><br><sub>Eduardo Brito</sub>
 </div>
@@ -83,11 +85,22 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
 </div>
 
 <div style="float: left; margin-right: 10px;">
+  <a href="https://github.com/Edkamimura"><img src="https://github.com/samueldata/lembremed/assets/163072898/c67ea93e-7815-41d6-b60a-4b9c94a80924" width="115" height="140"></a><br><sub>Edgard Kamimuram</sub>
+</div>
+
+<div style="float: left; margin-right: 10px;">
   <a href="https://github.com/CarolinaLuchetta"><img src="https://github.com/samueldata/lembremed/assets/163072898/dab9e17e-7160-4760-8791-59dfded7debb" width="115" height="140"></a><br><sub>Carolina Luchetta</sub>
 </div>
 
+<div style="float: left; margin-right: 10px;">
+  <a href="https://github.com/graciela-oliveira"><img src="" width="115" height="140"></a><br><sub>Graciela Olievria</sub>
+</div>
 
+<div style="float: left; margin-right: 10px;">
+  <a href="https://github.com/qbamanda"><img src="https://github.com/samueldata/lembremed/assets/163072898/bdbff197-5b1e-4c0d-b08e-5d0f64d2642f" width="115" height="140"></a><br><sub>Amanda Queçada</sub>
+</div>
 
-
-
+<div style="float: left; margin-right: 10px;">
+  <a href="https://github.com/samueldata"><img src="" width="115" height="140"></a><br><sub>Samuel Leite</sub>
+</div>
 
