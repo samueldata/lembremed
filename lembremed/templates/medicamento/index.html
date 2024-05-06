@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}LembreMED - MEDICAMENTOS{% endblock %}
+
+
+{% block content %}
+<main style="padding: 20px;">
+	<section class="medicamentos-container">
+		<h2 class="section-title">MEDICAMENTOS</h2>
+		<div class="medicamentos-filter">
+			<img class="filter-icon" src="{% static 'filter_7420963.png' %}" alt="Buscar">
+			<input type="text" id="searchInput" placeholder="Buscar por nome do principio ativo do medicamento" onkeyup="alert('digitou medicamento')"
+				style="width: 100%; padding: 10px; margin-bottom: 20px;">
+		</div>
+		{% if lista_estoques %}
+		<div class="medicamentos-cards">
+			<div class="medicamento-card">
+				<div class="medicamento-info">
+					<table>
+						<tr>
+							<td>
+								Medicamento
+							</td>
+							<td>
+								Apresentação
+							</td>
+							<td>
+								Concentração
+							</td>
+							<td>
+								Prescrição
+							</td>
+							<td>
+								Frequência
+							</td>
+							<td>
+								Horários
+							</td>
+							<td>
+								Qtd. disponível
+							</td>
+							<td>
+								Duração estoque
+							</td>
+							<td>
+								
+							</td>
+						</tr>						
+						{% for estoque_associado in lista_estoques %}
+							<tr>
+								<td>
+									{{ estoque_associado.estoque.medicamento }}
+								</td>
+								<td>
+									{{ estoque_associado.estoque.apresentacao }}
+								</td>
+								<td>
+									{{ estoque_associado.estoque.concentracao }}
+								</td>
+								<td>
+									{{ estoque_associado.estoque.prescricao|floatformat:2 }}
+								</td>
+								<td>
+									{{ estoque_associado.estoque.frequencia }} x dia
+								</td>
+								<td>
+									{{ estoque_associado.estoque.horarios }}
+								</td>
+								<td>
+									{{ estoque_associado.estoque.qtd_disponivel|floatformat:2 }}
+								</td>
+								<td>
+									Aproximadamente {{ estoque_associado.duracao|floatformat:0 }} dia(s)
+								</td>
+								<td>
+									
+									<div class="medicamento-actions">
+										<div class="medicamento-actions">
+											<span class="btn btn-primary" 
+												onclick="carregar_pagina_popup('editar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Alterar {{ estoque_associado.estoque.medicamento.principio }}')">
+												Editar Medicamento</span>
+											<span class="btn btn-primary" 
+												onclick="if (confirm('Confirma a exclusão deste medicamento?')) { carregar_pagina_popuploading('excluir/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Excluindo {{ estoque_associado.estoque.medicamento.principio }}...'); }">
+												Excluir</span>
+												
+										</div>
+										
+										{% if True or perms.lembremed.pode_medicar_medicamento %}
+											<div class="medicamento-actions">
+												<span class="btn btn-primary" 
+												onclick="if (confirm('Confirma a administração de {{ estoque_associado.estoque.medicamento.principio }}?')) { carregar_pagina_popuploading('administrar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Administrando {{ estoque_associado.estoque.medicamento.principio }}...'); }">
+													Administrar
+												</span>
+												
+											</div>
+										{% endif %}
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="9">
+									{% if estoque_associado.ultima_administracao %}
+										Última administração: {{ estoque_associado.ultima_administracao.dthr_administracao|date:"d/m/Y H:i" }}
+										feita por {{ estoque_associado.ultima_administracao.profissional.nome }}
+									{% else %}
+										Nunca administrado
+									{% endif %}
+								</td>
+							</tr>
+							{% if estoque_associado.duracao <= 7 %}
+								<tr>
+									<td colspan="9" class="text-center bg-danger text-white">
+										Faltam menos de 7 dias de estoque para este medicamento
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+			
+		</div>
+		{% else %}
+			<p style="text-align: center;">Não temos nenhum medicamento cadastrado para o morador :(</p>
+		{% endif %}
+		<button class="btn-cadastrar"
+			onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar medicamento');">Cadastrar Novo
+			Medicamento</button>
+	</section>
+		
+</main>
+<script src="{% static 'filter.js' %}"></script>
+{% endblock %}

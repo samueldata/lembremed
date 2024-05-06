@@ -110,9 +110,6 @@ main {
 .main-content {
     padding: 20px;
 }
-.no-profissionais {
-    text-align: center;
-}
 .feature-title {
     width: 100%;
     /* Ocupa a largura total da seção */
@@ -121,6 +118,146 @@ main {
     margin-bottom: 1em;
     /* Espaço abaixo do título para separá-lo dos cards */
 }
+
+.feature img {
+    margin-right: 1em;
+    width: 50px;
+    /* Ajuste conforme necessário */
+}
+
+.feature p {
+    color: #333;
+    padding: 0;
+    font-size: 1em;
+}
+
+
+#searchInput {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box; /* Inclui o padding na largura total */
+}
+
+.form-custom {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.form-custom .form-group {
+    margin-bottom: 15px;
+}
+
+.form-custom .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-custom .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-custom .btn-primary {
+    background-color: #004d40;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: block;  /* Facilita o alinhamento no formulário */
+    width: 100%;
+    margin-top: 10px;
+}
+
+.form-custom .btn-primary:hover {
+    background-color: #00251a;
+}
+
+.filter-icon {
+    height: 48px; /* Ajuste conforme a altura desejada, incluindo o padding */
+    margin-right: 10px; /* Espaço entre o ícone e a barra de entrada */
+}
+
+
+.section-title {
+    text-align: center;
+    color: #004d40;
+    margin-bottom: 20px;
+}
+
+
+.btn-cadastrar {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #004d40;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-cadastrar:hover {
+    background-color: #00251a;
+}
+
+
+footer {
+    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    /* position: fixed; */
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    /* Remove a margem padrão do parágrafo */
+    padding: 0 20px;
+    /* Adiciona algum espaço dos lados se necessário */
+    font-size: 0.9em;
+    /* Ajuste o tamanho da fonte conforme necessário */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.no-profissionais {
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .medicamentos-control {
     display: flex;
@@ -181,76 +318,23 @@ main {
     margin-bottom: 13%;
 }
 
-.feature img {
-    margin-right: 1em;
-    width: 50px;
-    /* Ajuste conforme necessário */
-}
 
-.feature p {
-    color: #333;
-    padding: 0;
-    font-size: 1em;
-}
 
-.moradores-filter {
+
+
+.moradores-filter,
+.medicamentos-filter {
     display: flex;
     align-items: normal;
     margin-bottom: 20px;
 }
 
-#searchInput {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box; /* Inclui o padding na largura total */
-}
 
-.form-custom {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    margin: 20px 0;
-}
 
-.form-custom .form-group {
-    margin-bottom: 15px;
-}
 
-.form-custom .form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-custom .form-control {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.form-custom .btn-primary {
-    background-color: #004d40;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-    display: block;  /* Facilita o alinhamento no formulário */
-    width: 100%;
-    margin-top: 10px;
-}
-
-.form-custom .btn-primary:hover {
-    background-color: #00251a;
-}
-
-.filter-icon {
-    height: 48px; /* Ajuste conforme a altura desejada, incluindo o padding */
-    margin-right: 10px; /* Espaço entre o ícone e a barra de entrada */
-}
-
-.moradores-container, .profissionais-container {
+.moradores-container, 
+.profissionais-container, 
+.medicamentos-container {
     max-width: 1200px;
     margin: 0 auto;
     /* Centraliza na página */
@@ -261,20 +345,18 @@ main {
     border-radius: 8px;
 }
 
-.section-title {
-    text-align: center;
-    color: #004d40;
-    margin-bottom: 20px;
-}
-
-.moradores-cards, .profissionais-cards {
+.moradores-cards, 
+.profissionais-cards, 
+.medicamentos-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     flex-direction: column;
 }
 
-.morador-card, .profissional-card {
+.morador-card, 
+.profissional-card, 
+.medicamento-card {
     width: auto;
     background: #e3f2fd;
     /* Fundo azul claro */
@@ -288,7 +370,9 @@ main {
     margin: 5px 0;
 }
 
-.morador-actions, .profissional-actions {
+.morador-actions, 
+.profissional-actions, 
+.medicamento-actions {
     text-align: center;
     margin-top: 20px;
     display: flex;
@@ -297,7 +381,11 @@ main {
 }
 
 .morador-actions button,
-.morador-actions a, .profissional-actions button, .profissional-actions a {
+.morador-actions a, 
+.profissional-actions button, 
+.profissional-actions a, 
+.medicamento-actions button, 
+.medicamento-actions a {
     padding: 10px 15px;
     margin-right: 10px;
     background-color: #26a69a;
@@ -309,43 +397,10 @@ main {
 }
 
 .morador-actions button:hover,
-.morador-actions a:hover {
+.morador-actions a:hover,
+.profissional-actions button:hover,
+.profissional-actions a:hover,
+.medicamento-actions button:hover,
+.medicamento-actions a:hover {
     background-color: #00796b;
-}
-
-.btn-cadastrar {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #004d40;
-    color: white;
-    text-align: center;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.btn-cadastrar:hover {
-    background-color: #00251a;
-}
-
-
-footer {
-    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    /* position: fixed; */
-    bottom: 0;
-    width: 100%;
-}
-
-footer p {
-    margin: 0;
-    /* Remove a margem padrão do parágrafo */
-    padding: 0 20px;
-    /* Adiciona algum espaço dos lados se necessário */
-    font-size: 0.9em;
-    /* Ajuste o tamanho da fonte conforme necessário */
 }

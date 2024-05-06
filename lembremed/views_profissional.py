@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from lembremed.models import Profissional, UserProfissional
+from lembremed.models import Profissional
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import permission_required
@@ -16,10 +16,9 @@ def profissional_listar(request):
 
 def profissional_editar(request, pcpf):
     profissional = Profissional.objects.filter(cpf=pcpf)[0]
-    user_profissional = UserProfissional.objects.get(profissional=profissional)
     context = {
         'profissional': profissional,
-        'user': user_profissional.user,
+        'user': profissional.user,
         }
     return render(request, 'profissional/cadastro.html', context)
 
@@ -45,28 +44,21 @@ def profissional_salvar(request):
             #profissional.cnpj_instituicao = pcnpj_instituicao
             profissional.save()
 
-            user_profissional = UserProfissional.objects.get(profissional=profissional)
-            user = user_profissional.user
+            user = profissional.user
             user.email = pemail
             if (psenha):
                 user.set_password(psenha)
             user.save()
 
         else:
-            profissional = Profissional.objects.create(cpf=pcpf, nome=pnome, coren=pcoren)
-            
             user = get_user_model().objects.create_user(username=pcpf, email=pemail, password=psenha)
             user.user_permissions.add(Permission.objects.get(codename='pode_gerenciar_morador'))
             user.user_permissions.add(Permission.objects.get(codename='pode_medicar_morador'))
             user.save()
 
-            user_profissional = UserProfissional(user=user, profissional=profissional)
-            user_profissional.save()
-
+            profissional = Profissional.objects.create(cpf=pcpf, nome=pnome, coren=pcoren, user=user)
+            
         
-
-        # Após criar o usuário, atribua o papel associado
-
         return HttpResponse("profissional salvo com sucesso")
     else:
         return HttpResponse("erro por GET no salvar")
@@ -77,6 +69,9 @@ def profissional_excluir(request, pcpf):
     profissional = Profissional.objects.get(cpf=pcpf)
     if (profissional):
         profissional.delete()
+
+        profissional.user.delete()
+        
         return HttpResponse("excluido com sucesso")
     else:
         return HttpResponse("Erro ao localizar cpf")

@@ -15,9 +15,11 @@
         <li>
           <a href="{% url 'index' %}">HOME</a>
         </li>
-        <li>
-          <a href="{% url 'morador_listar' %}">MORADORES</a>
-        </li>
+        {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+          <li>
+            <a href="{% url 'morador_listar' %}">MORADORES</a>
+          </li>
+        {% endif %}
         {% if perms.lembremed.pode_gerenciar_profissional %}
           <li>
             <a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a>
