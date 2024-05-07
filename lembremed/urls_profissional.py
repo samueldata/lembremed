@@ -1,5 +1,5 @@
 from django.urls import re_path
-from . import views_profissional
+from lembremed import views_profissional
 
 urlpatterns = [
     re_path(r'^$', views_profissional.profissional_listar, name='profissional_listar'),

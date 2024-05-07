@@ -1,5 +1,5 @@
 from django.urls import re_path
-from . import views_medicamento
+from lembremed import views_medicamento
 
 urlpatterns = [
     re_path(r'^(?P<pcpf>\d+)/$', views_medicamento.medicamento_listar, name='medicamento_listar'),

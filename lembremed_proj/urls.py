@@ -17,9 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import TemplateView  # Importa TemplateView para servir sua landing page
+from lembremed.decorators import adiciona_contexto
+
+
+from django.shortcuts import render
+
+#Pagina principal do site
+@adiciona_contexto
+def index_principal(request, contexto_padrao):
+    return render(request, 'index.html', contexto_padrao)
+
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html'), name='index'), 
+    #Desse jeito não carrega o contexto corretamente, para trazer o nome do usuario
+    #path('', adiciona_contexto(TemplateView.as_view(template_name='index.html')), name='index'),
+    re_path(r'^$', index_principal, name='index'),
+    path('', adiciona_contexto(TemplateView.as_view(template_name='index.html')), name='index'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('morador/', include('lembremed.urls_morador')),

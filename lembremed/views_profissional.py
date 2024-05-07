@@ -4,16 +4,20 @@ from lembremed.models import Profissional
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import permission_required
+from lembremed.decorators import adiciona_contexto
 
 #Pagina principal dos profissionais
 #Lista todos os profissionais
+@adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_profissional')
-def profissional_listar(request):
+def profissional_listar(request, contexto_padrao):
     profissionais = Profissional.objects.all()
     context = {'lista_profissionais': profissionais}
     print(profissionais.count())
-    return render(request, 'profissional/index.html', context)
+    return render(request, 'profissional/index.html', {**context, **contexto_padrao})
 
+
+@permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_editar(request, pcpf):
     profissional = Profissional.objects.filter(cpf=pcpf)[0]
     context = {
@@ -22,10 +26,14 @@ def profissional_editar(request, pcpf):
         }
     return render(request, 'profissional/cadastro.html', context)
 
+
+@permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_cadastrar(request):
     context = {}
     return render(request, 'profissional/cadastro.html', context)
 
+
+@permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_salvar(request):
     if request.method == 'POST':
         # Pegando a variável POST
@@ -58,12 +66,12 @@ def profissional_salvar(request):
 
             profissional = Profissional.objects.create(cpf=pcpf, nome=pnome, coren=pcoren, user=user)
             
-        
         return HttpResponse("profissional salvo com sucesso")
     else:
         return HttpResponse("erro por GET no salvar")
 
 
+@permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_excluir(request, pcpf):
     #Verifica se o cpf existe
     profissional = Profissional.objects.get(cpf=pcpf)

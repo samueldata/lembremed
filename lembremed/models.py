@@ -34,26 +34,24 @@ class Medicamento(models.Model):
 
     def __str__(self):
         return self.principio
+    
+class Apresentacao(models.Model):
+    codigo = models.AutoField(primary_key=True)
+    unidade_prescricao = models.CharField(max_length=100)
+    unidade_comercial = models.CharField(max_length=100)
+    razao_prescricao_comercial = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 
 class Estoque(models.Model):
     codigo = models.AutoField(primary_key=True)
     morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
     medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
-    tipos_apresentacao = (
-        ('comprimido', 'comprimido(s)'),
-        ('xarope', 'ml(s)'),
-        ('gotas', 'gota(s)'),
-        ('dose', 'dose(s)'),
-    )
-    apresentacao = models.CharField(max_length=10, choices=tipos_apresentacao)
+    apresentacao = models.ForeignKey(Apresentacao, on_delete=models.CASCADE)
     concentracao = models.CharField(max_length=50)
     prescricao = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     qtd_disponivel = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     frequencia = models.IntegerField(default=1)
     horarios = models.CharField(max_length=150)
     
-
-# Tabelas relacionais
 class Administra(models.Model):
     profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE)
     morador = models.ForeignKey(Morador, on_delete=models.CASCADE)

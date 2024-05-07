@@ -1,24 +1,34 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Morador
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
+from django.contrib.auth.decorators import permission_required
 
 #Pagina principal dos moradores
 #Lista todos os moradores
+@permission_required('lembremed.pode_gerenciar_morador')
 def morador_listar(request):
     moradores = Morador.objects.all()
     context = {'lista_moradores': moradores}
     return render(request, 'morador/index.html', context)
 
+
+@permission_required('lembremed.pode_gerenciar_morador')
 def morador_editar(request, pcpf):
     morador = Morador.objects.filter(cpf=pcpf)[0]
     #return HttpResponse(morador.nome)
     context = {'morador': morador}
     return render(request, 'morador/cadastro.html', context)
 
+
+@permission_required('lembremed.pode_gerenciar_morador')
 def morador_cadastrar(request):
     context = {}
     return render(request, 'morador/cadastro.html', context)
 
+
+@permission_required('lembremed.pode_gerenciar_morador')
 def morador_salvar(request):
     if request.method == 'POST':
         # Pegando a variável POST
@@ -42,6 +52,7 @@ def morador_salvar(request):
         return HttpResponse("erro por GET no salvar")
 
 
+@permission_required('lembremed.pode_gerenciar_morador')
 def morador_excluir(request, pcpf):
     #Verifica se o cpf existe
     morador = Morador.objects.get(cpf=pcpf)

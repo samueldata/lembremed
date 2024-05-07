@@ -24,11 +24,12 @@
         <label for="nome">Apresentação:</label>
         <select name="apresentacao" id="apresentacao" class="form-control form-select">
         <option data-bs-tipagem="&nbsp;"></option>
-        {% for apresentacao in tipos_apresentacao %}
-            <option value="{{ apresentacao.0 }}"
-            {% if estoque.apresentacao == apresentacao.0 %} selected {% endif %}
-            data-bs-tipagem="{{ apresentacao.1 }}"
-            >{{ apresentacao.0 }}</option>
+        {% for apresentacao in arr_apresentacoes %}
+            <option value="{{ apresentacao.codigo }}"
+            {% if estoque.apresentacao == apresentacao %} selected {% endif %}
+            data-bs-prescricao="{{ apresentacao.unidade_prescricao }}"
+            data-bs-comercial="{{ apresentacao.unidade_comercial }}"
+            >{{ apresentacao.unidade_prescricao }}</option>
         {% endfor %}
         </select>
     </div>
@@ -104,8 +105,8 @@ $("#nome_medicamento").on("input", function(){
 
 $("#apresentacao").on("change", function(){
     var option = $("#apresentacao option:selected")[0];
-    $('#tipagem_dosagem').html(option.attributes['data-bs-tipagem'].value);
-    $('#tipagem_qtddisponivel').html(option.attributes['data-bs-tipagem'].value);
+    $('#tipagem_dosagem').html(option.attributes['data-bs-prescricao'].value);
+    $('#tipagem_qtddisponivel').html(option.attributes['data-bs-comercial'].value);
 });
 
 </script>

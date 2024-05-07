@@ -6,8 +6,15 @@
   </div>
   <nav>
     <div class="nav-user">
+      
+
+
       {% if user.is_authenticated %}
-        Olá, {{ user.username }}!
+        Olá, 
+        {% block nome_usuario %}
+          {{ usuario.nome }}!
+        {% endblock %}
+        
       {% endif %}
     </div>
     <div class="nav-buttons">

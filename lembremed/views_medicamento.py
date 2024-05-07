@@ -1,15 +1,45 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from lembremed.models import Estoque, Medicamento, Administra, Morador, Profissional
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Permission
+from lembremed.models import Estoque, Medicamento, Administra, Morador, Profissional, Apresentacao
+from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
 from datetime import datetime
 
+
+def verificar_apresentacoes():
+    qtd_apresentacoes = Apresentacao.objects.count()
+    if (qtd_apresentacoes == 0):
+        Apresentacao.objects.create(
+            unidade_prescricao = 'gota(s)',
+            unidade_comercial = 'ml(s)',
+            razao_prescricao_comercial = 22,
+        )
+        Apresentacao.objects.create(
+            unidade_prescricao = 'ml(s)',
+            unidade_comercial = 'ml(s)',
+            razao_prescricao_comercial = 1,
+        )
+        Apresentacao.objects.create(
+            unidade_prescricao = 'comprimido(s)',
+            unidade_comercial = 'comprimido(s)',
+            razao_prescricao_comercial = 1,
+        )
+        Apresentacao.objects.create(
+            unidade_prescricao = 'dose(s)',
+            unidade_comercial = 'dose(s)',
+            razao_prescricao_comercial = 1,
+        )
+
 #Pagina principal dos medicamentos
 #Lista todos os medicamentos
-def medicamento_listar(request, pcpf):
+@adiciona_contexto
+@permission_required('lembremed.pode_gerenciar_morador')
+def medicamento_listar(request, pcpf, contexto_padrao):
+    #Verifica se tem os tipos de apresentacao cadastrados
+    verificar_apresentacoes()
+
     estoques = Estoque.objects.filter(morador=pcpf)
+    morador = Morador.objects.get(cpf=pcpf)
 
     estoques_administrados = []
     for estoque in estoques:
@@ -17,14 +47,15 @@ def medicamento_listar(request, pcpf):
         estoques_administrados.append({ #Cria o objeto com o estoque e sua ultima administracao
             'estoque': estoque,
             'ultima_administracao': ultima_administracao,
-            'duracao': estoque.qtd_disponivel / (estoque.frequencia * estoque.prescricao)
+            'duracao': (estoque.qtd_disponivel * estoque.apresentacao.razao_prescricao_comercial) / (estoque.frequencia * estoque.prescricao)
         })
 
-    context = {'lista_estoques': estoques_administrados}
+    context = {'lista_estoques': estoques_administrados, 'morador': morador}
     
-    return render(request, 'medicamento/index.html', context)
+    return render(request, 'medicamento/index.html', {**context, **contexto_padrao})
 
 
+@permission_required('lembremed.pode_medicar_morador')
 def medicamento_editar(request, pcpf, pcodigo):
     estoque = Estoque.objects.get(codigo=pcodigo, morador__cpf=pcpf)
 
@@ -39,24 +70,26 @@ def medicamento_editar(request, pcpf, pcodigo):
     return render(request, 'medicamento/cadastro.html', context)
 
 
+@permission_required('lembremed.pode_medicar_morador')
 def medicamento_cadastrar(request, pcpf):
     arr_medicamentos = Medicamento.objects.all().order_by('principio')
-    tipos_apresentacao = Estoque.tipos_apresentacao
+    arr_apresentacoes = Apresentacao.objects.all().order_by('unidade_prescricao')
 
     context = {
         'cpf': pcpf,
         'arr_medicamentos': arr_medicamentos,
-        'tipos_apresentacao': tipos_apresentacao,
+        'arr_apresentacoes': arr_apresentacoes,
         }
     return render(request, 'medicamento/cadastro.html', context)
 
 
+@permission_required('lembremed.pode_medicar_morador')
 def medicamento_salvar(request, pcpf):
     if request.method == 'POST':
         # Pegando a variável POST
         pcodigo = request.POST.get('codigo')
         pcodigo_medicamento = request.POST.get('codigo_medicamento')
-        papresentacao = request.POST.get('apresentacao')
+        papresentacao = Apresentacao.objects.get(codigo=request.POST.get('apresentacao'))
         pconcentracao = request.POST.get('concentracao')
         pprescricao = request.POST.get('prescricao')
         pfrequencia = request.POST.get('frequencia')
@@ -95,6 +128,7 @@ def medicamento_salvar(request, pcpf):
         return HttpResponse("erro por GET no salvar")
 
 
+@permission_required('lembremed.pode_medicar_morador')
 def medicamento_excluir(request, pcpf, pcodigo):
     #Verifica se o estoque existe para o cpf
     estoque = Estoque.objects.get(codigo=pcodigo, morador__cpf=pcpf)
@@ -111,12 +145,13 @@ def medicamento_excluir(request, pcpf, pcodigo):
         return HttpResponse("Erro ao localizar estoque")
     
 
+@permission_required('lembremed.pode_medicar_morador')
 def medicamento_administrar(request, pcpf, pcodigo):
     #Verifica se o estoque existe para o cpf
     estoque = Estoque.objects.get(codigo=pcodigo, morador__cpf=pcpf)
     if (estoque):
         #Atualiza o estoque
-        estoque.qtd_disponivel -= estoque.prescricao
+        estoque.qtd_disponivel -= estoque.prescricao / estoque.apresentacao.razao_prescricao_comercial
         estoque.save()
 
         #Registra a administracao

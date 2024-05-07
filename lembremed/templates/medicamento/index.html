@@ -6,6 +6,15 @@
 
 
 {% block content %}
+<style>
+tr.details > td, tr.details {
+	border-top-width: 2px;
+	border-top-color: black;
+	border-top-style: solid;
+}
+</style>
+
+
 <main style="padding: 20px;">
 	<section class="medicamentos-container">
 		<h2 class="section-title">MEDICAMENTOS</h2>
@@ -14,11 +23,20 @@
 			<input type="text" id="searchInput" placeholder="Buscar por nome do principio ativo do medicamento" onkeyup="alert('digitou medicamento')"
 				style="width: 100%; padding: 10px; margin-bottom: 20px;">
 		</div>
+			
+		<div class="text-center mb-1">
+			<h3>
+				{{ morador.nome }}
+			</h3>
+		</div>
+		
+		
 		{% if lista_estoques %}
 		<div class="medicamentos-cards">
 			<div class="medicamento-card">
 				<div class="medicamento-info">
-					<table>
+					<table class="table">
+						<thead>
 						<tr>
 							<td>
 								Medicamento
@@ -44,23 +62,41 @@
 							<td>
 								Duração estoque
 							</td>
-							<td>
-								
-							</td>
-						</tr>						
+						</tr>	
+						</thead>					
+						<tbody>
 						{% for estoque_associado in lista_estoques %}
-							<tr>
+							<tr class="details">
 								<td>
 									{{ estoque_associado.estoque.medicamento }}
+									
+									<div class="medicamento-actions">
+										{% if perms.lembremed.pode_medicar_morador %}
+										
+											<span class="btn btn-primary" 
+												onclick="carregar_pagina_popup('editar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Alterar {{ estoque_associado.estoque.medicamento.principio }}')">
+												Editar</span>
+											<span class="btn btn-primary" 
+												onclick="if (confirm('Confirma a exclusão deste medicamento?')) { carregar_pagina_popuploading('excluir/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Excluindo {{ estoque_associado.estoque.medicamento.principio }}...'); }">
+												Excluir</span>
+												
+											<span class="btn btn-primary" 
+												onclick="if (confirm('Confirma a administração de {{ estoque_associado.estoque.medicamento.principio }}?')) { carregar_pagina_popuploading('administrar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Administrando {{ estoque_associado.estoque.medicamento.principio }}...'); }">
+												Administrar
+											</span>
+											
+										{% endif %}
+									</div>
 								</td>
 								<td>
-									{{ estoque_associado.estoque.apresentacao }}
+									{{ estoque_associado.estoque.apresentacao.unidade_prescricao }}
 								</td>
 								<td>
 									{{ estoque_associado.estoque.concentracao }}
 								</td>
 								<td>
 									{{ estoque_associado.estoque.prescricao|floatformat:2 }}
+									{{ estoque_associado.estoque.apresentacao.unidade_prescricao }}
 								</td>
 								<td>
 									{{ estoque_associado.estoque.frequencia }} x dia
@@ -70,33 +106,10 @@
 								</td>
 								<td>
 									{{ estoque_associado.estoque.qtd_disponivel|floatformat:2 }}
+									{{ estoque_associado.estoque.apresentacao.unidade_comercial }}
 								</td>
 								<td>
 									Aproximadamente {{ estoque_associado.duracao|floatformat:0 }} dia(s)
-								</td>
-								<td>
-									
-									<div class="medicamento-actions">
-										<div class="medicamento-actions">
-											<span class="btn btn-primary" 
-												onclick="carregar_pagina_popup('editar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Alterar {{ estoque_associado.estoque.medicamento.principio }}')">
-												Editar Medicamento</span>
-											<span class="btn btn-primary" 
-												onclick="if (confirm('Confirma a exclusão deste medicamento?')) { carregar_pagina_popuploading('excluir/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Excluindo {{ estoque_associado.estoque.medicamento.principio }}...'); }">
-												Excluir</span>
-												
-										</div>
-										
-										{% if True or perms.lembremed.pode_medicar_medicamento %}
-											<div class="medicamento-actions">
-												<span class="btn btn-primary" 
-												onclick="if (confirm('Confirma a administração de {{ estoque_associado.estoque.medicamento.principio }}?')) { carregar_pagina_popuploading('administrar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Administrando {{ estoque_associado.estoque.medicamento.principio }}...'); }">
-													Administrar
-												</span>
-												
-											</div>
-										{% endif %}
-									</div>
 								</td>
 							</tr>
 							<tr>
@@ -117,6 +130,7 @@
 								</tr>
 							{% endif %}
 						{% endfor %}
+						</tbody>
 					</table>
 				</div>
 			</div>
