@@ -57,7 +57,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'static'),  # Ajuste aqui para o caminho absoluto correto
+            #os.path.join(BASE_DIR, 'static'),  # Ajuste aqui para o caminho absoluto correto
             os.path.join(BASE_DIR, 'venv/Lib/site-packages/django/contrib/auth/templates')
 
         ],
@@ -117,13 +117,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static', 'img'),
-    os.path.join(BASE_DIR, 'static', 'styles'),
-    os.path.join(BASE_DIR, 'static', 'scripts'),
+    ('images', os.path.join(BASE_DIR, 'static', 'img')),
+    ('styles', os.path.join(BASE_DIR, 'static', 'styles')),
+    ('scripts', os.path.join(BASE_DIR, 'static', 'scripts')),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

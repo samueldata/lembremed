@@ -103,7 +103,7 @@ nav a.active {
 }
 
 main {
-    background: url("background.jpeg") no-repeat center center;
+    background: url("/static/images/background.jpeg") no-repeat center center;
     background-size: cover;
     padding-top: 20px;
 }
