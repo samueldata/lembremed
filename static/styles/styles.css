@@ -240,7 +240,8 @@ footer p {
 
 
 
-.no-profissionais {
+.no-profissionais,
+.no-instituicoes {
     text-align: center;
 }
 
@@ -334,7 +335,8 @@ footer p {
 
 .moradores-container, 
 .profissionais-container, 
-.medicamentos-container {
+.medicamentos-container, 
+.instituicoes-container {
     max-width: 1200px;
     margin: 0 auto;
     /* Centraliza na página */
@@ -347,7 +349,8 @@ footer p {
 
 .moradores-cards, 
 .profissionais-cards, 
-.medicamentos-cards {
+.medicamentos-cards, 
+.instituicoes-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -356,7 +359,8 @@ footer p {
 
 .morador-card, 
 .profissional-card, 
-.medicamento-card {
+.medicamento-card, 
+.instituicao-card {
     width: auto;
     background: #e3f2fd;
     /* Fundo azul claro */
@@ -372,7 +376,8 @@ footer p {
 
 .morador-actions, 
 .profissional-actions, 
-.medicamento-actions {
+.medicamento-actions, 
+.instituicao-actions {
     text-align: center;
     margin-top: 20px;
     display: flex;
@@ -385,7 +390,9 @@ footer p {
 .profissional-actions button, 
 .profissional-actions a, 
 .medicamento-actions button, 
-.medicamento-actions a {
+.medicamento-actions a, 
+.instituicao-actions button, 
+.instituicao-actions a {
     padding: 10px 15px;
     margin-right: 10px;
     background-color: #26a69a;
@@ -401,6 +408,8 @@ footer p {
 .profissional-actions button:hover,
 .profissional-actions a:hover,
 .medicamento-actions button:hover,
-.medicamento-actions a:hover {
+.medicamento-actions a:hover,
+.instituicao-actions button:hover,
+.instituicao-actions a:hover {
     background-color: #00796b;
 }

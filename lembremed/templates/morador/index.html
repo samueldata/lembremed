@@ -29,9 +29,11 @@
                         <button onclick="if (confirm('confirma a exclusão deste morador?')) { document.location = 'excluir/{{ morador.cpf }}'; }">Excluir</button>
                     </div>
                     
+                    {% if perms.lembremed.pode_medicar_morador %}
                     <div class="morador-actions">
                         <a href="/medicamento/{{ morador.cpf }}">Medicamentos</a>
                     </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -44,5 +46,5 @@
             Morador</button>
     </section>
 </main>
-<script src="{% static 'filter.js' %}"></script>
+<script src="{% static 'scripts/filter.js' %}"></script>
 {% endblock %}

@@ -2,8 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Entidades fortes
+class Instituicao(models.Model):
+    cnpj = models.IntegerField(primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=50)
+    class Meta:
+        permissions = (
+            ("pode_gerenciar_instituicao", "Pode gerenciar as instituições"),
+        )
+
 class Morador(models.Model):
-    cpf = models.IntegerField(primary_key=True)
+    cpf = models.CharField(max_length=14, primary_key=True)
+    instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50)
     dt_nascimento = models.DateField()
     class Meta:
@@ -12,15 +22,10 @@ class Morador(models.Model):
             ("pode_medicar_morador", "Pode administrar medicamentos nos moradores"),
         )
 
-class Instituicao(models.Model):
-    cnpj = models.IntegerField(primary_key=True)
-    nome = models.CharField(max_length=50)
-    senha = models.CharField(max_length=50)
-
 class Profissional(models.Model):
-    cpf = models.IntegerField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #cnpj_instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
+    cpf = models.CharField(max_length=14, primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50)
     coren = models.IntegerField()
     class Meta:

@@ -1,15 +1,23 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Morador
+from .models import Morador, Instituicao, Profissional
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import permission_required
+from lembremed.decorators import adiciona_contexto
 
 #Pagina principal dos moradores
 #Lista todos os moradores
+@adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_morador')
-def morador_listar(request):
-    moradores = Morador.objects.all()
+def morador_listar(request, contexto_padrao):
+    #Verifica se eh profissional ou instituicao cadastrando
+    if (isinstance(contexto_padrao['usuario'], Instituicao)):
+        moradores = Morador.objects.filter(instituicao=contexto_padrao['usuario'])
+
+    elif(isinstance(contexto_padrao['usuario'], Profissional)):
+        moradores = Morador.objects.filter(instituicao=contexto_padrao['usuario'].instituicao)
+    
     context = {'lista_moradores': moradores}
     return render(request, 'morador/index.html', context)
 
@@ -28,8 +36,9 @@ def morador_cadastrar(request):
     return render(request, 'morador/cadastro.html', context)
 
 
+@adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_morador')
-def morador_salvar(request):
+def morador_salvar(request, contexto_padrao):
     if request.method == 'POST':
         # Pegando a variável POST
         pcpf = request.POST.get('cpf')
@@ -41,10 +50,18 @@ def morador_salvar(request):
             morador = Morador.objects.get(cpf=pcpf)
             morador.nome = pnome
             morador.dt_nascimento = pdt_nascimento
+            
 
         else:
             morador = Morador(cpf=pcpf, nome=pnome, dt_nascimento=pdt_nascimento)
 
+        #Verifica se eh profissional ou instituicao cadastrando
+        if (isinstance(contexto_padrao['usuario'], Instituicao)):
+            morador.instituicao = contexto_padrao['usuario']
+
+        elif(isinstance(contexto_padrao['usuario'], Profissional)):
+            morador.instituicao = contexto_padrao['usuario'].instituicao
+        
         morador.save()
 
         return HttpResponse("morador salvo com sucesso")

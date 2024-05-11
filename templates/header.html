@@ -22,15 +22,26 @@
         <li>
           <a href="{% url 'index' %}">HOME</a>
         </li>
+        {% if perms.lembremed.pode_gerenciar_instituicao %}
+        {# o super usuario tem todas as permissoes #}
+        {# % if request.user.is_superuser % #}
+          <li>
+            <a href="{% url 'instituicao_listar' %}">INSTITUIÇÕES</a>
+          </li>
+        {% endif %}
         {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+        {% if not request.user.is_superuser %}
           <li>
             <a href="{% url 'morador_listar' %}">MORADORES</a>
           </li>
         {% endif %}
+        {% endif %}
         {% if perms.lembremed.pode_gerenciar_profissional %}
+        {% if not request.user.is_superuser %}
           <li>
             <a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a>
           </li>
+        {% endif %}
         {% endif %}
 
         {% if user.is_authenticated %}

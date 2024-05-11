@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from lembremed.models import Estoque, Medicamento, Administra, Morador, Profissional, Apresentacao
+from lembremed.models import Estoque, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao
 from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
 from datetime import datetime
@@ -38,8 +38,14 @@ def medicamento_listar(request, pcpf, contexto_padrao):
     #Verifica se tem os tipos de apresentacao cadastrados
     verificar_apresentacoes()
 
-    estoques = Estoque.objects.filter(morador=pcpf)
-    morador = Morador.objects.get(cpf=pcpf)
+    #Verifica se eh profissional ou instituicao cadastrando
+    if (isinstance(contexto_padrao['usuario'], Instituicao)):
+        morador = Morador.objects.filter(cpf=pcpf, instituicao=contexto_padrao['usuario']).first()
+
+    elif(isinstance(contexto_padrao['usuario'], Profissional)):
+        morador = Morador.objects.filter(cpf=pcpf, instituicao=contexto_padrao['usuario'].instituicao).first()
+    
+    estoques = Estoque.objects.filter(morador=morador)
 
     estoques_administrados = []
     for estoque in estoques:
@@ -156,7 +162,7 @@ def medicamento_administrar(request, pcpf, pcodigo):
 
         #Registra a administracao
         Administra.objects.create(
-            profissional = Profissional.objects.get(user=request.user),
+            profissional = Profissional.objects.get(usuario=request.user),
             morador = estoque.morador,
             estoque = estoque,
             dthr_administracao = datetime.now(),

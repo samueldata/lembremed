@@ -11,9 +11,10 @@ from lembremed.decorators import adiciona_contexto
 @adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_listar(request, contexto_padrao):
-    profissionais = Profissional.objects.all()
+    #Somente instituicoes cadastram profissionais
+    profissionais = Profissional.objects.filter(instituicao=contexto_padrao['usuario'])
     context = {'lista_profissionais': profissionais}
-    print(profissionais.count())
+    
     return render(request, 'profissional/index.html', {**context, **contexto_padrao})
 
 
@@ -22,7 +23,7 @@ def profissional_editar(request, pcpf):
     profissional = Profissional.objects.filter(cpf=pcpf)[0]
     context = {
         'profissional': profissional,
-        'user': profissional.user,
+        'usuario': profissional.usuario,
         }
     return render(request, 'profissional/cadastro.html', context)
 
@@ -33,8 +34,9 @@ def profissional_cadastrar(request):
     return render(request, 'profissional/cadastro.html', context)
 
 
+@adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_profissional')
-def profissional_salvar(request):
+def profissional_salvar(request, contexto_padrao):
     if request.method == 'POST':
         # Pegando a variável POST
         pcpf = request.POST.get('cpf')
@@ -52,19 +54,19 @@ def profissional_salvar(request):
             #profissional.cnpj_instituicao = pcnpj_instituicao
             profissional.save()
 
-            user = profissional.user
-            user.email = pemail
+            usuario = profissional.usuario
+            usuario.email = pemail
             if (psenha):
-                user.set_password(psenha)
-            user.save()
+                usuario.set_password(psenha)
+            usuario.save()
 
         else:
-            user = get_user_model().objects.create_user(username=pcpf, email=pemail, password=psenha)
-            user.user_permissions.add(Permission.objects.get(codename='pode_gerenciar_morador'))
-            user.user_permissions.add(Permission.objects.get(codename='pode_medicar_morador'))
-            user.save()
+            usuario = get_user_model().objects.create_user(username=pcpf, email=pemail, password=psenha)
+            usuario.user_permissions.add(Permission.objects.get(codename='pode_gerenciar_morador'))
+            usuario.user_permissions.add(Permission.objects.get(codename='pode_medicar_morador'))
+            usuario.save()
 
-            profissional = Profissional.objects.create(cpf=pcpf, nome=pnome, coren=pcoren, user=user)
+            profissional = Profissional.objects.create(cpf=pcpf, nome=pnome, instituicao=contexto_padrao['usuario'], coren=pcoren, usuario=usuario)
             
         return HttpResponse("profissional salvo com sucesso")
     else:
