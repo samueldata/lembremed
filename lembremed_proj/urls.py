@@ -19,8 +19,11 @@ from django.urls import include, path, re_path
 from django.views.generic import TemplateView  # Importa TemplateView para servir sua landing page
 from lembremed.decorators import adiciona_contexto
 
+from django.conf import settings
+from django.conf.urls.static import static
 
 from django.shortcuts import render
+
 
 #Pagina principal do site
 @adiciona_contexto
@@ -39,4 +42,4 @@ urlpatterns = [
     path('profissional/', include('lembremed.urls_profissional')),
     path('medicamento/', include('lembremed.urls_medicamento')),
     path('instituicao/', include('lembremed.urls_instituicao')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

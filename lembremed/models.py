@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Entidades fortes
 class Instituicao(models.Model):
-    cnpj = models.IntegerField(primary_key=True)
+    cnpj = models.CharField(max_length=20, primary_key=True)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50)
     class Meta:
