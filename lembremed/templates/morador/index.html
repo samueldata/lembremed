@@ -26,7 +26,7 @@
                 <div class="morador-actions">
                     <div class="morador-actions">
                         <button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Morador</button>
-                        <button onclick="if (confirm('confirma a exclusão deste morador?')) { document.location = 'excluir/{{ morador.cpf }}'; }">Excluir</button>
+                        <button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
                     </div>
                     
                     {% if perms.lembremed.pode_medicar_morador %}

@@ -46,7 +46,7 @@
 
         {% if user.is_authenticated %}
           <li>
-            <a href="#" onclick="alert($('#logout_form')[0].submit())">SAIR</a>
+            <a href="#" onclick="$('#logout_form')[0].submit()">SAIR</a>
           </li>
           <form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
             {% csrf_token %}

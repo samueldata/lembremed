@@ -18,7 +18,7 @@
                         </div>
                         <div class="instituicao-actions">
                             <button onclick="carregar_pagina_popup('editar/{{ instituicao.cnpj }}', 'GET', {}, 'Alterar {{ instituicao.nome }}')">Editar Instituição</button>
-                            <button onclick="if (confirm('confirma a exclusão deste instituicao?')) { document.location = 'excluir/{{ instituicao.cnpj }}'; }">Excluir</button>
+                            <button onclick="if (confirm('Confirma a exclusão de {{ instituicao.nome }}?')) { carregar_pagina_popuploading('excluir/{{ instituicao.cnpj }}', 'GET', {}, 'Excluindo {{ instituicao.cnpj }}...'); }">Excluir</button>
                         </div>
                     </div>
                 {% endfor %}

@@ -21,7 +21,7 @@
                         </div>
                         <div class="profissional-actions">
                             <button onclick="carregar_pagina_popup('editar/{{ profissional.cpf }}', 'GET', {}, 'Alterar {{ profissional.nome }}')">Editar Profissional</button>
-                            <button onclick="if (confirm('confirma a exclusão deste profissional?')) { document.location = 'excluir/{{ profissional.cpf }}'; }">Excluir</button>
+                            <button onclick="if (confirm('Confirma a exclusão de {{ profissional.nome }}?')) { carregar_pagina_popuploading('excluir/{{ profissional.cpf }}', 'GET', {}, 'Excluindo {{ profissional.nome }}...'); }">Excluir</button>
                         </div>
                     </div>
                 {% endfor %}

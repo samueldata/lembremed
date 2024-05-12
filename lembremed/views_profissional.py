@@ -80,7 +80,7 @@ def profissional_excluir(request, pcpf):
     if (profissional):
         profissional.delete()
 
-        profissional.user.delete()
+        profissional.usuario.delete()
         
         return HttpResponse("excluido com sucesso")
     else:
