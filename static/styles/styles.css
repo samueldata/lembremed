@@ -7,19 +7,23 @@
 body,
 html {
     height: auto;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Helvetica Rounded', sans-serif;
+    font-weight: normal;
+    background-color: #efe7d4;
     /* Cor de fundo mais clara */
     color: #333;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Helvetica Regular', sans-serif;
     color: #333;
 }
 
 header {
-    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
+    background-color: #298377; /* Cor com transparência */
+    background-image: url("/static/images/background.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat no-repeat;
     color: white;
     padding: 10px 0;
     display: flex;
@@ -29,7 +33,7 @@ header {
 
 
 .brand-container img {
-    margin-left: 10px;
+    margin-left: 150px;
     max-width: 30px;
     /* Ou o tamanho que você preferir */
     height: auto;
@@ -55,9 +59,10 @@ header {
 .brand-container h1 {
     font-size: 24px;
     /* Ajuste o tamanho da fonte conforme necessário */
+    font-family: 'Myriad Pro', sans-serif;
     margin: 0;
     /* Isso remove a margem padrão do h1 */
-    color: white;
+    color: #efe7d4;
     /* Ajuste a cor conforme necessário */
 }
 
@@ -66,6 +71,7 @@ nav ul {
     list-style-type: none;
     display: flex;
     margin-bottom: 0px;
+    margin-right: 150px;
 
 }
 
@@ -74,19 +80,19 @@ nav li {
 }
 
 nav a {
-    color: white;
+    color: #efe7d4;
     text-decoration: none;
     font-weight: bold;
     /* text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); Melhora a legibilidade */
     padding: 10px 15px; /* Adiciona espaço ao redor do texto */
     border-radius: 20px; /* Arredonda os cantos do botão */
-    background-color: rgb(42 134 121); /* Fundo semi-transparente */
+    background-color: transparent; /* Fundo transparente */
     transition: background-color 0.3s; /* Suaviza a transição de cor */
 }
 
 nav a:hover, nav a:focus {
-    background-color: rgb(217,234,211); /* Cor mais sólida ao passar o mouse */
-    color: white; /* Mantém a cor do texto */
+    background-color: #76af9f; /* Cor mais sólida ao passar o mouse */
+    color: #efe7d4; /* Mantém a cor do texto */
     text-decoration: none; /* Remove qualquer sublinhado */
 }
 
@@ -98,14 +104,17 @@ nav a.active {
 
 .nav-user {
     text-align: right;
+    color: #efe7d4;
     padding-right: 25px;
     padding-bottom: 13px;
+    margin-right: 150px;
 }
 
 main {
-    background: url("/static/images/background.jpeg") no-repeat center center;
+    /*background: url("/static/images/background.jpeg") no-repeat center center;
     background-size: cover;
-    padding-top: 20px;
+    padding-top: 20px;*/
+    background-color: #efe7d4;
 }
 .main-content {
     padding: 20px;
@@ -226,6 +235,7 @@ footer p {
     /* Adiciona algum espaço dos lados se necessário */
     font-size: 0.9em;
     /* Ajuste o tamanho da fonte conforme necessário */
+    color: #efe7d4;
 }
 
 
@@ -260,7 +270,32 @@ footer p {
 
 
 
-.medicamentos-control {
+.banner {
+    /*background: url("/static/images/background.jpeg");*/
+    background-color: #333;
+    background-size: cover;
+    background-repeat: no-repeat no-repeat;
+    height: 900px;
+}
+
+
+
+
+
+
+
+.circulo {
+    width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	margin: 10px;
+    margin-top: 50px;
+    margin-right: 800px;
+    background: #2c8d7e
+}
+
+
+.medicamento-control {
     display: flex;
     /* flex-direction: column; Isso coloca os elementos em uma coluna em vez de linha */
     flex-wrap: wrap;
@@ -270,40 +305,37 @@ footer p {
     /* align-items: center; */
     /* Isso alinha todos os itens filhos (título e features) no centro horizontalmente */
     padding: 20px;
-    background-color: #ffffff;
     border-top: solid 10px #004d40;
-    margin-top: 50vh;
     /* Ajuste conforme necessário */
-    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
     clip-path: fill-box;
-    max-width: 1200px;
     width: 100%; /* Garante que a caixa ajuste-se à largura disponível até 1200px */
     margin-left: auto; /* Empurra a caixa para a direita automaticamente */
     margin-right: 20px; /* Mantém uma margem da direita */
+    margin-bottom: 50px; /* Margem padrão entre div´s */
 }
 
-
-.medicamentos-control h2 {
+.medicamento-control h2 {
     font-size: 2em;
     /* Tamanho da fonte */
-    color: #004d40;
+    color: #2a7c6f;
     /* Cor do texto */
     margin-bottom: 1em;
     /* Espaço abaixo do título */
     text-align: center;
     /* Centraliza o texto horizontalmente */
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 70px;
+    margin-bottom: 5px;
 }
 
 
-.medicamentos-control .feature {
+.medicamento-control .feature {
     flex: 1 1 200px;
     /* Cresce, encolhe e base de 200px */
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 20px 15px 1px rgba(0, 0, 0, 0.1);
+    text-align: justify;
     margin: 10px;
+    margin-bottom: 80px;
     padding: 20px;
-    background: #ffffff;
     border-radius: 8px;
     display: flex;
     align-items: normal;
@@ -311,13 +343,19 @@ footer p {
     /* Largura máxima para cada card */
 }
 
-.medicamentos-control .feature img {
+.medicamento-control .feature img {
     /* width: 100px;
     margin-right: 20px; */
     display: flex;
     align-items: normal;
+    height: 50px;
+    width: 50px;
+    margin-left: 10px;
     margin-bottom: 13%;
 }
+
+
+
 
 
 

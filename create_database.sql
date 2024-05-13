@@ -42,10 +42,13 @@ python manage.py migrate
 
 python manage.py populate_db
 
+# Comando para realocar os arquivos de imagem, css e javascript
 python manage.py collectstatic
 
 python manage.py createsuperuser
 
+
+# Colocar o servidor para rodar
 python manage.py runserver
 
 
