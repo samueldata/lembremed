@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}LembreMED - Instituição{% endblock %}
+
+{% block content %}
+<main class="main-content">
+    <section class="instituicoes-container">
+        <h2 class="section-title">INSTITUIÇÕES</h2>
+        {% if lista_instituicoes %}
+            <div class="instituicoes-cards">
+                {% for instituicao in lista_instituicoes %}
+                    <div class="instituicao-card">
+                        <div class="instituicao-info">
+                            <p>Nome: <strong>{{ instituicao.nome }}</strong></p>
+                            <p>CNPJ: {{ instituicao.cnpj }}</p>
+                        </div>
+                        <div class="instituicao-actions">
+                            <button onclick="carregar_pagina_popup('editar/{{ instituicao.cnpj }}', 'GET', {}, 'Alterar {{ instituicao.nome }}')">Editar Instituição</button>
+                            <button onclick="if (confirm('Confirma a exclusão de {{ instituicao.nome }}?')) { carregar_pagina_popuploading('excluir/{{ instituicao.cnpj }}', 'GET', {}, 'Excluindo {{ instituicao.cnpj }}...'); }">Excluir</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-instituicoes">Nenhuma instituição cadastrada no nosso sistema ainda :(</p>
+        {% endif %}
+
+        <button class="btn-cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar instituição');">Cadastrar Nova Instituição</button>
+    </section>
+</main>
+{% endblock %}

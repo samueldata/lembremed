@@ -1,33 +1,42 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from lembremed.models import Profissional, UserProfissional
+from lembremed.models import Profissional
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import permission_required
+from lembremed.decorators import adiciona_contexto
 
 #Pagina principal dos profissionais
 #Lista todos os profissionais
+@adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_profissional')
-def profissional_listar(request):
-    profissionais = Profissional.objects.all()
+def profissional_listar(request, contexto_padrao):
+    #Somente instituicoes cadastram profissionais
+    profissionais = Profissional.objects.filter(instituicao=contexto_padrao['usuario'])
     context = {'lista_profissionais': profissionais}
-    print(profissionais.count())
-    return render(request, 'profissional/index.html', context)
+    
+    return render(request, 'profissional/index.html', {**context, **contexto_padrao})
 
+
+@permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_editar(request, pcpf):
     profissional = Profissional.objects.filter(cpf=pcpf)[0]
-    user_profissional = UserProfissional.objects.get(profissional=profissional)
     context = {
         'profissional': profissional,
-        'user': user_profissional.user,
+        'usuario': profissional.usuario,
         }
     return render(request, 'profissional/cadastro.html', context)
 
+
+@permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_cadastrar(request):
     context = {}
     return render(request, 'profissional/cadastro.html', context)
 
-def profissional_salvar(request):
+
+@adiciona_contexto
+@permission_required('lembremed.pode_gerenciar_profissional')
+def profissional_salvar(request, contexto_padrao):
     if request.method == 'POST':
         # Pegando a variável POST
         pcpf = request.POST.get('cpf')
@@ -45,38 +54,34 @@ def profissional_salvar(request):
             #profissional.cnpj_instituicao = pcnpj_instituicao
             profissional.save()
 
-            user_profissional = UserProfissional.objects.get(profissional=profissional)
-            user = user_profissional.user
-            user.email = pemail
+            usuario = profissional.usuario
+            usuario.email = pemail
             if (psenha):
-                user.set_password(psenha)
-            user.save()
+                usuario.set_password(psenha)
+            usuario.save()
 
         else:
-            profissional = Profissional.objects.create(cpf=pcpf, nome=pnome, coren=pcoren)
+            usuario = get_user_model().objects.create_user(username=pcpf, email=pemail, password=psenha)
+            usuario.user_permissions.add(Permission.objects.get(codename='pode_gerenciar_morador'))
+            usuario.user_permissions.add(Permission.objects.get(codename='pode_medicar_morador'))
+            usuario.save()
+
+            profissional = Profissional.objects.create(cpf=pcpf, nome=pnome, instituicao=contexto_padrao['usuario'], coren=pcoren, usuario=usuario)
             
-            user = get_user_model().objects.create_user(username=pcpf, email=pemail, password=psenha)
-            user.user_permissions.add(Permission.objects.get(codename='pode_gerenciar_morador'))
-            user.user_permissions.add(Permission.objects.get(codename='pode_medicar_morador'))
-            user.save()
-
-            user_profissional = UserProfissional(user=user, profissional=profissional)
-            user_profissional.save()
-
-        
-
-        # Após criar o usuário, atribua o papel associado
-
         return HttpResponse("profissional salvo com sucesso")
     else:
         return HttpResponse("erro por GET no salvar")
 
 
+@permission_required('lembremed.pode_gerenciar_profissional')
 def profissional_excluir(request, pcpf):
     #Verifica se o cpf existe
     profissional = Profissional.objects.get(cpf=pcpf)
     if (profissional):
         profissional.delete()
+
+        profissional.usuario.delete()
+        
         return HttpResponse("excluido com sucesso")
     else:
         return HttpResponse("Erro ao localizar cpf")

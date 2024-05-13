@@ -2,8 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Entidades fortes
+class Instituicao(models.Model):
+    cnpj = models.CharField(max_length=20, primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=50)
+    class Meta:
+        permissions = (
+            ("pode_gerenciar_instituicao", "Pode gerenciar as instituições"),
+        )
+
 class Morador(models.Model):
-    cpf = models.IntegerField(primary_key=True)
+    cpf = models.CharField(max_length=14, primary_key=True)
+    instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50)
     dt_nascimento = models.DateField()
     class Meta:
@@ -12,64 +22,43 @@ class Morador(models.Model):
             ("pode_medicar_morador", "Pode administrar medicamentos nos moradores"),
         )
 
-class Instituicao(models.Model):
-    cnpj = models.IntegerField(primary_key=True)
-    nome = models.CharField(max_length=50)
-    senha = models.CharField(max_length=50)
-
 class Profissional(models.Model):
-    cpf = models.IntegerField(primary_key=True)
-    #cnpj_instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
+    cpf = models.CharField(max_length=14, primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50)
     coren = models.IntegerField()
     class Meta:
         permissions = (
-            ("pode_gerenciar_profissional", "Pode gerenciar os profissionales"),
+            ("pode_gerenciar_profissional", "Pode gerenciar os profissionais"),
         )
-
-class Estoque(models.Model):
-    codigo = models.AutoField(primary_key=True)
-    cpf_morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
-    quantidade = models.IntegerField(default=0)
-    qtd_minima = models.IntegerField(default=0)
-    dose = models.DecimalField(max_digits=4, decimal_places=2, null=True)
-    frequencia = models.IntegerField()
 
 class Medicamento(models.Model):
     codigo = models.AutoField(primary_key=True)
-    apresentacao = models.CharField(max_length=100)
+    principio = models.CharField(max_length=100)
 
-class NomeComercial(models.Model):
+    def __str__(self):
+        return self.principio
+    
+class Apresentacao(models.Model):
     codigo = models.AutoField(primary_key=True)
-    codigo_medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
-    nome_comercial = models.CharField(max_length=100)
+    unidade_prescricao = models.CharField(max_length=100)
+    unidade_comercial = models.CharField(max_length=100)
+    razao_prescricao_comercial = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 
-class Substancia(models.Model):
+class Estoque(models.Model):
     codigo = models.AutoField(primary_key=True)
-    nome = models.CharField(max_length=100)
-
-# Tabelas relacionais
-class UserProfissional(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE)
-
-class Compoe(models.Model):
-    codigo_estoque = models.ForeignKey(Estoque, on_delete=models.CASCADE)
-    codigo_medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
-    class Meta:
-        unique_together = ('codigo_estoque', 'codigo_medicamento')
-
-class Possui(models.Model):
-    codigo_medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
-    codigo_substancia = models.ForeignKey(Substancia, on_delete=models.CASCADE)
-    miligramagem = models.DecimalField(max_digits=8, decimal_places=2)
-    class Meta:
-        unique_together = ('codigo_medicamento', 'codigo_substancia')
-
+    morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
+    medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
+    apresentacao = models.ForeignKey(Apresentacao, on_delete=models.CASCADE)
+    concentracao = models.CharField(max_length=50)
+    prescricao = models.DecimalField(max_digits=6, decimal_places=2, null=True)
+    qtd_disponivel = models.DecimalField(max_digits=6, decimal_places=2, null=True)
+    frequencia = models.IntegerField(default=1)
+    horarios = models.CharField(max_length=150)
+    
 class Administra(models.Model):
-    cpf_profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE)
-    cpf_morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
-    codigo_medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
+    profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE)
+    morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
+    estoque = models.ForeignKey(Estoque, on_delete=models.CASCADE)
     dthr_administracao = models.DateTimeField(null=True)
-    class Meta:
-        unique_together = ('cpf_profissional', 'cpf_morador', 'codigo_medicamento')
