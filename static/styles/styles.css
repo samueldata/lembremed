@@ -31,6 +31,15 @@ header {
     align-items: center;
 }
 
+.login{
+    margin: 50px;
+}
+
+table{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
 
 .brand-container img {
     margin-left: 150px;
@@ -117,7 +126,9 @@ main {
     background-color: #efe7d4;
 }
 .main-content {
-    padding: 20px;
+    background-color: #2c8d7e;
+    padding-top: 100px;
+    padding-bottom: 100px;
 }
 .feature-title {
     width: 100%;
@@ -141,10 +152,11 @@ main {
 }
 
 
-#searchInput {
+input#searchInput {
     width: 100%;
     padding: 10px;
     box-sizing: border-box; /* Inclui o padding na largura total */
+    border-radius: 20px;
 }
 
 .form-custom {
@@ -271,8 +283,7 @@ footer p {
 
 
 .banner {
-    /*background: url("/static/images/background.jpeg");*/
-    background-color: #333;
+    background: url("/static/img/background.jpg");
     background-size: cover;
     background-repeat: no-repeat no-repeat;
     height: 900px;
@@ -379,7 +390,7 @@ footer p {
     margin: 0 auto;
     /* Centraliza na página */
     padding: 20px;
-    background-color: #fff;
+    background-color: #efe7d4;
     /* Fundo branco para a seção */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -396,16 +407,21 @@ footer p {
 }
 
 .morador-card, 
-.profissional-card, 
-.medicamento-card, 
+.profissional-card,
+.medicamento-card,
 .instituicao-card {
     width: auto;
-    background: #e3f2fd;
+    background-color: #e2dac7;
     /* Fundo azul claro */
     margin: 10px;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.medicamento-info{
+    display: flex;
 }
 
 .morador-info p {
@@ -433,7 +449,7 @@ footer p {
 .instituicao-actions a {
     padding: 10px 15px;
     margin-right: 10px;
-    background-color: #26a69a;
+    background-color: #2c8d7e;
     color: white;
     text-decoration: none;
     border: none;
