@@ -42,4 +42,4 @@ urlpatterns = [
     path('profissional/', include('lembremed.urls_profissional')),
     path('medicamento/', include('lembremed.urls_medicamento')),
     path('instituicao/', include('lembremed.urls_instituicao')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -124,7 +124,7 @@ STATICFILES_DIRS = [
     ('styles', os.path.join(BASE_DIR, 'static', 'styles')),
     ('scripts', os.path.join(BASE_DIR, 'static', 'scripts')),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -66,12 +66,12 @@ def medicamento_editar(request, pcpf, pcodigo):
     estoque = Estoque.objects.get(codigo=pcodigo, morador__cpf=pcpf)
 
     arr_medicamentos = Medicamento.objects.all().order_by('principio')
-    tipos_apresentacao = Estoque.tipos_apresentacao
+    arr_apresentacoes = Apresentacao.objects.all().order_by('unidade_prescricao')
 
     context = {
         'estoque': estoque,
         'arr_medicamentos': arr_medicamentos,
-        'tipos_apresentacao': tipos_apresentacao,
+        'arr_apresentacoes': arr_apresentacoes,
         }
     return render(request, 'medicamento/cadastro.html', context)
 

@@ -4,20 +4,24 @@ from lembremed.models import Profissional, Instituicao
 def adiciona_contexto(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
+
         #Cria a variavel com valor padrao
-        contexto = {'usuario': {'nome': '-usuario-'}}
+        contexto_padrao = {'usuario': {'nome': '-usuario-'}}
 
         #Verifica se o usuario estah logado
         if (request.user.is_authenticated):
             #verifica se o usuario eh profissional
-            profissional = Profissional.objects.filter(usuario=request.user).first()
-            if (profissional):
-                contexto = {'usuario': profissional}
+            usuario = Profissional.objects.filter(usuario=request.user).first()
+            print('lkdsfj', (usuario))
+            if (usuario):
+                contexto_padrao = {'usuario': usuario}
             else:
-                instituicao = Instituicao.objects.filter(usuario=request.user).first()
-                if (instituicao):
-                    contexto = {'usuario': instituicao}
+                usuario = Instituicao.objects.filter(usuario=request.user).first()
+                print('trert', usuario)
+                if (usuario):
+                    contexto_padrao = {'usuario': usuario}
+        
         
         # Chame a função original da view e adicione o contexto
-        return func(request, *args, contexto_padrao=contexto, **kwargs)
+        return func(request, contexto_padrao=contexto_padrao, *args, **kwargs)
     return wrapper

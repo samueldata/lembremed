@@ -15,9 +15,9 @@
                         <div class="profissional-info">
                             <p>Nome: <strong>{{ profissional.nome }}</strong></p>
                             <p>CPF: {{ profissional.cpf }}</p>
-                            <p>Instituição: {{ profissional.instituicao.nome }}</p>
                             <p>Coren: {{ profissional.coren }}</p>
-                            <p>CNPJ da Instituição: {{ profissional.cnpj_instituicao }}</p>
+                            <p>Instituição: {{ profissional.instituicao.nome }}</p>
+                            <p>CNPJ da Instituição: {{ profissional.instituicao.cnpj }}</p>
                         </div>
                         <div class="profissional-actions">
                             <button onclick="carregar_pagina_popup('editar/{{ profissional.cpf }}', 'GET', {}, 'Alterar {{ profissional.nome }}')">Editar Profissional</button>
