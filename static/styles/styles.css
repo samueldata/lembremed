@@ -35,12 +35,6 @@ header {
     margin: 50px;
 }
 
-table{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
 .brand-container img {
     margin-left: 150px;
     max-width: 30px;
