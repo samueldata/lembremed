@@ -14,40 +14,19 @@
       <p>Please login to see this page.</p>
     {% endif %}
   {% endif %}
-  <div class="login">
-    <form method="post" class="formlogin">
-      <h1>Login</h1>
-      <p>Digite os seus dados de acesso no campo abaixo.</p>
-      <table>
-        <label for="email">E-mail</label>
-            <input type="email" placeholder="Digite seu e-mail" autofocus="true" />
-            <label for="password">Senha</label>
-            <input type="password" placeholder="Digite seu e-mail" />
-            <a href="/">Esqueci minha senha</a>
-            <input type="submit" value="Acessar" class="btn" />
-
-        <!--<tr>
-
-    <form method="post" action="{% url 'login' %}" class="formlogin">
-      {% csrf_token %}
-          <td>{{ form.username.label_tag }}</td>
-          <td>{{ form.username }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.password.label_tag }}</td>
-          <td>{{ form.password }}</td>
-        </tr>
-      </table>
-      <input type="submit" value="login">
-      <input type="hidden" name="next" value="{{ next }}">-->
-
-    </form>
-
-   <!-- {# Assumes you set up the password_reset view in your URLconf #}
-  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>-->
   
+  <div class="login">
+    <form method="POST" class="formLogin">
+        <h1>Login</h1>
+        <p>Digite os seus dados de acesso no campo abaixo.</p>
+        <label for="email">Usuário</label>
+        <input type="text" placeholder="Digite nome de usuário" autofocus="true" />
+        <label for="password">Senha</label>
+        <input type="password" placeholder="Digite sua senha" />
+        <a href="/">Esqueci minha senha</a>
+        <input type="submit" value="Acessar" class="btn" />
+    </form>
   </div>
-
   
 
 {% endblock %}

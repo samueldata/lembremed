@@ -34,25 +34,29 @@ header {
 
 
 
-.login{
+.login {
     display: flex;
     flex-direction: column;
     align-items: center;
     align-content: center;
     justify-content: center;
     width: 100%;
-    height: 100vh;
-    background-color: #480ca8;
+    height: 824px;
+    background-color: #298377;
 }
 
 .formLogin {
     display: flex;
     flex-direction: column;
-    background-color: #fff;
-    border-radius: 7px;
+    background-color: #efe7d4;
+    border-radius: 40px;
     padding: 40px;
     box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
     gap: 5px
+}
+
+.areaLogin img {
+    width: 420px;
 }
 
 .formLogin h1 {
@@ -80,11 +84,18 @@ header {
     outline: none;
 }
 
-
-.formLogin input:focus {
-    border: 1px solid #f72585;
+.formLogin input.btn {
+   background-color: #2d7e71;
+   color: #efe7d4;
+   border-radius: 50px;
 }
 
+.formLogin input.btn:hover{
+    background-color: #144a41;
+}
+.formLogin input:focus {
+    border: 1px solid #144a41;
+}
 
 
 
