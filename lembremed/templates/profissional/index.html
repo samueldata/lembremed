@@ -5,27 +5,32 @@
 {% block title %}LembreMED - Profissionais{% endblock %}
 
 {% block content %}
-<main class="main-content">
+<main style="padding: 20px;">
     <section class="profissionais-container">
         <h2 class="section-title">PROFISSIONAIS</h2>
+        <div class="profissionais-filter">
+            <img class="filter-icon" src="{% static 'images/filter_7420963.png' %}" alt="Buscar">
+            <input type="text" id="searchInput" placeholder="Buscar por nome ou CPF..." onkeyup="filterProfissionais()"
+                style="width: 100%; padding: 10px; margin-bottom: 20px;">
+        </div>
         {% if lista_profissionais %}
-            <div class="profissionais-cards">
-                {% for profissional in lista_profissionais %}
-                    <div class="profissional-card">
-                        <div class="profissional-info">
-                            <p>Nome: <strong>{{ profissional.nome }}</strong></p>
-                            <p>CPF: {{ profissional.cpf }}</p>
-                            <p>Instituição: {{ profissional.instituicao.nome }}</p>
-                            <p>Coren: {{ profissional.coren }}</p>
-                            <p>CNPJ da Instituição: {{ profissional.cnpj_instituicao }}</p>
-                        </div>
-                        <div class="profissional-actions">
-                            <button onclick="carregar_pagina_popup('editar/{{ profissional.cpf }}', 'GET', {}, 'Alterar {{ profissional.nome }}')">Editar Profissional</button>
-                            <button onclick="if (confirm('Confirma a exclusão de {{ profissional.nome }}?')) { carregar_pagina_popuploading('excluir/{{ profissional.cpf }}', 'GET', {}, 'Excluindo {{ profissional.nome }}...'); }">Excluir</button>
-                        </div>
-                    </div>
-                {% endfor %}
+        <div class="profissionais-cards">
+            {% for profissional in lista_profissionais %}
+            <div class="profissional-card">
+                <div class="profissional-info">
+                    <p>Nome: <strong>{{ profissional.nome }}</strong></p>
+                    <p>CPF: <span class="cpf">{{ profissional.cpf }}</span></p>
+                    <p>Instituição: {{ profissional.instituicao.nome }}</p>
+                    <p>Coren: {{ profissional.coren }}</p>
+                    <p>CNPJ da Instituição: {{ profissional.cnpj_instituicao }}</p>
+                </div>
+                <div class="profissional-actions">
+                    <button onclick="carregar_pagina_popup('editar/{{ profissional.cpf }}', 'GET', {}, 'Alterar {{ profissional.nome }}')">Editar Profissional</button>
+                    <button onclick="if (confirm('Confirma a exclusão de {{ profissional.nome }}?')) { carregar_pagina_popuploading('excluir/{{ profissional.cpf }}', 'GET', {}, 'Excluindo {{ profissional.nome }}...'); }">Excluir</button>
+                </div>
             </div>
+            {% endfor %}
+        </div>
         {% else %}
             <p class="no-profissionais">Nenhum profissional cadastrado no nosso sistema ainda :(</p>
         {% endif %}
@@ -33,4 +38,39 @@
         <button class="btn-cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar profissional');">Cadastrar Novo Profissional</button>
     </section>
 </main>
+<script>
+function filterProfissionais() {
+    var input = document.getElementById('searchInput');
+    var filter = input.value.toUpperCase();
+    var cardsContainer = document.querySelector('.profissionais-cards');
+    var cards = cardsContainer.getElementsByClassName('profissional-card');
+
+    for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        var name = card.querySelector('.profissional-info p').textContent.toUpperCase(); // Assumindo que o nome é o primeiro <p>
+        var cpf = card.querySelectorAll('.profissional-info p')[1].textContent.toUpperCase(); // Assumindo que o CPF é o segundo <p>
+
+        if (name.indexOf(filter) > -1 || cpf.indexOf(filter) > -1) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    }
+}
+</script>
+<script>
+    $(document).ready(function() {
+        // Aplica a máscara de CPF
+        $('.cpf').mask('000.000.000-00');
+
+        // Formata cada CPF para o padrão brasileiro
+        $('.cpf').each(function() {
+            var cpf = $(this).text().replace(/\D/g, ''); // Remove não dígitos
+            if (cpf.length === 11) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                $(this).text(cpf);
+            }
+        });
+    });
+</script>
 {% endblock %}

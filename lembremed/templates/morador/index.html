@@ -4,7 +4,6 @@
 
 {% block title %}LembreMED - Moradores{% endblock %}
 
-
 {% block content %}
 <main style="padding: 20px;">
     <section class="moradores-container">
@@ -20,7 +19,7 @@
             <div class="morador-card">
                 <div class="morador-info">
                     <p>Nome: <strong>{{ morador.nome }}</strong></p>
-                    <p>CPF: {{ morador.cpf }}</p>
+                    <p>CPF: <span class="cpf">{{ morador.cpf }}</span></p>
                     <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
                 </div>
                 <div class="morador-actions">
@@ -42,9 +41,23 @@
         <p style="text-align: center;">Não temos nenhum morador cadastrado no nosso sistema ainda :(</p>
         {% endif %}
         <button class="btn-cadastrar"
-            onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar morador');">Cadastrar Novo
-            Morador</button>
+            onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar morador');">Cadastrar Novo Morador</button>
     </section>
 </main>
 <script src="{% static 'scripts/filter.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        // Aplica a máscara de CPF
+        $('.cpf').mask('000.000.000-00');
+
+        // Formata cada CPF para o padrão brasileiro
+        $('.cpf').each(function() {
+            var cpf = $(this).text().replace(/\D/g, ''); // Remove não dígitos
+            if (cpf.length === 11) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                $(this).text(cpf);
+            }
+        });
+    });
+</script>
 {% endblock %}
