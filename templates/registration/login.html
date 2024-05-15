@@ -3,7 +3,10 @@
 {% block content %}
 
   {% if form.errors %}
+  <div class="popUp-failLogin">
     <p>Your username and password didn't match. Please try again.</p>
+  </div>
+    
   {% endif %}
 
   {% if next %}
@@ -16,16 +19,29 @@
   {% endif %}
   
   <div class="login">
-    <form method="POST" class="formLogin">
+    <form method="post"  class="formLogin" action="{% url 'login' %}">
+      {% csrf_token %}
         <h1>Login</h1>
         <p>Digite os seus dados de acesso no campo abaixo.</p>
-        <label for="email">Usuário</label>
-        <input type="text" placeholder="Digite nome de usuário" autofocus="true" />
-        <label for="password">Senha</label>
-        <input type="password" placeholder="Digite sua senha" />
-        <a href="/">Esqueci minha senha</a>
+        <table>
+          <tr>
+            <td>{{ form.username.label_tag }}</td>
+          </tr>
+          <tr>
+            <td>{{ form.username }}</td>
+          </tr>
+          <tr>
+            <td>{{ form.password.label_tag }}</td>
+          </tr>
+          <tr>
+            <td>{{ form.password }}</td>
+          </tr>
+        </table>
+        {# Assumes you set up the password_reset view in your URLconf #}
+        <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
         <input type="submit" value="Acessar" class="btn" />
     </form>
+   
   </div>
   
 

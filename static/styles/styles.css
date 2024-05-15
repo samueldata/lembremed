@@ -32,7 +32,11 @@ header {
 }
 
 
-
+.popUp-failLogin{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
 
 .login {
     display: flex;
@@ -55,10 +59,6 @@ header {
     gap: 5px
 }
 
-.areaLogin img {
-    width: 420px;
-}
-
 .formLogin h1 {
     padding: 0;
     margin: 0;
@@ -75,6 +75,7 @@ header {
 
 .formLogin input {
     padding: 15px;
+    width: 300px;
     font-size: 14px;
     border: 1px solid #ccc;
     margin-bottom: 20px;
@@ -93,12 +94,109 @@ header {
 .formLogin input.btn:hover{
     background-color: #144a41;
 }
-.formLogin input:focus {
-    border: 1px solid #144a41;
+
+
+.ForgotPassword {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    height: 824px;
+    background-color: #298377;
+}
+
+.formForgotPassword {
+    display: flex;
+    flex-direction: column;
+    background-color: #efe7d4;
+    border-radius: 40px;
+    padding: 40px;
+    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
+    gap: 5px
+}
+
+.formForgotPassword h1 {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 23px;
+}
+
+.formForgotPassword p {
+    display: inline-block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.formForgotPassword input {
+    padding: 15px;
+    width: 300px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    border-radius: 4px;
+    transition: all linear 160ms;
+    outline: none;
+}
+
+.formForgotPassword input.btn {
+   background-color: #2d7e71;
+   color: #efe7d4;
+   border-radius: 50px;
+}
+
+.formLogin input.btn:hover{
+    background-color: #144a41;
+}
+
+
+.reset_password_done{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 791px;
+}
+
+.reset_password_done p{
+    font-size: 30px;
 }
 
 
 
+
+.logout{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 822px;
+}
+
+.logout h1{
+    font-size: 100px;
+}
+
+.logout h2{
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+button.btn.Logout{
+    background: #2d7e71;
+    color: #efe7d4;
+    padding: 10px 20px;
+    margin-top: 30px;
+    border-radius: 50px;
+
+}
+
+button.btn.Logout:hover{
+    background: #144a41;
+}
 
 .brand-container img {
     margin-left: 150px;
@@ -187,7 +285,7 @@ main {
 .main-content {
     background-color: #2c8d7e;
     padding-top: 100px;
-    padding-bottom: 100px;
+    padding-bottom: 210px;
 }
 .feature-title {
     width: 100%;
@@ -244,11 +342,11 @@ input#searchInput {
 
 .form-custom .btn-primary {
     background-color: #004d40;
-    color: white;
+    color: #efe7d4;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 50px;
     display: block;  /* Facilita o alinhamento no formulário */
     width: 100%;
     margin-top: 10px;
@@ -279,7 +377,7 @@ input#searchInput {
     color: white;
     text-align: center;
     border: none;
-    border-radius: 4px;
+    border-radius: 50px;
     cursor: pointer;
     margin-top: 20px;
 }
@@ -290,15 +388,30 @@ input#searchInput {
 
 
 footer {
-    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
+    display: flex;
+    justify-content: center;
+    background-color: #298377;
+    border-top: solid 1px #efe7d4;
     color: white;
     text-align: center;
     padding: 20px 0;
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
 }
 
+.footer{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+footer h1 {
+    padding: 0 20px;
+    /* Adiciona algum espaço dos lados se necessário */
+    font-size: 20px;
+    /* Ajuste o tamanho da fonte conforme necessário */
+    color: #efe7d4;
+}
 footer p {
     margin: 0;
     /* Remove a margem padrão do parágrafo */
@@ -342,7 +455,7 @@ footer p {
 
 
 .banner {
-    background: url("/static/img/background.jpg");
+    background: url(/lembremed/static/img/background.jpg);
     background-size: cover;
     background-repeat: no-repeat no-repeat;
     height: 900px;
@@ -455,6 +568,7 @@ footer p {
     border-radius: 8px;
 }
 
+
 .moradores-cards, 
 .profissionais-cards, 
 .medicamentos-cards, 
@@ -463,6 +577,13 @@ footer p {
     flex-wrap: wrap;
     justify-content: space-around;
     flex-direction: column;
+}
+
+.moradores-cards, 
+.profissionais-cards{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 .morador-card, 
@@ -474,7 +595,7 @@ footer p {
     /* Fundo azul claro */
     margin: 10px;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -495,7 +616,7 @@ footer p {
     margin-top: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 
 .morador-actions button,
@@ -512,17 +633,23 @@ footer p {
     color: white;
     text-decoration: none;
     border: none;
-    border-radius: 4px;
+    border-radius: 50px;
     cursor: pointer;
 }
+
 
 .morador-actions button:hover,
 .morador-actions a:hover,
 .profissional-actions button:hover,
 .profissional-actions a:hover,
 .medicamento-actions button:hover,
+.medicamento-actions button:focus,
 .medicamento-actions a:hover,
 .instituicao-actions button:hover,
 .instituicao-actions a:hover {
     background-color: #00796b;
+}
+
+.medicamento-actions button:focus{
+    border-color: #00251a;
 }
