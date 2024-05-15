@@ -12,12 +12,10 @@ def adiciona_contexto(func):
         if (request.user.is_authenticated):
             #verifica se o usuario eh profissional
             usuario = Profissional.objects.filter(usuario=request.user).first()
-            print('lkdsfj', (usuario))
             if (usuario):
                 contexto_padrao = {'usuario': usuario}
             else:
                 usuario = Instituicao.objects.filter(usuario=request.user).first()
-                print('trert', usuario)
                 if (usuario):
                     contexto_padrao = {'usuario': usuario}
         

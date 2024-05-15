@@ -15,7 +15,7 @@ function filterMoradores() {
         var cpf = card.querySelectorAll('.morador-info p')[1].textContent.toUpperCase(); // Assumindo que o CPF é o segundo <p>
 
         // Verifica se o texto inserido no input está no nome ou no CPF
-        if (deaccent(name).indexOf(deaccent(filter)) > -1 || cpf.indexOf(filter) > -1) {
+        if (deaccent(name).indexOf(deaccent(filter)) > -1 || deaccent(cpf).indexOf(deaccent(filter)) > -1) {
             card.style.display = "";
         } else {
             card.style.display = "none";
