@@ -75,17 +75,17 @@ tr.details > td, tr.details {
 										<div class="medicamento-actions">
 											{% if perms.lembremed.pode_medicar_morador %}
 											
-												<span class="btn btn-primary" 
+												<button class="btn btn-primary" 
 													onclick="carregar_pagina_popup('editar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Alterar {{ estoque_associado.estoque.medicamento.principio }}')">
-													Editar</span>
-												<span class="btn btn-primary" 
+													Editar</button>
+												<button class="btn btn-primary" 
 													onclick="if (confirm('Confirma a exclusão deste medicamento?')) { carregar_pagina_popuploading('excluir/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Excluindo {{ estoque_associado.estoque.medicamento.principio }}...'); }">
-													Excluir</span>
+													Excluir</button>
 													
-												<span class="btn btn-primary" 
+												<button class="btn btn-primary" 
 													onclick="if (confirm('Confirma a administração de {{ estoque_associado.estoque.medicamento.principio }}?')) { carregar_pagina_popuploading('administrar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Administrando {{ estoque_associado.estoque.medicamento.principio }}...'); }">
 													Administrar
-												</span>
+										</button>
 												
 											{% endif %}
 										</div>
