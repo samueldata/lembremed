@@ -5,7 +5,7 @@
 {% block title %}LembreMED - Moradores{% endblock %}
 
 {% block content %}
-<main style="padding: 20px;">
+<main class="main-content" >
     <section class="moradores-container">
         <h2 class="section-title">MORADORES</h2>
         <div class="moradores-filter">
@@ -14,15 +14,17 @@
                 style="width: 100%; padding: 10px; margin-bottom: 20px;">
         </div>
         {% if lista_moradores %}
-        <div class="moradores-cards">
-            {% for morador in lista_moradores %}
-            <div class="morador-card">
-                <div class="morador-info">
-                    <p>Nome: <strong>{{ morador.nome }}</strong></p>
-                    <p>CPF: <span class="cpf">{{ morador.cpf }}</span></p>
-                    <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
-                </div>
-                <div class="morador-actions">
+
+            <div class="moradores-cards">
+                {% for morador in lista_moradores %}
+                    <div class="morador-card">
+                        <div class="morador-info">
+                            <p>Nome: <strong>{{ morador.nome }}</strong></p>
+                            <p>CPF: {{ morador.cpf }}</p>
+                            <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
+                    </div>
+                    <div class="morador-actions">
+
                     <div class="morador-actions">
                         <button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Morador</button>
                         <button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>

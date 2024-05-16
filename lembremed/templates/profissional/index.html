@@ -5,6 +5,7 @@
 {% block title %}LembreMED - Profissionais{% endblock %}
 
 {% block content %}
+
 <main style="padding: 20px;">
     <section class="profissionais-container">
         <h2 class="section-title">PROFISSIONAIS</h2>
@@ -28,6 +29,7 @@
                     <button onclick="carregar_pagina_popup('editar/{{ profissional.cpf }}', 'GET', {}, 'Alterar {{ profissional.nome }}')">Editar Profissional</button>
                     <button onclick="if (confirm('Confirma a exclusão de {{ profissional.nome }}?')) { carregar_pagina_popuploading('excluir/{{ profissional.cpf }}', 'GET', {}, 'Excluindo {{ profissional.nome }}...'); }">Excluir</button>
                 </div>
+
             </div>
             {% endfor %}
         </div>
@@ -38,6 +40,7 @@
         <button class="btn-cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar profissional');">Cadastrar Novo Profissional</button>
     </section>
 </main>
+
 <script>
 function filterProfissionais() {
     var input = document.getElementById('searchInput');
@@ -73,4 +76,5 @@ function filterProfissionais() {
         });
     });
 </script>
+
 {% endblock %}
