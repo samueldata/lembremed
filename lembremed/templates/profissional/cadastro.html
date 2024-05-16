@@ -19,7 +19,8 @@
     </div>
     <div class="form-group">
         <label for="coren">Coren:</label>
-        <input name="coren" type="text" id="coren" value="{{ profissional.coren }}" class="form-control">
+        <input name="coren" type="text" id="coren" value="{{ profissional.coren }}" class="form-control" pattern="[A-Z]{2}\d{5,6}[A-Z]" title="Digite o COREN no formato: UF123456E">
+        <small class="form-text text-muted">Formato esperado: UF123456E (onde UF é a sigla do estado).</small>
     </div>
     <div class="form-group">
         <label for="email">E-mail:</label>
@@ -31,8 +32,32 @@
     </div>
     <button type="submit" class="btn btn-primary">Salvar</button>
 </form>
-
 <script>
     // Troca o submit para enviar no popup
     document.getElementById('form_profissional').addEventListener('submit', envia_e_recarregar);
+</script>
+<script>
+    $(document).ready(function () {
+        $('#cpf').mask('000.000.000-00');
+        $('#coren').mask('AA000000A', {
+            translation: {
+                'A': {pattern: /[A-Z]/},
+                '0': {pattern: /\d/}
+            }
+        });
+
+        // Evento de submit do formulário
+        $('#form_profissional').on('submit', function () {
+            var cpf = $('#cpf').val();
+            var coren = $('#coren').val();
+
+            // Remover caracteres não numéricos
+            cpf = cpf.replace(/\D/g, '');
+            coren = coren.replace(/\D/g, '');
+
+            // Atualizar o valor do campo com apenas números
+            $('#cpf').val(cpf);
+            $('#coren').val(coren);
+        });
+    });
 </script>
