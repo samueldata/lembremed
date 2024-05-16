@@ -38,30 +38,30 @@ tr.details > td, tr.details {
 					<table class="table table-medicamento">
 						<thead>
 						<tr>
-							<td>
+							<th>
 								Medicamento
-							</td>
-							<td>
+							</th>
+							<th>
 								Apresentação
-							</td>
-							<td>
+							</th>
+							<th>
 								Concentração
-							</td>
-							<td>
+							</th>
+							<th>
 								Prescrição
-							</td>
-							<td>
+							</th>
+							<th>
 								Frequência
-							</td>
-							<td>
+							</th>
+							<th>
 								Horários
-							</td>
-							<td>
+							</th>
+							<th>
 								Qtd. disponível
-							</td>
-							<td>
+							</th>
+							<th>
 								Duração estoque
-							</td>
+							</th>
 						</tr>	
 						</thead>	
 						{% for estoque_associado in lista_estoques %}				
@@ -84,7 +84,7 @@ tr.details > td, tr.details {
 													
 												<button class="btn btn-primary" 
 													onclick="if (confirm('Confirma a administração de {{ estoque_associado.estoque.medicamento.principio }}?')) { carregar_pagina_popuploading('administrar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Administrando {{ estoque_associado.estoque.medicamento.principio }}...'); }">
-													Administrar
+													Medicar
 										</button>
 												
 											{% endif %}

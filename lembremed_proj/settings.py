@@ -124,6 +124,8 @@ STATICFILES_DIRS = [
     ('styles', os.path.join(BASE_DIR, 'static', 'styles')),
     ('scripts', os.path.join(BASE_DIR, 'static', 'scripts')),
 ]
+
+#Quando descomentar esta linha deve-se tbm descomentar a linha depois do array em urls.py
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
 
 # Default primary key field type

@@ -6,10 +6,11 @@
 
 body,
 html {
-    height: auto;
+    /*height: auto;*/
+    height: 100vh; /* Define a altura do corpo como 100% da altura da janela */
     font-family: 'Helvetica Rounded', sans-serif;
     font-weight: normal;
-    background-color: #efe7d4;
+    background-color: #eee;
     /* Cor de fundo mais clara */
     color: #333;
 }
@@ -52,7 +53,7 @@ header {
 .formLogin {
     display: flex;
     flex-direction: column;
-    background-color: #efe7d4;
+    background-color: #eee;
     border-radius: 40px;
     padding: 40px;
     box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
@@ -87,7 +88,7 @@ header {
 
 .formLogin input.btn {
    background-color: #2d7e71;
-   color: #efe7d4;
+   color: #eee;
    border-radius: 50px;
 }
 
@@ -110,7 +111,7 @@ header {
 .formForgotPassword {
     display: flex;
     flex-direction: column;
-    background-color: #efe7d4;
+    background-color: #eee;
     border-radius: 40px;
     padding: 40px;
     box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
@@ -145,7 +146,7 @@ header {
 
 .formForgotPassword input.btn {
    background-color: #2d7e71;
-   color: #efe7d4;
+   color: #eee;
    border-radius: 50px;
 }
 
@@ -187,7 +188,7 @@ header {
 
 button.btn.Logout{
     background: #2d7e71;
-    color: #efe7d4;
+    color: #eee;
     padding: 10px 20px;
     margin-top: 30px;
     border-radius: 50px;
@@ -228,7 +229,7 @@ button.btn.Logout:hover{
     font-family: 'Myriad Pro', sans-serif;
     margin: 0;
     /* Isso remove a margem padrão do h1 */
-    color: #efe7d4;
+    color: #eee;
     /* Ajuste a cor conforme necessário */
 }
 
@@ -246,7 +247,7 @@ nav li {
 }
 
 nav a {
-    color: #efe7d4;
+    color: #eee;
     text-decoration: none;
     font-weight: bold;
     /* text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); Melhora a legibilidade */
@@ -258,7 +259,7 @@ nav a {
 
 nav a:hover, nav a:focus {
     background-color: #76af9f; /* Cor mais sólida ao passar o mouse */
-    color: #efe7d4; /* Mantém a cor do texto */
+    color: #eee; /* Mantém a cor do texto */
     text-decoration: none; /* Remove qualquer sublinhado */
 }
 
@@ -270,7 +271,7 @@ nav a.active {
 
 .nav-user {
     text-align: right;
-    color: #efe7d4;
+    color: #eee;
     padding-right: 25px;
     padding-bottom: 13px;
     margin-right: 150px;
@@ -280,7 +281,7 @@ main {
     /*background: url("/static/images/background.jpeg") no-repeat center center;
     background-size: cover;
     padding-top: 20px;*/
-    background-color: #efe7d4;
+    background-color: #eee;
 }
 .main-content {
     background-color: #2c8d7e;
@@ -317,7 +318,7 @@ input#searchInput {
 }
 
 .form-custom {
-    background-color: #fff;
+    background-color: #eee;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -342,7 +343,7 @@ input#searchInput {
 
 .form-custom .btn-primary {
     background-color: #004d40;
-    color: #efe7d4;
+    color: #eee;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
@@ -391,7 +392,7 @@ footer {
     display: flex;
     justify-content: center;
     background-color: #298377;
-    border-top: solid 1px #efe7d4;
+    border-top: solid 1px #eee;
     color: white;
     text-align: center;
     padding: 20px 0;
@@ -410,7 +411,7 @@ footer h1 {
     /* Adiciona algum espaço dos lados se necessário */
     font-size: 20px;
     /* Ajuste o tamanho da fonte conforme necessário */
-    color: #efe7d4;
+    color: #eee;
 }
 footer p {
     margin: 0;
@@ -419,7 +420,7 @@ footer p {
     /* Adiciona algum espaço dos lados se necessário */
     font-size: 0.9em;
     /* Ajuste o tamanho da fonte conforme necessário */
-    color: #efe7d4;
+    color: #eee;
 }
 
 
@@ -455,7 +456,7 @@ footer p {
 
 
 .banner {
-    background: url(/lembremed/static/img/background.jpg);
+    background: url(/static/images/background.jpg);
     background-size: cover;
     background-repeat: no-repeat no-repeat;
     height: 900px;
@@ -562,7 +563,7 @@ footer p {
     margin: 0 auto;
     /* Centraliza na página */
     padding: 20px;
-    background-color: #efe7d4;
+    background-color: #eee;
     /* Fundo branco para a seção */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -590,8 +591,8 @@ footer p {
 .profissional-card,
 .medicamento-card,
 .instituicao-card {
-    width: auto;
-    background-color: #e2dac7;
+    width: 100%;
+    background-color: #d3d6d6;
     /* Fundo azul claro */
     margin: 10px;
     padding: 15px;
