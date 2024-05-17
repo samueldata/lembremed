@@ -27,7 +27,6 @@ class Profissional(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50)
-
     coren = models.CharField(max_length=10)  # Alterado de IntegerField para CharField
 
     class Meta:

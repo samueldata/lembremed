@@ -39,7 +39,7 @@
     </div>
     <div class="form-group">
         <label for="prescricao">Dosagem prescrita:</label>
-        <input name="prescricao" type="number" id="prescricao" value="{{ estoque.prescricao }}" class="form-control" />
+        <input name="prescricao" type="text" id="prescricao" value="{{ estoque.prescricao|stringformat:".2f" }}" class="form-control" />
         <span id="tipagem_dosagem">&nbsp;</span>
     </div>
     <div class="form-group">

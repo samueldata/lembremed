@@ -97,7 +97,7 @@ tr.details > td, tr.details {
 										{{ estoque_associado.estoque.concentracao }}
 									</td>
 									<td>
-										{{ estoque_associado.estoque.prescricao|floatformat:2 }}
+										{{ estoque_associado.estoque.prescricao|stringformat:".2f" }}
 										{{ estoque_associado.estoque.apresentacao.unidade_prescricao }}
 									</td>
 									<td>
@@ -107,7 +107,7 @@ tr.details > td, tr.details {
 										{{ estoque_associado.estoque.horarios }}
 									</td>
 									<td>
-										{{ estoque_associado.estoque.qtd_disponivel|floatformat:2 }}
+										{{ estoque_associado.estoque.qtd_disponivel|stringformat:".2f" }}
 										{{ estoque_associado.estoque.apresentacao.unidade_comercial }}
 									</td>
 									<td>
