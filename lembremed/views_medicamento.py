@@ -98,7 +98,7 @@ def medicamento_salvar(request, pcpf):
         papresentacao = Apresentacao.objects.get(codigo=request.POST.get('apresentacao'))
         pconcentracao = request.POST.get('concentracao')
         pprescricao = request.POST.get('prescricao')
-        pprescricao = pprescricao if int(pprescricao) > 0 else 1
+        pprescricao = pprescricao if float(pprescricao) > 0 else 1
         pfrequencia = request.POST.get('frequencia')
         phorarios = request.POST.get('horarios')
         pqtd_disponivel = request.POST.get('qtd_disponivel')
