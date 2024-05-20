@@ -4,6 +4,8 @@ from lembremed.models import Estoque, Medicamento, Administra, Morador, Profissi
 from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
 from datetime import datetime
+import re
+from decimal import Decimal
 
 
 def verificar_apresentacoes():
@@ -53,7 +55,7 @@ def medicamento_listar(request, pcpf, contexto_padrao):
         estoques_administrados.append({ #Cria o objeto com o estoque e sua ultima administracao
             'estoque': estoque,
             'ultima_administracao': ultima_administracao,
-            'duracao': (estoque.qtd_disponivel * estoque.apresentacao.razao_prescricao_comercial) / (estoque.frequencia * estoque.prescricao)
+            'duracao': ((estoque.qtd_disponivel * estoque.apresentacao.razao_prescricao_comercial) / (estoque.frequencia * estoque.prescricao)) if estoque.qtd_disponivel and estoque.frequencia and estoque.apresentacao.razao_prescricao_comercial and estoque.prescricao else 0
         })
 
     context = {'lista_estoques': estoques_administrados, 'morador': morador}
@@ -102,17 +104,26 @@ def medicamento_salvar(request, pcpf):
         pfrequencia = request.POST.get('frequencia')
         phorarios = request.POST.get('horarios')
         pqtd_disponivel = request.POST.get('qtd_disponivel')
+        pqtd_alterar = request.POST.get('qtd_alterar')
 
         #Verifica se estah editando
         if (request.POST.get('edit')):
-            estoque = Estoque.objects.get(codigo=pcodigo)
+            estoque = Estoque.objects.filter(codigo=pcodigo)[0]
             estoque.medicamento = Medicamento.objects.get(codigo=pcodigo_medicamento)
             estoque.apresentacao = papresentacao
             estoque.concentracao = pconcentracao
             estoque.prescricao = pprescricao
             estoque.frequencia = pfrequencia
             estoque.horarios = phorarios
-            estoque.qtd_disponivel = pqtd_disponivel
+            pqtd_alterar = re.findall(r'^(\+|\-)(\d+|\d+\.\d+)$', pqtd_alterar)
+            
+            if (len(pqtd_alterar) == 1):
+                psinal, pqtd_alterar = pqtd_alterar[0]
+                estoque.qtd_disponivel = estoque.qtd_disponivel if estoque.qtd_disponivel else Decimal('0')
+                if (psinal == '+'):
+                    estoque.qtd_disponivel += Decimal(pqtd_alterar)
+                else:
+                    estoque.qtd_disponivel -= Decimal(pqtd_alterar)
             estoque.save()
 
         else:
