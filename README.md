@@ -103,17 +103,27 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
 
 ## Tecnologias Utilizadas
 
+<p align="center">
+ 
 As tecnologias utilizadas no desenvolvimento do projeto incluem:
 
-- **Git**: Utilizado como sistema de controle de versão para o gerenciamento do código-fonte.
-- **Django**: Um framework web em Python que facilita a construção de aplicativos web robustos e escaláveis.
-- **SQL**: Linguagem padrão para manipulação de bancos de dados relacionais, sendo utilizada para consultas e interações com o banco de dados.
-- **HTML**: Linguagem de marcação utilizada para criar a estrutura básica de páginas web.
-- **CSS**: Utilizado para estilizar e definir o layout das páginas web, tornando-as mais atraentes e usáveis.
-- **JavaScript**: Linguagem de programação utilizada para adicionar interatividade e dinamismo às páginas web.
+
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" width="40" height="40"/> **Git**: Utilizado como sistema de controle de versão para o gerenciamento do código-fonte. 
+
+![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)
+**Django**: Um framework web em Python que facilita a construção de aplicativos web robustos e escaláveis. 
+
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-plain.svg" alt="PostgreSQL" width="40" height="40"/>**SQL**: Linguagem padrão para manipulação de bancos de dados relacionais, sendo utilizada para consultas e interações com o banco de dados. 
+
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" width="40" height="40"/> **HTML**: Linguagem de marcação utilizada para criar a estrutura básica de páginas web. 
+
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" width="40" height="40"/>**CSS**: Utilizado para estilizar e definir o layout das páginas web, tornando-as mais atraentes e usáveis. 
+
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40"/> **JavaScript**: Linguagem de programação utilizada para adicionar interatividade e dinamismo às páginas web. 
 
 Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, segurança e uma experiência de usuário agradável durante a interação com a aplicação.
 
+</p>
 
 ## Pessoas Contribuidoras
 
