@@ -169,7 +169,7 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
       <a href="https://github.com/CarolinaLuchetta"><img src="https://github.com/samueldata/lembremed/assets/163072898/dab9e17e-7160-4760-8791-59dfded7debb" width="115" height="140"><br><sub>Carolina Luchetta</sub></a>
     </td>
     <td align="center">
-      <a href="https://github.com/graciela-oliveira"><img src="" width="115" height="140"><br><sub>Graciela Oliveira</sub></a>
+      <a href="https://github.com/graciela-oliveira"><img src="https://github.com/samueldata/lembremed/assets/163072898/157ea53b-a436-4fa4-b6e8-870992057d58" width="115" height="140"><br><sub>Graciela Oliveira</sub></a>
     </td>
     <td align="center">
       <a href="https://github.com/qbamanda"><img src="https://github.com/samueldata/lembremed/assets/163072898/bdbff197-5b1e-4c0d-b08e-5d0f64d2642f" width="115" height="140"><br><sub>Amanda Queçada</sub></a>
