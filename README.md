@@ -30,11 +30,76 @@ Calculadora web de duração de medicamentos voltada para Instituições de Long
 
 ## Descrição do Projeto
 
- Aplicação web "Lembre-Med", idealizada para otimizar o cálculo da duração de medicamentos em Instituições de Longa Permanência para Idosos (ILPIs). A aplicação combina conhecimentos em Tecnologia da Informação e Ciência de Dados, utilizando noções de framework web (Django), versionamento de código e banco de dados. O projeto segue a metodologia proposta por Mascarenhas (2018) e Lakatos e Marconi (2003), com ênfase em pesquisa qualitativa, pesquisa aplicada e pesquisa-ação. A aplicação da metodologia Design Thinking garante o desenvolvimento centrado no usuário, com foco na compreensão das necessidades das ILPIs e na criação de soluções inovadoras. A arquitetura da aplicação e a escolha das tecnologias utilizadas foram elaboradas para garantir eficiência, robustez e escalabilidade da solução. Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas ILPIs, colaborando para a qualidade de vida e segurança de seus pacientes, além de apoiar na efetivação dos direitos desse segmento populacional, que possui necessidades específicas quanto à administração de medicamentos
+ A aplicação combina conhecimentos em Tecnologia da Informação e Ciência de Dados, utilizando noções de framework web (Django), versionamento de código e banco de dados. O projeto segue a metodologia proposta por Mascarenhas (2018) e Lakatos e Marconi (2003), com ênfase em pesquisa qualitativa, pesquisa aplicada e pesquisa-ação.
+
+A aplicação da metodologia Design Thinking garante o desenvolvimento centrado no usuário, com foco na compreensão das necessidades das ILPIs e na criação de soluções inovadoras. A arquitetura da aplicação e a escolha das tecnologias utilizadas foram elaboradas para garantir eficiência, robustez e escalabilidade da solução.
+
+Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas ILPIs, colaborando para a qualidade de vida e segurança de seus pacientes, além de apoiar na efetivação dos direitos desse segmento populacional, que possui necessidades específicas quanto à administração de medicamentos.
 
 ## Funcionalidades e Demonstração da Aplicação
 
-Liste as principais funcionalidades do seu projeto e forneça uma demonstração, se aplicável.
+ Principais funcionalidades do projeto:
+
+1. Cadastro de Profissionais
+- Descrição: Permite o registro de profissionais da saúde que trabalham na ILPI.
+- Detalhes:
+  - Nome completo
+  - CPF 
+  - Identificação profissional (COREN, etc.)
+    
+2. Cadastro de Instituições
+- Descrição: Funcionalidade para cadastrar as clínicas e instituições de cuidados para idosos.
+- Detalhes:
+  - Nome da instituição
+  
+3. Cadastro de Moradores
+- Descrição: Registro dos moradores que recebem cuidados na clínica.
+- Detalhes:
+  - Nome completo
+  - Data de nascimento
+  - CPF
+
+4. Cadastro de Medicamentos por Morador
+- Descrição: Cada morador pode ter seus medicamentos registrados individualmente.
+- Detalhes:
+  - Nome do medicamento
+  - Concentração
+  - Frequência de administração
+  - Horários de administração
+      
+5. Controle de Estoque de Medicamentos por Morador
+- Descrição: Monitora a quantidade de medicamentos disponível para cada morador.
+- Detalhes:
+  - Quantidade inicial
+  - Quantidade atual
+  - Alertas para reposição
+    
+6. Administração da Dose com Hora da Última Administração
+- Descrição: Registra a administração de doses de medicamentos, garantindo que a medicação seja dada na hora certa.
+- Detalhes:
+  - Registro da hora da última dose administrada
+  - Responsável pela administração
+
+<p align="center">
+  <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/a0a9c7f0-6515-4e85-ba65-5b36f2bd4ca8" width="516" height="300" ></a><br><sub> Tela Inicial</sub>
+</div>
+
+<p align="center">
+  <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/27ff20f5-6232-4141-8943-43abe7274608" width="516" height="200" ></a><br><sub> Tela Cadastro de ILPIS</sub>
+</div>
+
+<p align="center">
+  <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/e72dc00e-b412-4264-b4d6-ff7c0fada2b3" width="516" height="200" ></a><br><sub> Tela Cadastro de Moradores</sub>
+</div>
+
+<p align="center">
+  <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/94f7e75b-8b35-4bd5-9b97-703d3de5b60c" width="516" height="200" ></a><br><sub> Tela Cadastro de Profissionais</sub>
+</div>
+
+<p align="center">
+  <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/432cea78-f1e3-47d0-af71-413c13ac207d" width="516" height="200" ></a><br><sub> Tela Cadastro e Administração de Medicamentos por morador</sub>
+</div>
+
 
 ## Tecnologias Utilizadas
 
@@ -72,34 +137,41 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
 
 **Conheça os incríveis desenvolvedores que contribuíram para este projeto:**
 
-<div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/2f9676fc-55be-437c-88a5-54b096eef5da" width="115" height="140" ></a><br><sub>Eduardo Brito</sub>
+
+<div style="display: flex; justify-content: center;">
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/2f9676fc-55be-437c-88a5-54b096eef5da" width="115" height="140"><br><sub>Eduardo Brito</sub></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/giovanabcunha"><img src="https://github.com/samueldata/lembremed/assets/163072898/214fad6f-59b6-4fd7-88ca-a50c21860aa2" width="115" height="140"><br><sub>Giovana Cunha</sub></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/crfurquim"><img src="https://github.com/samueldata/lembremed/assets/163072898/f81a3bb7-c664-484c-b01e-9d84906a5eb6" width="115" height="140"><br><sub>Christian Furquim</sub></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Edkamimura"><img src="https://github.com/samueldata/lembremed/assets/163072898/c67ea93e-7815-41d6-b60a-4b9c94a80924" width="115" height="140"><br><sub>Edgard Kamimura</sub></a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/CarolinaLuchetta"><img src="https://github.com/samueldata/lembremed/assets/163072898/dab9e17e-7160-4760-8791-59dfded7debb" width="115" height="140"><br><sub>Carolina Luchetta</sub></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/graciela-oliveira"><img src="" width="115" height="140"><br><sub>Graciela Oliveira</sub></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/qbamanda"><img src="https://github.com/samueldata/lembremed/assets/163072898/bdbff197-5b1e-4c0d-b08e-5d0f64d2642f" width="115" height="140"><br><sub>Amanda Queçada</sub></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/samueldata"><img src="https://github.com/samueldata/lembremed/assets/163072898/5e027315-3fc9-40f1-b7aa-3d5ad94405e5" width="115" height="140"><br><sub>Samuel Leite</sub></a>
+    </td>
+  </tr>
+</table>
 </div>
 
-<!-- Giovana cole o texto que enviei aqui embaixo -->
 
 
-<div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/crfurquim"><img src="https://github.com/samueldata/lembremed/assets/163072898/f81a3bb7-c664-484c-b01e-9d84906a5eb6" width="115" height="140"></a><br><sub>Christian Furquim</sub>
-</div>
-
-<!-- Edgard cole o texto que enviei aqui embaixo -->
-
-
-<div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/CarolinaLuchetta"><img src="https://github.com/samueldata/lembremed/assets/163072898/dab9e17e-7160-4760-8791-59dfded7debb" width="115" height="140"></a><br><sub>Carolina Luchetta</sub>
-</div>
-
-<div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/graciela-oliveira"><img src="" width="115" height="140"></a><br><sub>Graciela Olievria</sub>
-</div>
-
-<div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/qbamanda"><img src="https://github.com/samueldata/lembremed/assets/163072898/bdbff197-5b1e-4c0d-b08e-5d0f64d2642f" width="115" height="140"></a><br><sub>Amanda Queçada</sub>
-</div>
-
-<div style="float: left; margin-right: 10px;">
-  <a href="https://github.com/samueldata"><img src="https://github.com/samueldata/lembremed/assets/163072898/5e027315-3fc9-40f1-b7aa-3d5ad94405e5" width="115" height="140"></a><br><sub>Samuel Leite</sub>
-</div>
 
 
