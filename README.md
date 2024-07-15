@@ -11,7 +11,7 @@
 <img loading="lazy" src=https://img.shields.io/badge/SQL-magenta>
 <img loading="lazy" src=https://img.shields.io/badge/HTML-green>
 <img loading="lazy" src=https://img.shields.io/badge/CSS-purple>
-<img loading="lazy" src=https://img.shields.io/badge/JAVA-orange>  
+<img loading="lazy" src=https://img.shields.io/badge/JavaScript-orange>  
 </p>
 
 ![GitHub Org's stars](https://img.shields.io/github/stars/samueldata/lembremed)
