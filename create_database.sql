@@ -8,7 +8,7 @@ https://stackoverflow.com/questions/18022809/how-can-i-solve-error-mysql-shutdow
 /*=======================*/
 /*Criando a base de dados*/
 
-DROP DATABASE lembremed;
+DROP DATABASE IF EXISTS lembremed;
 CREATE DATABASE lembremed;
 USE lembremed;
 
