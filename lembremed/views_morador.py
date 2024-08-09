@@ -86,7 +86,6 @@ def morador_salvar(request, contexto_padrao):
 			morador = Morador(
 				cpf=pcpf, nome=pnome, dt_nascimento=pdt_nascimento, responsavel=responsavel
 			)
-			morador.save()
 
 		#Verifica se eh profissional ou instituicao que estah cadastrando o morador
 		if (isinstance(contexto_padrao['usuario'], Instituicao)):
@@ -102,8 +101,8 @@ def morador_salvar(request, contexto_padrao):
 			mensagem = render_to_string('email_templates/basic_email.html', {
 					'title': "Cadastro de responsável - Lembremed",
 					'message': f"Olá " + morador.responsavel.nome.split()[0] + \
-								"\nClique no link abaixo para associar seu telegram e receber as novidades do LembreMed."
-								f"\n<a href=\"https://telegram.me/lembremed_bot?text={morador.responsavel.hashcode}\">https://telegram.me/lembremed_bot?text={morador.responsavel.hashcode}</a>"
+								"\n<br />Clique no link abaixo para associar seu telegram e receber as novidades do LembreMed."
+								f"\n<br /><a href=\"https://telegram.me/lembremed_bot?text={morador.responsavel.hashcode}\">https://telegram.me/lembremed_bot?text={morador.responsavel.hashcode}</a>"
 			})
 			
 			send_mail(subject="Cadastro de responsável - Lembremed",

@@ -66,6 +66,10 @@ class Estoque(models.Model):
 	qtd_disponivel = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 	frequencia = models.IntegerField(default=1)
 	horarios = models.CharField(max_length=150)
+	validade = models.DateField()
+	
+	def estimativa_duracao(self):
+		return ((self.qtd_disponivel * self.apresentacao.razao_prescricao_comercial) / (self.frequencia * self.prescricao)) if self.qtd_disponivel and self.frequencia and self.apresentacao.razao_prescricao_comercial and self.prescricao else 0
 
 class Administra(models.Model):
 	profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE)
