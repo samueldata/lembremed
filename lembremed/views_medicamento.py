@@ -7,6 +7,7 @@ from datetime import datetime
 import re
 from decimal import Decimal
 
+#teste amanda
 
 def verificar_apresentacoes():
     qtd_apresentacoes = Apresentacao.objects.count()
