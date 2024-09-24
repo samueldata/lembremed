@@ -1,6 +1,9 @@
 from django.test import TestCase
+from lembremed.models import Medicamento
 from lembremed.models import Apresentacao
 from lembremed.views_medicamento import verificar_apresentacoes
+from lembremed.utils import popular_tabela_com_csv
+from unittest.mock import patch, mock_open
 
 class VerificarApresentacoesTestCase(TestCase):
     def setUp(self):
@@ -63,3 +66,27 @@ class VerificarApresentacoesTestCase(TestCase):
         apresentacao4 = apresentacoes.get(unidade_prescricao='dose(s)')
         self.assertEqual(apresentacao4.unidade_comercial, 'dose(s)')
         self.assertEqual(apresentacao4.razao_prescricao_comercial, 1)
+
+
+class PopularTabelaComCsvTestCase(TestCase):
+    @patch('builtins.open', new_callable=mock_open, read_data='principio\nParacetamol\nIbuprofeno')
+    @patch('lembremed.utils.csv.DictReader')
+    def test_popular_tabela_com_csv(self, mock_csv_reader, mock_file):
+        # Mock the CSV reader to return specific data
+        mock_csv_reader.return_value = [
+            {'principio': 'Paracetamol'},
+            {'principio': 'Ibuprofeno'}
+        ]
+
+        # Call the function to populate the table
+        popular_tabela_com_csv()
+
+        # Check if the Medicamento objects were created
+        medicamentos = Medicamento.objects.all()
+        self.assertEqual(medicamentos.count(), 2)
+
+        medicamento1 = medicamentos.get(principio='Paracetamol')
+        self.assertEqual(medicamento1.principio, 'Paracetamol')
+
+        medicamento2 = medicamentos.get(principio='Ibuprofeno')
+        self.assertEqual(medicamento2.principio, 'Ibuprofeno')
