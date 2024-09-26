@@ -8,7 +8,7 @@ https://stackoverflow.com/questions/18022809/how-can-i-solve-error-mysql-shutdow
 /*=======================*/
 /*Criando a base de dados*/
 
-DROP DATABASE lembremed;
+DROP DATABASE IF EXISTS lembremed;
 CREATE DATABASE lembremed;
 USE lembremed;
 
@@ -42,10 +42,13 @@ python manage.py migrate
 
 python manage.py populate_db
 
+# Comando para realocar os arquivos de imagem, css e javascript
 python manage.py collectstatic
 
 python manage.py createsuperuser
 
+
+# Colocar o servidor para rodar
 python manage.py runserver
 
 

@@ -12,6 +12,7 @@ from lembremed.decorators import adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_morador')
 def morador_listar(request, contexto_padrao):
     #Verifica se eh profissional ou instituicao cadastrando
+    print("\n", (contexto_padrao['usuario']), "\n\n")
     if (isinstance(contexto_padrao['usuario'], Instituicao)):
         moradores = Morador.objects.filter(instituicao=contexto_padrao['usuario'])
 
@@ -19,7 +20,7 @@ def morador_listar(request, contexto_padrao):
         moradores = Morador.objects.filter(instituicao=contexto_padrao['usuario'].instituicao)
     
     context = {'lista_moradores': moradores}
-    return render(request, 'morador/index.html', context)
+    return render(request, 'morador/index.html', {**context, **contexto_padrao})
 
 
 @permission_required('lembremed.pode_gerenciar_morador')

@@ -27,7 +27,8 @@ class Profissional(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50)
-    coren = models.IntegerField()
+    coren = models.CharField(max_length=10)  # Alterado de IntegerField para CharField
+
     class Meta:
         permissions = (
             ("pode_gerenciar_profissional", "Pode gerenciar os profissionais"),
@@ -35,7 +36,7 @@ class Profissional(models.Model):
 
 class Medicamento(models.Model):
     codigo = models.AutoField(primary_key=True)
-    principio = models.CharField(max_length=100)
+    principio = models.CharField(max_length=255)
 
     def __str__(self):
         return self.principio

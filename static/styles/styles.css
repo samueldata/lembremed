@@ -6,20 +6,25 @@
 
 body,
 html {
-    height: auto;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    /*height: auto;*/
+    height: 100vh; /* Define a altura do corpo como 100% da altura da janela */
+    font-family: 'Helvetica Rounded', sans-serif;
+    font-weight: normal;
+    background-color: #eee;
     /* Cor de fundo mais clara */
     color: #333;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Helvetica Regular', sans-serif;
     color: #333;
 }
 
 header {
-    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
+    background-color: #298377; /* Cor com transparência */
+    background-image: url("/static/images/background.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat no-repeat;
     color: white;
     padding: 10px 0;
     display: flex;
@@ -28,8 +33,174 @@ header {
 }
 
 
+.popUp-failLogin{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    height: 824px;
+    background-color: #298377;
+}
+
+.formLogin {
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
+    border-radius: 40px;
+    padding: 40px;
+    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
+    gap: 5px
+}
+
+.formLogin h1 {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 2.3em;
+}
+
+.formLogin p {
+    display: inline-block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.formLogin input {
+    padding: 15px;
+    width: 300px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    border-radius: 4px;
+    transition: all linear 160ms;
+    outline: none;
+}
+
+.formLogin input.btn {
+   background-color: #2d7e71;
+   color: #eee;
+   border-radius: 50px;
+}
+
+.formLogin input.btn:hover{
+    background-color: #144a41;
+}
+
+
+.ForgotPassword {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    height: 824px;
+    background-color: #298377;
+}
+
+.formForgotPassword {
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
+    border-radius: 40px;
+    padding: 40px;
+    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
+    gap: 5px
+}
+
+.formForgotPassword h1 {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 23px;
+}
+
+.formForgotPassword p {
+    display: inline-block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.formForgotPassword input {
+    padding: 15px;
+    width: 300px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    border-radius: 4px;
+    transition: all linear 160ms;
+    outline: none;
+}
+
+.formForgotPassword input.btn {
+   background-color: #2d7e71;
+   color: #eee;
+   border-radius: 50px;
+}
+
+.formLogin input.btn:hover{
+    background-color: #144a41;
+}
+
+
+.reset_password_done{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 791px;
+}
+
+.reset_password_done p{
+    font-size: 30px;
+}
+
+
+
+
+.logout{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 822px;
+}
+
+.logout h1{
+    font-size: 100px;
+}
+
+.logout h2{
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+button.btn.Logout{
+    background: #2d7e71;
+    color: #eee;
+    padding: 10px 20px;
+    margin-top: 30px;
+    border-radius: 50px;
+
+}
+
+button.btn.Logout:hover{
+    background: #144a41;
+}
+
 .brand-container img {
-    margin-left: 10px;
+    margin-left: 150px;
     max-width: 30px;
     /* Ou o tamanho que você preferir */
     height: auto;
@@ -55,9 +226,10 @@ header {
 .brand-container h1 {
     font-size: 24px;
     /* Ajuste o tamanho da fonte conforme necessário */
+    font-family: 'Myriad Pro', sans-serif;
     margin: 0;
     /* Isso remove a margem padrão do h1 */
-    color: white;
+    color: #eee;
     /* Ajuste a cor conforme necessário */
 }
 
@@ -66,6 +238,7 @@ nav ul {
     list-style-type: none;
     display: flex;
     margin-bottom: 0px;
+    margin-right: 150px;
 
 }
 
@@ -74,19 +247,19 @@ nav li {
 }
 
 nav a {
-    color: white;
+    color: #eee;
     text-decoration: none;
     font-weight: bold;
     /* text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); Melhora a legibilidade */
     padding: 10px 15px; /* Adiciona espaço ao redor do texto */
     border-radius: 20px; /* Arredonda os cantos do botão */
-    background-color: rgb(42 134 121); /* Fundo semi-transparente */
+    background-color: transparent; /* Fundo transparente */
     transition: background-color 0.3s; /* Suaviza a transição de cor */
 }
 
 nav a:hover, nav a:focus {
-    background-color: rgb(217,234,211); /* Cor mais sólida ao passar o mouse */
-    color: white; /* Mantém a cor do texto */
+    background-color: #76af9f; /* Cor mais sólida ao passar o mouse */
+    color: #eee; /* Mantém a cor do texto */
     text-decoration: none; /* Remove qualquer sublinhado */
 }
 
@@ -98,17 +271,22 @@ nav a.active {
 
 .nav-user {
     text-align: right;
+    color: #eee;
     padding-right: 25px;
     padding-bottom: 13px;
+    margin-right: 150px;
 }
 
 main {
-    background: url("/static/images/background.jpeg") no-repeat center center;
+    /*background: url("/static/images/background.jpeg") no-repeat center center;
     background-size: cover;
-    padding-top: 20px;
+    padding-top: 20px;*/
+    background-color: #eee;
 }
 .main-content {
-    padding: 20px;
+    background-color: #2c8d7e;
+    padding-top: 100px;
+    padding-bottom: 210px;
 }
 .feature-title {
     width: 100%;
@@ -132,14 +310,15 @@ main {
 }
 
 
-#searchInput {
+input#searchInput {
     width: 100%;
     padding: 10px;
     box-sizing: border-box; /* Inclui o padding na largura total */
+    border-radius: 20px;
 }
 
 .form-custom {
-    background-color: #fff;
+    background-color: #eee;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -164,11 +343,11 @@ main {
 
 .form-custom .btn-primary {
     background-color: #004d40;
-    color: white;
+    color: #eee;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 50px;
     display: block;  /* Facilita o alinhamento no formulário */
     width: 100%;
     margin-top: 10px;
@@ -199,7 +378,7 @@ main {
     color: white;
     text-align: center;
     border: none;
-    border-radius: 4px;
+    border-radius: 50px;
     cursor: pointer;
     margin-top: 20px;
 }
@@ -210,15 +389,30 @@ main {
 
 
 footer {
-    background-color: rgba(0, 77, 64, 0.8); /* Cor com transparência */
+    display: flex;
+    justify-content: center;
+    background-color: #298377;
+    border-top: solid 1px #eee;
     color: white;
     text-align: center;
     padding: 20px 0;
-    /* position: fixed; */
+    position: relative;
     bottom: 0;
     width: 100%;
 }
 
+.footer{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+footer h1 {
+    padding: 0 20px;
+    /* Adiciona algum espaço dos lados se necessário */
+    font-size: 20px;
+    /* Ajuste o tamanho da fonte conforme necessário */
+    color: #eee;
+}
 footer p {
     margin: 0;
     /* Remove a margem padrão do parágrafo */
@@ -226,6 +420,7 @@ footer p {
     /* Adiciona algum espaço dos lados se necessário */
     font-size: 0.9em;
     /* Ajuste o tamanho da fonte conforme necessário */
+    color: #eee;
 }
 
 
@@ -260,7 +455,31 @@ footer p {
 
 
 
-.medicamentos-control {
+.banner {
+    background: url(/static/images/background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat no-repeat;
+    height: 900px;
+}
+
+
+
+
+
+
+
+.circulo {
+    width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	margin: 10px;
+    margin-top: 50px;
+    margin-right: 800px;
+    background: #2c8d7e
+}
+
+
+.medicamento-control {
     display: flex;
     /* flex-direction: column; Isso coloca os elementos em uma coluna em vez de linha */
     flex-wrap: wrap;
@@ -270,40 +489,37 @@ footer p {
     /* align-items: center; */
     /* Isso alinha todos os itens filhos (título e features) no centro horizontalmente */
     padding: 20px;
-    background-color: #ffffff;
     border-top: solid 10px #004d40;
-    margin-top: 50vh;
     /* Ajuste conforme necessário */
-    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
     clip-path: fill-box;
-    max-width: 1200px;
     width: 100%; /* Garante que a caixa ajuste-se à largura disponível até 1200px */
     margin-left: auto; /* Empurra a caixa para a direita automaticamente */
     margin-right: 20px; /* Mantém uma margem da direita */
+    margin-bottom: 50px; /* Margem padrão entre div´s */
 }
 
-
-.medicamentos-control h2 {
+.medicamento-control h2 {
     font-size: 2em;
     /* Tamanho da fonte */
-    color: #004d40;
+    color: #2a7c6f;
     /* Cor do texto */
     margin-bottom: 1em;
     /* Espaço abaixo do título */
     text-align: center;
     /* Centraliza o texto horizontalmente */
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 70px;
+    margin-bottom: 5px;
 }
 
 
-.medicamentos-control .feature {
+.medicamento-control .feature {
     flex: 1 1 200px;
     /* Cresce, encolhe e base de 200px */
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 20px 15px 1px rgba(0, 0, 0, 0.1);
+    text-align: justify;
     margin: 10px;
+    margin-bottom: 80px;
     padding: 20px;
-    background: #ffffff;
     border-radius: 8px;
     display: flex;
     align-items: normal;
@@ -311,11 +527,14 @@ footer p {
     /* Largura máxima para cada card */
 }
 
-.medicamentos-control .feature img {
+.medicamento-control .feature img {
     /* width: 100px;
     margin-right: 20px; */
     display: flex;
     align-items: normal;
+    height: 50px;
+    width: 50px;
+    margin-left: 10px;
     margin-bottom: 13%;
 }
 
@@ -323,7 +542,11 @@ footer p {
 
 
 
+
+
+
 .moradores-filter,
+.profissionais-filter,
 .medicamentos-filter {
     display: flex;
     align-items: normal;
@@ -341,11 +564,12 @@ footer p {
     margin: 0 auto;
     /* Centraliza na página */
     padding: 20px;
-    background-color: #fff;
+    background-color: #eee;
     /* Fundo branco para a seção */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
+
 
 .moradores-cards, 
 .profissionais-cards, 
@@ -357,17 +581,30 @@ footer p {
     flex-direction: column;
 }
 
+.moradores-cards, 
+.profissionais-cards{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
 .morador-card, 
-.profissional-card, 
-.medicamento-card, 
+.profissional-card,
+.medicamento-card,
 .instituicao-card {
-    width: auto;
-    background: #e3f2fd;
+    width: 100%;
+    background-color: #d3d6d6;
     /* Fundo azul claro */
     margin: 10px;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.medicamento-info{
+    display: flex;
 }
 
 .morador-info p {
@@ -382,7 +619,7 @@ footer p {
     margin-top: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 
 .morador-actions button,
@@ -395,21 +632,27 @@ footer p {
 .instituicao-actions a {
     padding: 10px 15px;
     margin-right: 10px;
-    background-color: #26a69a;
+    background-color: #2c8d7e;
     color: white;
     text-decoration: none;
     border: none;
-    border-radius: 4px;
+    border-radius: 50px;
     cursor: pointer;
 }
+
 
 .morador-actions button:hover,
 .morador-actions a:hover,
 .profissional-actions button:hover,
 .profissional-actions a:hover,
 .medicamento-actions button:hover,
+.medicamento-actions button:focus,
 .medicamento-actions a:hover,
 .instituicao-actions button:hover,
 .instituicao-actions a:hover {
     background-color: #00796b;
+}
+
+.medicamento-actions button:focus{
+    border-color: #00251a;
 }

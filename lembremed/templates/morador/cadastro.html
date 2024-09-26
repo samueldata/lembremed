@@ -25,3 +25,17 @@
     // Troca o submit para enviar no popup
     document.getElementById('form_morador').addEventListener('submit', envia_e_recarregar);
 </script>
+<script>
+    $(document).ready(function () {
+        $('#cpf').mask('000.000.000-00');
+
+        // Evento de submit do formulário
+        $('#form_morador').on('submit', function () {
+            var cpf = $('#cpf').val();
+            // Remover caracteres não numéricos
+            cpf = cpf.replace(/\D/g, '');
+            // Atualizar o valor do campo com apenas números
+            $('#cpf').val(cpf);
+        });
+    });
+</script>

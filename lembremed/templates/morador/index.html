@@ -4,9 +4,8 @@
 
 {% block title %}LembreMED - Moradores{% endblock %}
 
-
 {% block content %}
-<main style="padding: 20px;">
+<main class="main-content" >
     <section class="moradores-container">
         <h2 class="section-title">MORADORES</h2>
         <div class="moradores-filter">
@@ -15,15 +14,17 @@
                 style="width: 100%; padding: 10px; margin-bottom: 20px;">
         </div>
         {% if lista_moradores %}
-        <div class="moradores-cards">
-            {% for morador in lista_moradores %}
-            <div class="morador-card">
-                <div class="morador-info">
-                    <p>Nome: <strong>{{ morador.nome }}</strong></p>
-                    <p>CPF: {{ morador.cpf }}</p>
-                    <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
-                </div>
-                <div class="morador-actions">
+
+            <div class="moradores-cards">
+                {% for morador in lista_moradores %}
+                    <div class="morador-card">
+                        <div class="morador-info">
+                            <p>Nome: <strong>{{ morador.nome }}</strong></p>
+                            <p>CPF: {{ morador.cpf }}</p>
+                            <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
+                    </div>
+                    <div class="morador-actions">
+
                     <div class="morador-actions">
                         <button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Morador</button>
                         <button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
@@ -42,9 +43,23 @@
         <p style="text-align: center;">Não temos nenhum morador cadastrado no nosso sistema ainda :(</p>
         {% endif %}
         <button class="btn-cadastrar"
-            onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar morador');">Cadastrar Novo
-            Morador</button>
+            onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar morador');">Cadastrar Novo Morador</button>
     </section>
 </main>
 <script src="{% static 'scripts/filter.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        // Aplica a máscara de CPF
+        $('.cpf').mask('000.000.000-00');
+
+        // Formata cada CPF para o padrão brasileiro
+        $('.cpf').each(function() {
+            var cpf = $(this).text().replace(/\D/g, ''); // Remove não dígitos
+            if (cpf.length === 11) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                $(this).text(cpf);
+            }
+        });
+    });
+</script>
 {% endblock %}

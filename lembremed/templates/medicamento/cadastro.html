@@ -39,7 +39,7 @@
     </div>
     <div class="form-group">
         <label for="prescricao">Dosagem prescrita:</label>
-        <input name="prescricao" type="number" id="prescricao" value="{{ estoque.prescricao }}" class="form-control" />
+        <input name="prescricao" type="text" id="prescricao" value="{{ estoque.prescricao|stringformat:".2f" }}" class="form-control" />
         <span id="tipagem_dosagem">&nbsp;</span>
     </div>
     <div class="form-group">
@@ -53,13 +53,37 @@
     </div>
     <div class="form-group">
         <label for="qtd_disponivel">Quantidade disponível:</label>
-        <input name="qtd_disponivel" type="number" id="qtd_disponivel" value="{{ estoque.qtd_disponivel }}" class="form-control" />
+        <input name="qtd_disponivel" type="text" id="qtd_disponivel" value="{{ estoque.qtd_disponivel|stringformat:".2f" }}" class="form-control" {% if estoque %} disabled {% endif %} />
         <span id="tipagem_qtddisponivel">&nbsp;</span>
     </div>
+    {% if estoque %}
+        <div class="form-group">
+            <label for="qtd_alterar">Adicionar ou diminuir quantidade do estoque:</label>
+            <input name="qtd_alterar" type="text" id="qtd_alterar" value="" class="form-control" />
+            <small class="form-text text-muted">Formato esperado: &lt;+|-&gt;&lt;qtd&gt; (Ex.: "+1", "-3", "+5.5", "-2.75").</small>
+        </div>
+    {% endif %}
+
+    
     <button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
 <script>
+
+/*document.getElementById('form_estoque').addEventListener('submit', teste_feririxXo);
+
+function teste_feririxXo(e) {
+    alert('foi');
+    e.preventDefault();
+    e.stopPropagation();
+}
+*/	
+
+$( "form_estoque" ).on( "submit", function( event ) {
+  event.preventDefault();
+  event.stopPropagation();
+  // Do something
+});
 
 // Troca o submit para enviar no popup
 document.getElementById('form_estoque').addEventListener('submit', envia_e_recarregar);
@@ -107,6 +131,10 @@ $("#apresentacao").on("change", function(){
     var option = $("#apresentacao option:selected")[0];
     $('#tipagem_dosagem').html(option.attributes['data-bs-prescricao'].value);
     $('#tipagem_qtddisponivel').html(option.attributes['data-bs-comercial'].value);
+});
+
+$( document ).ready(function() {
+    $("#apresentacao").trigger("change");
 });
 
 </script>

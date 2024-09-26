@@ -32,3 +32,19 @@
     // Troca o submit para enviar no popup
     document.getElementById('form_instituicao').addEventListener('submit', envia_e_recarregar);
 </script>
+<script>
+    $(document).ready(function () {
+      // Aplicar máscara de CNPJ
+      $('#cnpj').mask('00.000.000/0000-00');
+  
+      // Evento de submit do formulário
+      $('#form_instituicao').on('submit', function () {
+        var cnpj = $('#cnpj').val();
+        // Remover caracteres não numéricos
+        cnpj = cnpj.replace(/\D/g, '');
+        // Atualizar o valor do campo com apenas números
+        $('#cnpj').val(cnpj);
+      });
+    });
+  </script>
+  

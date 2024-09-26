@@ -6,6 +6,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import permission_required
 from lembremed.decorators import adiciona_contexto
 
+#teste
 
 #Pagina principal dos instituicoes
 #Lista todos os instituicoes
