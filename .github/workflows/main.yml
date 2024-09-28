@@ -19,23 +19,26 @@ jobs:
       - name: Instalar Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.9'  # Pode alterar para a versão que usa no servidor, como 3.11 se for necessário
 
       - name: Instalar dependências
         run: |
           python -m pip install --upgrade pip
           pip install pytest
           pip install -r requirements.txt
+          pip install mysqlclient
+
+      - name: Configurar o MySQL
+        run: |
+          sudo apt-get install -y mysql-server
+          sudo service mysql start
+          mysql -u root -e "SOURCE lembremed\lembremed\create_database.sql"
 
       - name: Definir variável de ambiente do Django
-        run: export DJANGO_SETTINGS_MODULE=lembremed.settings
+        run: echo "DJANGO_SETTINGS_MODULE=lembremed.settings" >> $GITHUB_ENV
 
       - name: Migrar banco de dados
         run: python manage.py migrate
 
       - name: Rodar testes
         run: pytest
-
-      - name: Start MySQL
-        run: |
-          sudo service mysql start
