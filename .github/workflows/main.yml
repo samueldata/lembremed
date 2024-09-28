@@ -35,3 +35,7 @@ jobs:
 
       - name: Rodar testes
         run: pytest
+
+      - name: Start MySQL
+        run: |
+          sudo service mysql start
