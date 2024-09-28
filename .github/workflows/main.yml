@@ -28,13 +28,13 @@ jobs:
           pip install -r requirements.txt
           pip install mysqlclient
 
-      - name: Configurar MySQL
+      - name: Configurar o MySQL e criar banco de dados
         run: |
           sudo apt-get install -y mysql-server
           sudo service mysql start
-          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'auth_socket';"
-          sudo mysql -e "FLUSH PRIVILEGES;"
-          sudo mysql -e "SOURCE lembremed/lembremed/create_database.sql"
+          sudo mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
+          sudo mysql -u root --password="root" --execute="FLUSH PRIVILEGES;"
+          sudo mysql -u root --password="root" -e "SOURCE lembremed/lembremed/create_database.sql"
 
       - name: Definir variável de ambiente do Django
         run: echo "DJANGO_SETTINGS_MODULE=lembremed.settings" >> $GITHUB_ENV
