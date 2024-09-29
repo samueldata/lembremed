@@ -37,38 +37,32 @@ jobs:
           sudo service mysql start
           sleep 5
 
-          # Criar um arquivo de configuração para o MySQL
-          echo "[client]" > /home/runner/.my.cnf
-          echo "user=root" >> /home/runner/.my.cnf
-          echo "password=fHw*(aFx5-%!" >> /home/runner/.my.cnf
-          chmod 600 /home/runner/.my.cnf
-
-          # Criar uma senha para o usuário root
-          echo "Definindo senha para o usuário root..."
-          sudo mysql --defaults-file=/home/runner/.my.cnf -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'fHw*(aFx5-%!';"
+          # Redefina a senha do root
+          echo "Redefinindo senha para o usuário root..."
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'nova_senha_secreta';"
 
           # Criar o banco de dados
           echo "Criando banco de dados lembremed..."
-          if ! sudo mysql --defaults-file=/home/runner/.my.cnf -e "CREATE DATABASE lembremed;"; then
+          if ! sudo mysql -uroot -pnova_senha_secreta -e "CREATE DATABASE lembremed;"; then
             echo "Erro ao criar banco de dados."
             exit 1
           fi
 
           # Criar um novo usuário e conceder privilégios
           echo "Criando usuário testuser e concedendo privilégios..."
-          if ! sudo mysql --defaults-file=/home/runner/.my.cnf -e "CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'password';"; then
+          if ! sudo mysql -uroot -pnova_senha_secreta -e "CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'password';"; then
             echo "Erro ao criar usuário."
             exit 1
           fi
 
-          if ! sudo mysql --defaults-file=/home/runner/.my.cnf -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'testuser'@'localhost';"; then
+          if ! sudo mysql -uroot -pnova_senha_secreta -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'testuser'@'localhost';"; then
             echo "Erro ao conceder privilégios."
             exit 1
           fi
 
           # Finalizar
-          sudo mysql --defaults-file=/home/runner/.my.cnf -e "FLUSH PRIVILEGES;"
-
+          sudo mysql -uroot -pnova_senha_secreta -e "FLUSH PRIVILEGES;"
+      
       - name: Definir variável de ambiente do Django
         run: echo "DJANGO_SETTINGS_MODULE=lembremed.settings" >> $GITHUB_ENV
 
