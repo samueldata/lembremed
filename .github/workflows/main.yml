@@ -30,20 +30,22 @@ jobs:
 
       - name: Instalar e configurar MySQL
         run: |
+          sudo apt-get update
           sudo apt-get install -y mysql-server
           sudo service mysql start
+          
           # Iniciar MySQL sem autenticação
-          sudo mysql --skip-grant-tables --skip-networking &
-
+          sudo mysqld_safe --skip-grant-tables --skip-networking &
+          
           # Esperar o MySQL iniciar
           sleep 5
-
+          
           # Executar comandos para criar banco e definir senha
           sudo mysql -e "FLUSH PRIVILEGES;"
           sudo mysql -e "CREATE DATABASE lembremed;"
           sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
           sudo mysql -e "FLUSH PRIVILEGES;"
-
+          
           # Encerrar o MySQL
           sudo killall mysqld
 
