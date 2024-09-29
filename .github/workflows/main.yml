@@ -41,6 +41,12 @@ jobs:
           sudo service mysql restart
           sleep 5
 
+          # Verificar se o MySQL está aceitando conexões
+          if ! sudo mysql --skip-password -e "SELECT VERSION();"; then
+            echo "Erro ao conectar ao MySQL com skip-grant-tables."
+            exit 1
+          fi
+
           # Conectar ao MySQL sem senha e criar o banco de dados
           echo "Criando banco de dados lembremed..."
           if ! sudo mysql --skip-password -e "CREATE DATABASE lembremed;"; then
@@ -65,6 +71,7 @@ jobs:
             exit 1
           fi
 
+          # Finalizar
           sudo mysql --skip-password -e "FLUSH PRIVILEGES;"
 
       - name: Definir variável de ambiente do Django
