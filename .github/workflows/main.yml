@@ -40,8 +40,8 @@ jobs:
           sudo service mysql restart
           sleep 5
 
-          # Criar o banco de dados
-          echo "CREATE DATABASE lembremed;" | sudo mysql
+          # Conectar ao MySQL sem senha e criar o banco de dados
+          sudo mysql --skip-password -e "CREATE DATABASE lembremed;"
 
           # Remover o arquivo de configuração temporário
           sudo rm /etc/mysql/conf.d/mysqld.cnf
@@ -49,9 +49,9 @@ jobs:
           sleep 5
 
           # Criar o usuário e conceder privilégios
-          echo "CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';" | sudo mysql
-          echo "GRANT ALL PRIVILEGES ON lembremed.* TO 'root'@'localhost';" | sudo mysql
-          echo "FLUSH PRIVILEGES;" | sudo mysql
+          sudo mysql --skip-password -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';"
+          sudo mysql --skip-password -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'root'@'localhost';"
+          sudo mysql --skip-password -e "FLUSH PRIVILEGES;"
 
       - name: Definir variável de ambiente do Django
         run: echo "DJANGO_SETTINGS_MODULE=lembremed.settings" >> $GITHUB_ENV
