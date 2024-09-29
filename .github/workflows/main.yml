@@ -30,6 +30,7 @@ jobs:
 
       - name: Instalar e configurar MySQL
         run: |
+          # Instalar MySQL Server
           sudo apt-get install -y mysql-server
           sudo service mysql start
           sleep 5
@@ -41,7 +42,11 @@ jobs:
           sleep 5
 
           # Conectar ao MySQL sem senha e criar o banco de dados
-          sudo mysql --skip-password -e "CREATE DATABASE lembremed;"
+          echo "Criando banco de dados lembremed..."
+          if ! sudo mysql --skip-password -e "CREATE DATABASE lembremed;"; then
+            echo "Erro ao criar banco de dados."
+            exit 1
+          fi
 
           # Remover o arquivo de configuração temporário
           sudo rm /etc/mysql/conf.d/mysqld.cnf
@@ -49,8 +54,17 @@ jobs:
           sleep 5
 
           # Criar o usuário e conceder privilégios
-          sudo mysql --skip-password -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';"
-          sudo mysql --skip-password -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'root'@'localhost';"
+          echo "Criando usuário root e concedendo privilégios..."
+          if ! sudo mysql --skip-password -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';"; then
+            echo "Erro ao criar usuário."
+            exit 1
+          fi
+
+          if ! sudo mysql --skip-password -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'root'@'localhost';"; then
+            echo "Erro ao conceder privilégios."
+            exit 1
+          fi
+
           sudo mysql --skip-password -e "FLUSH PRIVILEGES;"
 
       - name: Definir variável de ambiente do Django
