@@ -26,33 +26,35 @@ jobs:
           pip install pytest
           pip install -r requirements.txt
           pip install mysqlclient
-  
+
       - name: Instalar e configurar MySQL
         run: |
           # Instalar MySQL Server se não estiver instalado
           if ! command -v mysql &> /dev/null; then
             sudo apt-get install -y mysql-server
           fi
-          sudo service mysql start
+          sudo service mysql stop
+          sudo mysqld_safe --skip-grant-tables &
           sleep 5
-        
-          # Acessar MySQL sem senha ou com senha padrão
-          echo "Acessando MySQL sem senha..."
-          sudo mysql -e "SELECT 1;"
-        
-          # Redefina a senha do root
+
+          # Redefinir a senha do root
           echo "Redefinindo senha para o usuário root..."
+          sudo mysql -e "UPDATE mysql.user SET authentication_string=null WHERE User='root';"
+          sudo mysql -e "UPDATE mysql.user SET plugin='mysql_native_password' WHERE User='root';"
           sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'nova_senha_secreta';"
-        
+          sudo mysql -e "FLUSH PRIVILEGES;"
+          sudo service mysql restart
+          sleep 5
+
           # Criar o banco de dados
           echo "Criando banco de dados lembremed..."
           sudo mysql -uroot -pnova_senha_secreta -e "CREATE DATABASE lembremed;"
-        
+
           # Criar um novo usuário e conceder privilégios
           echo "Criando usuário testuser e concedendo privilégios..."
           sudo mysql -uroot -pnova_senha_secreta -e "CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'password';"
           sudo mysql -uroot -pnova_senha_secreta -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'testuser'@'localhost';"
-        
+
           # Finalizar
           sudo mysql -uroot -pnova_senha_secreta -e "FLUSH PRIVILEGES;"
       
