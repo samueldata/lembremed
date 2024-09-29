@@ -37,8 +37,8 @@ jobs:
 
           # Redefinir a senha do root sem --skip-grant-tables
           echo "Redefinindo senha para o usuário root..."
-          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'nova_senha_secreta';"
-          sudo mysql -e "FLUSH PRIVILEGES;"
+          sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'nova_senha_secreta';"
+          sudo mysql -u root -pnova_senha_secreta -e "FLUSH PRIVILEGES;"
           sudo service mysql restart
           sleep 5
 
