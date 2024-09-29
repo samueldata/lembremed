@@ -28,21 +28,24 @@ jobs:
           pip install -r requirements.txt
           pip install mysqlclient
 
-      - name: Instalar e configurar MySQL sem senha para root
+      - name: Instalar e configurar MySQL
         run: |
           sudo apt-get install -y mysql-server
           sudo service mysql start
-          # Permitir login de root sem senha para o script de CI
-          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'auth_socket';"
+          # Iniciar MySQL sem autenticação
+          sudo mysql --skip-grant-tables --skip-networking &
 
-      - name: Criar banco de dados
-        run: |
-          sudo mysql -e "SOURCE lembremed/lembremed/create_database.sql"
+          # Esperar o MySQL iniciar
+          sleep 5
 
-      - name: Definir senha para root
-        run: |
+          # Executar comandos para criar banco e definir senha
+          sudo mysql -e "FLUSH PRIVILEGES;"
+          sudo mysql -e "CREATE DATABASE lembremed;"
           sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
-          sudo mysql -u root -p'root' -e "FLUSH PRIVILEGES;"
+          sudo mysql -e "FLUSH PRIVILEGES;"
+
+          # Encerrar o MySQL
+          sudo killall mysqld
 
       - name: Definir variável de ambiente do Django
         run: echo "DJANGO_SETTINGS_MODULE=lembremed.settings" >> $GITHUB_ENV
