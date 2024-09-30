@@ -6,7 +6,6 @@
   <div class="popUp-failLogin">
     <p>Your username and password didn't match. Please try again.</p>
   </div>
-    
   {% endif %}
 
   {% if next %}
@@ -24,43 +23,48 @@
         <h1>Login</h1>
         <p>Digite os seus dados de acesso no campo abaixo.</p>
         
-        <!-- Adicionando o campo select obrigatório -->
+        <!-- Campo select obrigatório -->
         <label for="user_type">Selecione o tipo de usuário:</label>
-        <select id="user_type" name="user_type" required onchange="applyMask()">
+        <select id="user_type" name="user_type" required onchange="applyMaskAndShowFields()">
           <option value="" disabled selected>Selecione...</option>
           <option value="administrador">Administrador</option>
           <option value="instituicao">Instituição</option>
           <option value="profissional">Profissional</option>
         </select>
 
-        <table>
-          <tr>
-            <td>{{ form.username.label_tag }}</td>
-          </tr>
-          <tr>
-            <td><input type="text" id="username" name="username" value="{{ form.username.value }}" required></td>
-          </tr>
-          <tr>
-            <td>{{ form.password.label_tag }}</td>
-          </tr>
-          <tr>
-            <td>{{ form.password }}</td>
-          </tr>
-        </table>
+        <!-- Ocultar inicialmente os campos de usuário e senha -->
+        <div id="loginFields" style="display:none;">
+          <table>
+            <tr>
+              <td>{{ form.username.label_tag }}</td>
+            </tr>
+            <tr>
+              <td><input type="text" id="username" name="username" value="{{ form.username.value }}" required></td>
+            </tr>
+            <tr>
+              <td>{{ form.password.label_tag }}</td>
+            </tr>
+            <tr>
+              <td>{{ form.password }}</td>
+            </tr>
+          </table>
+        </div>
 
-        {# Assumes you set up the password_reset view in your URLconf #}
         <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
         <input type="submit" value="Acessar" class="btn" />
     </form>
-   
   </div>
 
-  <!-- Script para aplicar as máscaras e limpar o campo -->
+  <!-- Script para aplicar máscaras e exibir os campos -->
   <script>
-    function applyMask() {
+    function applyMaskAndShowFields() {
       var userType = document.getElementById('user_type').value;
       var usernameField = document.getElementById('username');
+      var loginFields = document.getElementById('loginFields');
       
+      // Exibe os campos de login
+      loginFields.style.display = 'block';
+
       // Limpa o valor do campo ao trocar a seleção
       usernameField.value = '';
 
@@ -82,9 +86,12 @@
       }
     }
 
-    // Aplicar a máscara ao carregar a página com o valor padrão do select
+    // Não exibir os campos até o tipo de usuário ser selecionado
     window.onload = function() {
-      applyMask();
+      var userType = document.getElementById('user_type').value;
+      if (userType === '') {
+        document.getElementById('loginFields').style.display = 'none';
+      }
     };
   </script>
 
