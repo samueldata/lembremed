@@ -2,17 +2,17 @@
 
 {% load static %}
 
-{% block title %}LembreMED - MEDICAMENTOS{% endblock %}
+{% block title %}Lembre-MEd - MEDICAMENTOS{% endblock %}
 
 
 {% block content %}
-<style>
+{% comment %} <style>
 tr.details > td, tr.details {
 	border-top-width: 2px;
 	border-top-color: black;
 	border-top-style: solid;
 }
-</style>
+</style> {% endcomment %}
 
 
 <main style="padding: 20px;">
@@ -32,7 +32,7 @@ tr.details > td, tr.details {
 		
 		
 		{% if lista_estoques %}
-		<div class="medicamentos-cards">
+		<div class="medicamentos-cards" style="overflow-x: auto;">
 			<div class="medicamento-card">
 				<div class="medicamento-info">
 					<table class="table table-medicamento">
