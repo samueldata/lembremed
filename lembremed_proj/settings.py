@@ -139,3 +139,14 @@ LOGIN_REDIRECT_URL = '/'
 
 # Jogando os emails no console pra testar as funcionalidades
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = #sender's email-id
+# EMAIL_HOST_PASSWORD = #password associated with above email-id (not the regular password)
+
+
+
+TELEGRAM_TOKEN = '8162836094:AAHQunZn3Vibglmi4OI8nCFBbsaviwBTXis'

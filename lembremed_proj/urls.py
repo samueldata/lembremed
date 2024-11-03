@@ -24,7 +24,6 @@ from django.conf.urls.static import static
 
 from django.shortcuts import render
 
-
 #Pagina principal do site
 @adiciona_contexto
 def index_principal(request, contexto_padrao):

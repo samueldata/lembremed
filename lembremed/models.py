@@ -22,6 +22,16 @@ class Morador(models.Model):
             ("pode_medicar_morador", "Pode administrar medicamentos nos moradores"),
         )
 
+class Responsavel(models.Model):
+    cpf = models.CharField(max_length=14, primary_key=True)
+    telegram_id = models.BigIntegerField()
+    nome = models.CharField(max_length=50)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+
+class Responde(models.Model):
+    estoque = models.ForeignKey(Responsavel, on_delete=models.CASCADE)
+    morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
+
 class Profissional(models.Model):
     cpf = models.CharField(max_length=14, primary_key=True)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
