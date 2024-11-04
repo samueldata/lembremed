@@ -29,8 +29,9 @@ Calculadora web de duração de medicamentos voltada para Instituições de Long
 
 1. [Descrição do Projeto](#descrição-do-projeto)
 2. [Funcionalidades e Demonstração da Aplicação](#funcionalidades-e-demonstração-da-aplicação)
-3. [Tecnologias Utilizadas](#tecnologias-utilizadas)
-4. [Pessoas Contribuidoras](#pessoas-contribuidoras)
+3. [Novas funcionalidades](#novas-funcionalidades).
+4. [Tecnologias Utilizadas](#tecnologias-utilizadas)
+5. [Pessoas Contribuidoras](#pessoas-contribuidoras)
 
 ## Descrição do Projeto
 
@@ -104,6 +105,13 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
   <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/432cea78-f1e3-47d0-af71-413c13ac207d" width="516" height="200" ></a><br><sub> Tela Cadastro e Administração de Medicamentos por morador</sub>
 </div>
 
+## Novas funcionalidades
+
+<p align="center">
+
+  - API de notificação por email / WhatsApp  
+  - Melhorar responsividade  
+  - Tela nova de login 
 
 ## Tecnologias Utilizadas
 
