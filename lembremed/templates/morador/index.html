@@ -22,22 +22,19 @@
                             <p>Nome: <strong>{{ morador.nome }}</strong></p>
                             <p>CPF: {{ morador.cpf }}</p>
                             <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
-                    </div>
-                    <div class="morador-actions">
-
-                    <div class="morador-actions">
-                        <button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Morador</button>
-                        <button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
+                        </div>
+                        <div class="morador-actions">
+                            <button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Morador</button>
+                            <button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
+                        {% if perms.lembremed.pode_medicar_morador %}
+                            <a href="/medicamento/{{ morador.cpf }}">Medicamentos</a>
+                        {% endif %}
+                        </div>
                     </div>
                     
-                    {% if perms.lembremed.pode_medicar_morador %}
-                    <div class="morador-actions">
-                        <a href="/medicamento/{{ morador.cpf }}">Medicamentos</a>
-                    </div>
-                    {% endif %}
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
         {% else %}
         <p style="text-align: center;">Não temos nenhum morador cadastrado no nosso sistema ainda :(</p>
