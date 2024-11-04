@@ -29,7 +29,7 @@ Calculadora web de duração de medicamentos voltada para Instituições de Long
 
 1. [Descrição do Projeto](#descrição-do-projeto)
 2. [Funcionalidades e Demonstração da Aplicação](#funcionalidades-e-demonstração-da-aplicação)
-3. [Novas funcionalidades](#novas-funcionalidades).
+3. [Novas funcionalidades](#novas-funcionalidades)
 4. [Tecnologias Utilizadas](#tecnologias-utilizadas)
 5. [Pessoas Contribuidoras](#pessoas-contribuidoras)
 
