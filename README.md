@@ -1,8 +1,12 @@
 <h1 align="center"> Grupo 014 - UNIVESP Projeto Integrador :) </h1>
 
 <p align="center">
-<img loading="lazy" src="https://img.shields.io/badge/Site-Em_Desenvolvimento-green"/>
+  <img src="https://img.shields.io/badge/PI-concluído_com_sucesso-green" alt="PI concluído com sucesso"/>
+  <br>
+  <img src="https://img.shields.io/badge/PII-Em_Desenvolvimento-blue" alt="PII em desenvolvimento"/>
 </p>
+
+
 
 <p align="center">
 <img loading="lazy" src=https://img.shields.io/badge/Codes-yellow>
