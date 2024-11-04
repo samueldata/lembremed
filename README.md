@@ -109,7 +109,7 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
 
 <p align="center">
 
-  - API de notificação por email / WhatsApp  
+  - API de notificação
   - Melhorar responsividade  
   - Tela nova de login 
 
