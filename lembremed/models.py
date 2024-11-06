@@ -13,10 +13,11 @@ class Instituicao(models.Model):
 
 class Responsavel(models.Model):
 	cpf = models.CharField(max_length=14, primary_key=True)
-	telegram_id = models.BigIntegerField()
+	telegram_id = models.BigIntegerField(null=True)
 	hashcode = models.CharField(max_length=40)
 	nome = models.CharField(max_length=50)
 	email = models.CharField(max_length=80)
+	telefone = models.CharField(max_length=20)
 
 class Morador(models.Model):
 	cpf = models.CharField(max_length=14, primary_key=True)

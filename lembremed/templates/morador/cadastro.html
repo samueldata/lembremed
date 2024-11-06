@@ -22,22 +22,22 @@
 		<label>Responsável:</label>
 		<div class="form-group ms-3">
 			<label for="rcpf">CPF:</label>
-			<input name="rcpf" id="rcpf" value="{{ responsavel.cpf }}" class="form-control" onchange="verifica_cpf_responsavel(this)" />
+			<input name="rcpf" id="rcpf" value="{{ morador.responsavel.cpf }}" class="form-control" />
 		</div>
 		<div class="form-group ms-3">
 			<label for="rnome">Nome:</label>
-			<input name="rnome" id="rnome" value="{{ responsavel.nome }}" class="form-control" disabled="" />
+			<input name="rnome" id="rnome" value="{{ morador.responsavel.nome }}" class="form-control" disabled="" />
 		</div>
 		<div class="form-group ms-3">
 			<label for="remail">E-mail:</label>
-			<input name="remail" id="rcpf" value="{{ responsavel.cpf }}" class="form-control" disabled="" />
+			<input name="remail" id="remail" value="{{ morador.responsavel.email }}" class="form-control" disabled="" />
 		</div>
 		<div class="form-group ms-3">
 			<label for="rtelefone">Telefone:</label>
-			<input name="rtelefone" id="rtelefone" value="{{ responsavel.telefone }}" class="form-control" disabled="" />
+			<input name="rtelefone" id="rtelefone" value="{{ morador.responsavel.telefone }}" class="form-control" disabled="" />
 		</div>
 	</div>
-	<button type="submit" class="btn btn-primary">Salvar</button>
+	<button type="submit" class="btn btn-primary">Stelegraalvar</button>
 </form>
 
 <script>
@@ -46,19 +46,58 @@
 </script>
 <script>
 	$(document).ready(function () {
-		$('#cpf').mask('000.000.000-00');
+		var cpfmask = '000.000.000-00';
+		$('#cpf').mask(cpfmask);
+		$('#rcpf').mask(cpfmask)
+		.on('keydown', function() {
+			//Verifica se nao chegou no tamanho da mascara
+			if (this.value.length < cpfmask.length) {
+				this.tamanhoanterior = this.value.length; 
+				$(this).trigger('keyup');
+			}
+		})
+		.on('keyup', function() {
+			//Verifica se tem 11 caracteres e se adicionou algum caractere
+			if ((this.value.length == 14) && (this.tamanhoanterior < this.value.length)) {
+				//Verifica se cpf jah existe no banco de dados
+				/*myinput = $("{% csrf_token %}")
+				mydata = [];
+				mydata.push({'name': myinput.attr('name'), 'value': myinput.val()});
+				mydata.push({'name': 'rcpf', 'value': myinput.val()});*/
+
+				$.ajax({
+					url: "procurar_responsavel/",
+					method: "POST",
+					data: $('form').serialize(),
+					success: function(response) {
+						//Verifica se o resultado voltou dados do responsavel
+						if (response.indexOf('|') != -1) {
+							campos = response.split('|');
+							$('#rnome').val(campos[0]).attr('disabled', '');
+							$('#remail').val(campos[1]).attr('disabled', '');
+							$('#rtelefone').val(campos[2]).attr('disabled', '');
+
+						} else {
+							//Nao encontrou o cpf do responsavel, entao habilita os campos para cadastrar
+							$('#rnome').removeAttr('disabled');
+							$('#remail').removeAttr('disabled');
+							$('#rtelefone').removeAttr('disabled');
+						}
+					}
+				});
+
+				//Indica que preencheu mais um caractere 
+				this.tamanhoanterior = this.value.length;
+			}
+		});
+		$('#rtelefone').mask('(00) 000000000');
 
 		// Evento de submit do formulário
 		$('#form_morador').on('submit', function () {
-			var cpf = $('#cpf').val();
-			// Remover caracteres não numéricos
-			cpf = cpf.replace(/\D/g, '');
-			// Atualizar o valor do campo com apenas números
-			$('#cpf').val(cpf);
+			// Atualizar o valor do campo com apenas números, removendo caracteres nao numericos
+			$('#cpf').val( $('#cpf').val().replace(/\D/g, ''));
+			$('#rcpf').val( $('#rcpf').val().replace(/\D/g, ''));
 		});
-	});
 
-	function verifica_cpf_responsavel(input) {
-		alert($(input).length);
-	}
+	});
 </script>

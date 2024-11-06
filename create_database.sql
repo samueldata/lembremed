@@ -4,6 +4,20 @@ https://stackoverflow.com/questions/60864367/1030-got-error-176-read-page-with-w
 https://stackoverflow.com/questions/18022809/how-can-i-solve-error-mysql-shutdown-unexpectedly
 */
 
+/*
+
+#Preparando o ambiente
+mkdir projeto_lembremed
+cd projeto_lembremed
+mkdir ambiente01
+	#Windows
+	python -m venv .\ambiente01
+	ambiente01\Scripts\activate
+	#Unix
+	python -m venv ./ambiente01
+	source ambiente01/bin/activate
+pip install django mysqlclient python-telegram-bot requests
+*/
 
 /*=======================*/
 /*Criando a base de dados*/
@@ -22,31 +36,39 @@ FLUSH PRIVILEGES;
 
 /*
 
+#Clonando o projeto
 git clone https://github.com/samueldata/lembremed
 
 
 #Entrar na raiz do projeto
+cd lembremed
 
+#Apagando os migrations anteriores
+	#Windows
+	del lembremed\migrations\00*
+	#Unix
+	rm lembremed/migrations/00*
 
-#Windows
-del lembremed\migrations\00*
-
-#Unix
-rm lembremed/migrations/00*
-
+#Criando os migrations
 python manage.py makemigrations
 
+#Pre-configurado, alterar se desejar
 > configurar o usuario do banco em lembremed_proj/settings.py
 
+#Rodando os migrations
 python manage.py migrate
 
+#Importando a lista de medicamentos pro banco
 python manage.py populate_db
 
 # Comando para realocar os arquivos de imagem, css e javascript
 python manage.py collectstatic
 
+#Criando o usuario administrativo
 python manage.py createsuperuser
-
+>lembremed
+>lembremed@lembremed.com
+>g14UNIVESP
 
 # Colocar o servidor para rodar
 python manage.py runserver

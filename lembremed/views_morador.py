@@ -47,9 +47,10 @@ def morador_salvar(request, contexto_padrao):
 		pnome = request.POST.get('nome')
 		pdt_nascimento = request.POST.get('dt_nascimento')
 
-		rcpf = request.POST.get('rcpf')
-		rnome = request.POST.get('rnome')
-		remail = request.POST.get('remail')
+		prcpf = request.POST.get('rcpf')
+		prnome = request.POST.get('rnome')
+		premail = request.POST.get('remail')
+		prtelefone = request.POST.get('rtelefone')
 
 		#Verifica se estah editando
 		if (request.POST.get('edit')):
@@ -57,11 +58,21 @@ def morador_salvar(request, contexto_padrao):
 			morador.nome = pnome
 			morador.dt_nascimento = pdt_nascimento
 
-		else:
-			morador = Morador(cpf=pcpf, nome=pnome, dt_nascimento=pdt_nascimento)
+			#Verifica se trocou o responsavel
+			if ((morador.responsavel.cpf == None) or (morador.responsavel.cpf != prcpf)):
+				morador.responsavel = Responsavel(cpf=prcpf, nome=prnome, email=premail, telefone=prtelefone
+					,hashcode=requests.get("https://www.uuidgenerator.net/api/version4", headers={"Accept": "application/json"})
+				)
+				morador.responsavel.save()
 
-			responsavel = Responsavel(cpf=rcpf, nome=rnome)
-			responsavel.hashcode = requests.get("https://www.uuidgenerator.net/api/version4", headers={"Accept": "application/json"})
+		else:
+			morador = Morador(
+				cpf=pcpf, nome=pnome, dt_nascimento=pdt_nascimento, responsavel=Responsavel(
+					cpf=prcpf, nome=prnome, email=premail, telefone=prtelefone
+					,hashcode=requests.get("https://www.uuidgenerator.net/api/version4", headers={"Accept": "application/json"})
+				)
+			)
+			morador.responsavel.save()
 
 		#Verifica se eh profissional ou instituicao cadastrando
 		if (isinstance(contexto_padrao['usuario'], Instituicao)):
@@ -86,3 +97,21 @@ def morador_excluir(request, pcpf):
 		return HttpResponse("excluido com sucesso")
 	else:
 		return HttpResponse("Erro ao localizar cpf")
+
+
+@adiciona_contexto
+@permission_required('lembremed.pode_gerenciar_morador')
+def morador_procurar_responsavel(request, contexto_padrao):
+	if request.method == 'POST':
+		# Pegando a variável POST
+		prcpf = request.POST.get('rcpf')
+
+		responsavel = Responsavel.objects.filter(cpf=prcpf)
+		if (responsavel.count() == 1):
+			return HttpResponse(responsavel.nome+'|'+responsavel.email+'|'+responsavel.telefone)
+		else:
+			return HttpResponse("0")
+
+	else:
+		return HttpResponse("erro por GET no salvar")
+
