@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import Morador, Responsavel, Instituicao, Profissional
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -61,7 +63,7 @@ def morador_salvar(request, contexto_padrao):
 			#Verifica se trocou o responsavel
 			if ((morador.responsavel.cpf == None) or (morador.responsavel.cpf != prcpf)):
 				morador.responsavel = Responsavel(cpf=prcpf, nome=prnome, email=premail, telefone=prtelefone
-					,hashcode=requests.get("https://www.uuidgenerator.net/api/version4", headers={"Accept": "application/json"})
+					,hashcode=requests.get("https://www.uuidgenerator.net/api/version4").text
 				)
 				morador.responsavel.save()
 
@@ -69,7 +71,7 @@ def morador_salvar(request, contexto_padrao):
 			morador = Morador(
 				cpf=pcpf, nome=pnome, dt_nascimento=pdt_nascimento, responsavel=Responsavel(
 					cpf=prcpf, nome=prnome, email=premail, telefone=prtelefone
-					,hashcode=requests.get("https://www.uuidgenerator.net/api/version4", headers={"Accept": "application/json"})
+					,hashcode=requests.get("https://www.uuidgenerator.net/api/version4").text
 				)
 			)
 			morador.responsavel.save()
@@ -82,6 +84,17 @@ def morador_salvar(request, contexto_padrao):
 			morador.instituicao = contexto_padrao['usuario'].instituicao
 
 		morador.save()
+
+		#Verifica se o responsavel nao tem telegram associado
+		if (not morador.responsavel.telegram_id):
+			send_mail(subject="Cadastro de responsável - Lembremed",
+				message=f"Olá "+morador.responsavel.nome.split()[0] +
+						"\nClique neste link para associar seu telegram e receber as novidades do LembreMed."
+						f"\n<a href=\"https://telegram.me/lembremed_bot?start={morador.responsavel.hashcode}\">https://telegram.me/lembremed_bot?start={morador.responsavel.hashcode}</a>",
+				from_email=settings.EMAIL_HOST_USER,
+				recipient_list=[morador.responsavel.email],
+				fail_silently=True,  # Set to True to suppress exceptions
+			)
 
 		return HttpResponse("Morador salvo com sucesso")
 	else:

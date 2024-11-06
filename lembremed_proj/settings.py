@@ -31,46 +31,46 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'lembremed.apps.LembremedConfig',
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'lembremed.apps.LembremedConfig',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.security.SecurityMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'lembremed_proj.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-            #os.path.join(BASE_DIR, 'static'),  # Ajuste aqui para o caminho absoluto correto
-            os.path.join(BASE_DIR, 'venv/Lib/site-packages/django/contrib/auth/templates')
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [
+			os.path.join(BASE_DIR, 'templates'),
+			#os.path.join(BASE_DIR, 'static'),  # Ajuste aqui para o caminho absoluto correto
+			os.path.join(BASE_DIR, 'venv/Lib/site-packages/django/contrib/auth/templates')
 
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+		],
+		'APP_DIRS': True,
+		'OPTIONS': {
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
+				'django.contrib.messages.context_processors.messages',
+			],
+		},
+	},
 ]
 
 WSGI_APPLICATION = 'lembremed_proj.wsgi.application'
@@ -80,14 +80,14 @@ WSGI_APPLICATION = 'lembremed_proj.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'lembremed',
-        'USER': 'lembremed',
-        'PASSWORD': 'g14UNIVESP',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME': 'lembremed',
+		'USER': 'lembremed',
+		'PASSWORD': 'g14UNIVESP',
+		'HOST': 'localhost',
+		'PORT': '3306',
+	}
 }
 
 
@@ -95,10 +95,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+	{"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
+	{"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
+	{"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
+	{"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
 
@@ -120,9 +120,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    ('images', os.path.join(BASE_DIR, 'static', 'img')),
-    ('styles', os.path.join(BASE_DIR, 'static', 'styles')),
-    ('scripts', os.path.join(BASE_DIR, 'static', 'scripts')),
+	('images', os.path.join(BASE_DIR, 'static', 'img')),
+	('styles', os.path.join(BASE_DIR, 'static', 'styles')),
+	('scripts', os.path.join(BASE_DIR, 'static', 'scripts')),
 ]
 
 #Quando descomentar esta linha deve-se tbm descomentar a linha depois do array em urls.py
