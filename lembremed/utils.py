@@ -1,8 +1,6 @@
 import csv
 from .models import Medicamento, Responsavel
 #from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
-from asgiref.sync import sync_to_async
 
 
 def popular_tabela_com_csv():
@@ -70,15 +68,7 @@ def rodar_tg_bot():
 	application = Application.builder().token(settings.TELEGRAM_TOKEN).build()
 
 	# Add conversation handler with the states CADASTRADOS_ESCOLHENDO, TYPING_CHOICE and TYPING_REPLY
-	conv_handler = ConversationHandler(
-		fallbacks=[
-			MessageHandler(
-				filters.ALL, mensagem_recebida
-			),
-		],
-	)
-
-	application.add_handler(conv_handler)
+	application.add_handler(MessageHandler(filters.ALL, mensagem_recebida))
 
 	# Run the bot until the user presses Ctrl-C
 	application.run_polling(allowed_updates=Update.ALL_TYPES)
@@ -91,7 +81,16 @@ async def mensagem_recebida(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 	if (len(responsaveis) == 1):
 		responsavel = responsaveis[0]
 		responsavel.telegram_id = update.effective_user.id
+		responsavel.hashcode = ''
 		await responsavel.asave()
+		await update.message.reply_text(
+			"Cadastro atualizado com sucesso!"
+		)
+
+	else:
+		await update.message.reply_text(
+			"Desculpe, não consegui encontrar o resonsavel..."
+		)
 
 
 
@@ -100,22 +99,13 @@ async def mensagem_recebida(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 
 
 
-
+"""
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	ja_entrou = context.user_data.get("ja_entrou", None)
 
 	#Verifica se o usuario jah esta cadastrado no servico
 	#responsavel = Responsavel.objects.filter(telegram_id=update.effective_user.id)
-	"""
-	if hasattr(Responsavel.objects, 'filter_async'):
-		responsavel_filter_async = getattr(Responsavel.objects, 'filter_async')
-		responsavel = await responsavel_filter_async(telegram_id=update.effective_user.id)
-	else:
-		responsavel = await sync_to_async(Responsavel.objects.filter, thread_sensitive=True)(
-			Q(telegram_id=update.effective_user.id),
-		)
-	"""
 
 	#Verifica se a pessoa eh cadastrada
 	responsaveis = [responsavel async for responsavel in Responsavel.objects.filter(telegram_id=update.effective_user.id)]
@@ -345,3 +335,4 @@ async def sair(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	)
 	return ConversationHandler.END
 
+"""

@@ -99,13 +99,16 @@ def morador_salvar(request, contexto_padrao):
 
 		#Verifica se o responsavel nao tem telegram associado
 		if (not morador.responsavel.telegram_id):
-			send_mail(subject="Cadastro de responsável - Lembremed",
-				message=render_to_string('email_templates/email_template.html', {
+			mensagem = render_to_string('email_templates/basic_email.html', {
 					'title': "Cadastro de responsável - Lembremed",
-					'message': f"Olá "+morador.responsavel.nome.split()[0] +
-						"\nClique no link abaixo para associar seu telegram e receber as novidades do LembreMed."
-						f"\n<a href=\"https://telegram.me/lembremed_bot?start={morador.responsavel.hashcode}\">https://telegram.me/lembremed_bot?start={morador.responsavel.hashcode}</a>"
-				}),
+					'message': f"Olá " + morador.responsavel.nome.split()[0] + \
+								"\nClique no link abaixo para associar seu telegram e receber as novidades do LembreMed."
+								f"\n<a href=\"https://telegram.me/lembremed_bot?text={morador.responsavel.hashcode}\">https://telegram.me/lembremed_bot?text={morador.responsavel.hashcode}</a>"
+			})
+			
+			send_mail(subject="Cadastro de responsável - Lembremed",
+				message = mensagem,
+				html_message = mensagem,
 				from_email=settings.EMAIL_HOST_USER,
 				recipient_list=[morador.responsavel.email],
 				fail_silently=True,  # Set to True to suppress exceptions
