@@ -26,15 +26,15 @@
 		</div>
 		<div class="form-group ms-3">
 			<label for="rnome">Nome:</label>
-			<input name="rnome" id="rnome" value="{{ morador.responsavel.nome }}" class="form-control" disabled="" />
+			<input name="rnome" id="rnome" value="{{ morador.responsavel.nome }}" class="form-control" />
 		</div>
 		<div class="form-group ms-3">
 			<label for="remail">E-mail:</label>
-			<input name="remail" id="remail" value="{{ morador.responsavel.email }}" class="form-control" disabled="" />
+			<input name="remail" id="remail" value="{{ morador.responsavel.email }}" class="form-control" />
 		</div>
 		<div class="form-group ms-3">
 			<label for="rtelefone">Telefone:</label>
-			<input name="rtelefone" id="rtelefone" value="{{ morador.responsavel.telefone }}" class="form-control" disabled="" />
+			<input name="rtelefone" id="rtelefone" value="{{ morador.responsavel.telefone }}" class="form-control" />
 		</div>
 	</div>
 	<button type="submit" class="btn btn-primary">Stelegraalvar</button>
@@ -57,14 +57,9 @@
 			}
 		})
 		.on('keyup', function() {
-			//Verifica se tem 11 caracteres e se adicionou algum caractere
-			if ((this.value.length == 14) && (this.tamanhoanterior < this.value.length)) {
+			//Verifica se tem o tamanho da mascara e se adicionou algum caractere
+			if ((this.value.length == cpfmask.length) && (this.tamanhoanterior < this.value.length)) {
 				//Verifica se cpf jah existe no banco de dados
-				/*myinput = $("{% csrf_token %}")
-				mydata = [];
-				mydata.push({'name': myinput.attr('name'), 'value': myinput.val()});
-				mydata.push({'name': 'rcpf', 'value': myinput.val()});*/
-
 				$.ajax({
 					url: "procurar_responsavel/",
 					method: "POST",
@@ -73,15 +68,15 @@
 						//Verifica se o resultado voltou dados do responsavel
 						if (response.indexOf('|') != -1) {
 							campos = response.split('|');
-							$('#rnome').val(campos[0]).attr('disabled', '');
-							$('#remail').val(campos[1]).attr('disabled', '');
-							$('#rtelefone').val(campos[2]).attr('disabled', '');
+							$('#rnome').val(campos[0]);
+							$('#remail').val(campos[1]);
+							$('#rtelefone').val(campos[2]);
 
 						} else {
 							//Nao encontrou o cpf do responsavel, entao habilita os campos para cadastrar
-							$('#rnome').removeAttr('disabled');
-							$('#remail').removeAttr('disabled');
-							$('#rtelefone').removeAttr('disabled');
+							$('#rnome').val('');
+							$('#remail').val('');
+							$('#rtelefone').val('');
 						}
 					}
 				});

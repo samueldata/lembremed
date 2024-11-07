@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
+from django.template.loader import render_to_string
 from .models import Morador, Responsavel, Instituicao, Profissional
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -54,33 +55,44 @@ def morador_salvar(request, contexto_padrao):
 		premail = request.POST.get('remail')
 		prtelefone = request.POST.get('rtelefone')
 
-		#Verifica se estah editando
+		#Independente de cadastro ou edicao, verifica se o cpf do responsavel existe
+		#pois outro morador ja pode ter cadastrado o responsavel previamente
+		responsavel = Responsavel.objects.filter(cpf=prcpf)
+		if (responsavel.count() == 0):
+			responsavel = Responsavel(
+				cpf=prcpf, nome=prnome, email=premail, telefone=prtelefone
+				,hashcode=requests.get("https://www.uuidgenerator.net/api/version4").text
+			)
+		else:
+			responsavel = responsavel[0]
+			responsavel.nome = prnome
+			responsavel.email = premail
+			responsavel.telefone = prtelefone
+		
+		responsavel.save()
+
+
+		#Verifica se estah editando o morador
 		if (request.POST.get('edit')):
 			morador = Morador.objects.get(cpf=pcpf)
 			morador.nome = pnome
 			morador.dt_nascimento = pdt_nascimento
 
 			#Verifica se trocou o responsavel
-			if ((morador.responsavel.cpf == None) or (morador.responsavel.cpf != prcpf)):
-				morador.responsavel = Responsavel(cpf=prcpf, nome=prnome, email=premail, telefone=prtelefone
-					,hashcode=requests.get("https://www.uuidgenerator.net/api/version4").text
-				)
-				morador.responsavel.save()
+			if (morador.responsavel.cpf != responsavel.cpf):
+				morador.responsavel = responsavel
 
 		else:
 			morador = Morador(
-				cpf=pcpf, nome=pnome, dt_nascimento=pdt_nascimento, responsavel=Responsavel(
-					cpf=prcpf, nome=prnome, email=premail, telefone=prtelefone
-					,hashcode=requests.get("https://www.uuidgenerator.net/api/version4").text
-				)
+				cpf=pcpf, nome=pnome, dt_nascimento=pdt_nascimento, responsavel=responsavel
 			)
-			morador.responsavel.save()
+			morador.save()
 
-		#Verifica se eh profissional ou instituicao cadastrando
+		#Verifica se eh profissional ou instituicao que estah cadastrando o morador
 		if (isinstance(contexto_padrao['usuario'], Instituicao)):
 			morador.instituicao = contexto_padrao['usuario']
 
-		elif(isinstance(contexto_padrao['usuario'], Profissional)):
+		elif (isinstance(contexto_padrao['usuario'], Profissional)):
 			morador.instituicao = contexto_padrao['usuario'].instituicao
 
 		morador.save()
@@ -88,9 +100,12 @@ def morador_salvar(request, contexto_padrao):
 		#Verifica se o responsavel nao tem telegram associado
 		if (not morador.responsavel.telegram_id):
 			send_mail(subject="Cadastro de responsável - Lembremed",
-				message=f"Olá "+morador.responsavel.nome.split()[0] +
-						"\nClique neste link para associar seu telegram e receber as novidades do LembreMed."
-						f"\n<a href=\"https://telegram.me/lembremed_bot?start={morador.responsavel.hashcode}\">https://telegram.me/lembremed_bot?start={morador.responsavel.hashcode}</a>",
+				message=render_to_string('email_templates/email_template.html', {
+					'title': "Cadastro de responsável - Lembremed",
+					'message': f"Olá "+morador.responsavel.nome.split()[0] +
+						"\nClique no link abaixo para associar seu telegram e receber as novidades do LembreMed."
+						f"\n<a href=\"https://telegram.me/lembremed_bot?start={morador.responsavel.hashcode}\">https://telegram.me/lembremed_bot?start={morador.responsavel.hashcode}</a>"
+				}),
 				from_email=settings.EMAIL_HOST_USER,
 				recipient_list=[morador.responsavel.email],
 				fail_silently=True,  # Set to True to suppress exceptions
@@ -121,6 +136,7 @@ def morador_procurar_responsavel(request, contexto_padrao):
 
 		responsavel = Responsavel.objects.filter(cpf=prcpf)
 		if (responsavel.count() == 1):
+			responsavel = responsavel[0]
 			return HttpResponse(responsavel.nome+'|'+responsavel.email+'|'+responsavel.telefone)
 		else:
 			return HttpResponse("0")
