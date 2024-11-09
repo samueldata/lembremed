@@ -1,6 +1,6 @@
 from functools import wraps
 from lembremed.models import Profissional, Instituicao, Morador, Medicamento, Estoque
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 
 def adiciona_contexto(func):
 	@wraps(func)
@@ -26,8 +26,12 @@ def adiciona_contexto(func):
 					contexto_padrao = {'usuario': usuario}
 
 			#Verifica se tem medicamento a vencer ou a faltar
-			contexto_padrao.estoque_acabando = Estoque.objects.filter(estimativa_duracao__lte=7)
-			contexto_padrao.estoque_vencendo = Estoque.objects.filter(validade__lte=datetime.date.today() + timedelta(days=7))
+			contexto_padrao['estoque_acabando'] = []
+			estoque = Estoque.objects.all()
+			for item in estoque:
+				if (item.estimativa_duracao() <= 7):
+					contexto_padrao['estoque_acabando'].append(item)
+			contexto_padrao['estoque_vencendo'] = Estoque.objects.filter(validade__lte=date.today() + timedelta(days=7))
 
 
 

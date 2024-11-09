@@ -101,6 +101,7 @@ def medicamento_salvar(request, pcpf):
 		pcodigo_medicamento = request.POST.get('codigo_medicamento')
 		papresentacao = Apresentacao.objects.get(codigo=request.POST.get('apresentacao'))
 		pconcentracao = request.POST.get('concentracao')
+		pvalidade = request.POST.get('validade')
 		pprescricao = request.POST.get('prescricao')
 		pprescricao = pprescricao if float(pprescricao) > 0 else 1
 		pfrequencia = request.POST.get('frequencia')
@@ -114,6 +115,7 @@ def medicamento_salvar(request, pcpf):
 			estoque.medicamento = Medicamento.objects.get(codigo=pcodigo_medicamento)
 			estoque.apresentacao = papresentacao
 			estoque.concentracao = pconcentracao
+			estoque.validade = pvalidade
 			estoque.prescricao = pprescricao
 			estoque.frequencia = pfrequencia
 			estoque.horarios = phorarios
@@ -134,6 +136,7 @@ def medicamento_salvar(request, pcpf):
 				medicamento = Medicamento.objects.get(codigo=pcodigo_medicamento),
 				apresentacao = papresentacao,
 				concentracao = pconcentracao,
+				validade = pvalidade,
 				prescricao = pprescricao,
 				frequencia = pfrequencia,
 				horarios = phorarios,
