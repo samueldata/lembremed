@@ -22,7 +22,7 @@
 
 # LembreMEd
 
-Calculadora web de duração de medicamentos voltada para Instituições de Longa Permanência para Idosos (ILPIs).
+Calculadora web de duração de medicamentos voltada para Instituições de Longa Permanência para Idosos (ILPIs);
 
 
 ## Índice
