@@ -4,6 +4,8 @@
 	<title>{{ title }}</title>
 </head>
 <body>
+	{% autoescape off %}
 	{{ message }}
+	{% endautoescape %}
 </body>
 </html>
