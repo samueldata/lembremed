@@ -18,11 +18,11 @@
 							<p>Medicamento: <span><strong>{{ estoque.medicamento.principio }}</strong> {{ estoque.apresentacao.unidade_prescricao }}</span></p>
 							<p>Duração do estoque: <span><strong>{{ estoque.estimativa_duracao|floatformat:0 }}</strong> dia(s)</span></p>
 						</div>
-						<div class="instituicao-actions">
+						<!-- div class="instituicao-actions">
 							<button class="btn btn-primary" 
-							onclick="carregar_pagina_popup('/medicamento/{{ estoque.morador.cpf }}/editar/{{ estoque.codigo }}', 'GET', {}, 'Alterar {{ estoque.medicamento.principio }}'); setTimeout(function() { $('#form_estoque').attr('action', '/medicamento/{{ estoque.morador.cpf }}/salvar/')}, 450) ">
+							onclick="carregar_pagina_popup('/medicamento/{{ estoque.morador.cpf }}/editar/{{ estoque.codigo }}', 'GET', {}, 'Alterar {{ estoque.medicamento.principio }}'); setTimeout(function() { $('#form_estoque').attr('action', '/medicamento/{{ estoque.morador.cpf }}/salvar/')}, 950) ">
 							Editar</button>
-						</div>
+						</div -->
 					</div>
 				{% endfor %}
 			</div>
