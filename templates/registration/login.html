@@ -6,7 +6,6 @@
   <div class="popUp-failLogin">
     <p>Your username and password didn't match. Please try again.</p>
   </div>
-    
   {% endif %}
 
   {% if next %}
@@ -19,30 +18,85 @@
   {% endif %}
   
   <div class="login">
-    <form method="post"  class="formLogin" action="{% url 'login' %}">
+    <form method="post" class="formLogin" action="{% url 'login' %}">
       {% csrf_token %}
         <h1>Login</h1>
         <p>Digite os seus dados de acesso no campo abaixo.</p>
-        <table>
-          <tr>
-            <td>{{ form.username.label_tag }}</td>
-          </tr>
-          <tr>
-            <td>{{ form.username }}</td>
-          </tr>
-          <tr>
-            <td>{{ form.password.label_tag }}</td>
-          </tr>
-          <tr>
-            <td>{{ form.password }}</td>
-          </tr>
-        </table>
-        {# Assumes you set up the password_reset view in your URLconf #}
+        
+        <!-- Campo select obrigatório -->
+        <label for="user_type">Selecione o tipo de usuário:</label>
+        <select id="user_type" name="user_type" required onchange="applyMaskAndShowFields()">
+          <option value="" disabled selected>Selecione...</option>
+          <option value="administrador">Administrador</option>
+          <option value="instituicao">Instituição</option>
+          <option value="profissional">Profissional</option>
+        </select>
+
+        <!-- Ocultar inicialmente os campos de usuário e senha -->
+        <div id="loginFields" style="display:none;">
+          <table>
+            <tr>
+              <td>{{ form.username.label_tag }}</td>
+            </tr>
+            <tr>
+              <td><input type="text" id="username" name="username" value="{{ form.username.value }}" required></td>
+            </tr>
+            <tr>
+              <td>{{ form.password.label_tag }}</td>
+            </tr>
+            <tr>
+              <td>{{ form.password }}</td>
+            </tr>
+          </table>
+        </div>
+
         <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
         <input type="submit" value="Acessar" class="btn" />
     </form>
-   
   </div>
-  
+
+  <!-- Script para aplicar máscaras e exibir os campos -->
+  <script>
+    function applyMaskAndShowFields() {
+      var userType = document.getElementById('user_type').value;
+      var usernameField = document.getElementById('username');
+      var loginFields = document.getElementById('loginFields');
+      
+      // Exibe os campos de login
+      loginFields.style.display = 'block';
+
+      // Limpa o valor do campo ao trocar a seleção
+      usernameField.value = '';
+
+      // Remove qualquer máscara existente
+      usernameField.value = usernameField.value.replace(/\D/g, '');
+
+      if (userType === 'instituicao') {
+        // Aplica máscara de CNPJ (xx.xxx.xxx/xxxx-xx)
+        usernameField.placeholder = 'Digite o CNPJ (xx.xxx.xxx/xxxx-xx)';
+        $(usernameField).mask('00.000.000/0000-00');
+      } else if (userType === 'profissional') {
+        // Aplica máscara de CPF (xxx.xxx.xxx-xx)
+        usernameField.placeholder = 'Digite o CPF (xxx.xxx.xxx-xx)';
+        $(usernameField).mask('000.000.000-00');
+      } else {
+        // Remove a máscara para Administrador
+        usernameField.placeholder = 'Digite seu login';
+        $(usernameField).unmask();
+      }
+    }
+
+    // Não exibir os campos até o tipo de usuário ser selecionado
+    window.onload = function() {
+      var userType = document.getElementById('user_type').value;
+      if (userType === '') {
+        document.getElementById('loginFields').style.display = 'none';
+      }
+    };
+  </script>
+
+  <!-- Importar jQuery e jQuery Mask Plugin -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 {% endblock %}

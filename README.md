@@ -1,8 +1,12 @@
 <h1 align="center"> Grupo 014 - UNIVESP Projeto Integrador :) </h1>
 
 <p align="center">
-<img loading="lazy" src="https://img.shields.io/badge/Site-Em_Desenvolvimento-green"/>
+  <img src="https://img.shields.io/badge/PI-concluído_com_sucesso-green" alt="PI concluído com sucesso"/>
+  <br>
+  <img src="https://img.shields.io/badge/PII-Em_Desenvolvimento-blue" alt="PII em desenvolvimento"/>
 </p>
+
+
 
 <p align="center">
 <img loading="lazy" src=https://img.shields.io/badge/Codes-yellow>
@@ -25,8 +29,9 @@ Calculadora web de duração de medicamentos voltada para Instituições de Long
 
 1. [Descrição do Projeto](#descrição-do-projeto)
 2. [Funcionalidades e Demonstração da Aplicação](#funcionalidades-e-demonstração-da-aplicação)
-3. [Tecnologias Utilizadas](#tecnologias-utilizadas)
-4. [Pessoas Contribuidoras](#pessoas-contribuidoras)
+3. [Novas funcionalidades](#novas-funcionalidades)
+4. [Tecnologias Utilizadas](#tecnologias-utilizadas)
+5. [Pessoas Contribuidoras](#pessoas-contribuidoras)
 
 ## Descrição do Projeto
 
@@ -100,6 +105,13 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
   <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/432cea78-f1e3-47d0-af71-413c13ac207d" width="516" height="200" ></a><br><sub> Tela Cadastro e Administração de Medicamentos por morador</sub>
 </div>
 
+## Novas funcionalidades
+
+<p align="center">
+
+  - API de notificação
+  - Melhorar responsividade  
+  - Tela nova de login 
 
 ## Tecnologias Utilizadas
 

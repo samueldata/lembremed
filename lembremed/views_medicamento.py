@@ -11,6 +11,7 @@ from decimal import Decimal
 import requests
 from django.conf import settings
 
+#teste amanda
 
 def verificar_apresentacoes():
 	qtd_apresentacoes = Apresentacao.objects.count()
