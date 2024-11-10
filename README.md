@@ -111,7 +111,16 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
 
   - API de notificação
   - Melhorar responsividade  
-  - Tela nova de login 
+  - Tela nova de login
+
+ <p align="center">
+  <a href="https://github.com/britocps"><img src="https://github.com/user-attachments/assets/b4ab253a-5907-4e6a-a4e0-0ab1b641ed9b" width="516" height="200" ></a><br><sub> Notificação de estoque baixo E-mail</sub>
+</div>
+
+  <p align="center">
+  <a href="https://github.com/britocps"><img src="https://github.com/user-attachments/assets/5e4c36e9-9b4e-4481-89b0-2d4a92c3b46f" width="516" height="200" ></a><br><sub> Tela nova de login</sub>
+</div>
+
 
 ## Tecnologias Utilizadas
 
