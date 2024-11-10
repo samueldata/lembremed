@@ -6,5 +6,5 @@ __pycache__/
 *.sqlite3
 static_collected/
 lembremed/migrations/00*
-
+.vscode/
 TODO.md
