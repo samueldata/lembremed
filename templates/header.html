@@ -22,7 +22,7 @@
 				{% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
 				{% if estoque_acabando or estoque_vencendo %}
 				<li>
-					<a href="{% url 'index' %}">!!!</a>
+					<a href="{% url 'notificacao_listar' %}"><img style="width: 1em;" src="/static/images/notification.png"></a>
 				</li>
 				{% endif %}
 				{% endif %}

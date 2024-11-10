@@ -1,9 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from lembremed.models import Estoque, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao
 from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
 from datetime import datetime
+from django.core.mail import send_mail
 import re
 from decimal import Decimal
 import requests
@@ -102,9 +104,10 @@ def medicamento_salvar(request, pcpf):
 		papresentacao = Apresentacao.objects.get(codigo=request.POST.get('apresentacao'))
 		pconcentracao = request.POST.get('concentracao')
 		pvalidade = request.POST.get('validade')
-		pprescricao = request.POST.get('prescricao')
-		pprescricao = pprescricao if float(pprescricao) > 0 else 1
-		pfrequencia = request.POST.get('frequencia')
+		pprescricao = Decimal(request.POST.get('prescricao'))
+		pprescricao = pprescricao if pprescricao > 0 else 1
+		pfrequencia = Decimal(request.POST.get('frequencia'))
+		pfrequencia = pfrequencia if pfrequencia > 0 else 1
 		phorarios = request.POST.get('horarios')
 		pqtd_disponivel = request.POST.get('qtd_disponivel')
 		pqtd_alterar = request.POST.get('qtd_alterar')
@@ -129,6 +132,36 @@ def medicamento_salvar(request, pcpf):
 				else:
 					estoque.qtd_disponivel -= Decimal(pqtd_alterar)
 			estoque.save()
+
+			if (estoque.estimativa_duracao() <= 7):
+				#Verifica se o responsavel tem telegram cadastrado
+				if (estoque.morador.responsavel.telegram_id):
+					url = f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage"
+					dados_post = {
+						'chat_id': estoque.morador.responsavel.telegram_id,
+						'text': f"Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque\nVerifique a necessidade de uma nova aquisição"
+					}
+
+					x = requests.post(url, json = dados_post)
+
+					#requests.get(f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage?chat_id={estoque.morador.responsavel.telegram_id}&text=Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque")
+				if (estoque.morador.responsavel.email):
+					
+					mensagem = render_to_string('email_templates/basic_email.html', {
+							'title': "Medicamento acabando - Lembremed",
+							'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}." 
+										f"\n<br />O medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} foi recém administrado agora tem 7 dias ou menos de estoque disponível."
+										f"\n<br />Verifique a necessidade de uma nova aquisição."
+					})
+					
+					send_mail(subject="Medicamento acabando - Lembremed",
+						message = mensagem,
+						html_message = mensagem,
+						from_email=settings.EMAIL_HOST_USER,
+						recipient_list=[estoque.morador.responsavel.email],
+						fail_silently=True,  # Set to True to suppress exceptions
+					)
+
 
 		else:
 			Estoque.objects.create(
@@ -184,9 +217,35 @@ def medicamento_administrar(request, pcpf, pcodigo):
 			estoque = estoque,
 			dthr_administracao = datetime.now(),
 		)
-		duracao = ((estoque.qtd_disponivel * estoque.apresentacao.razao_prescricao_comercial) / (estoque.frequencia * estoque.prescricao)) if estoque.qtd_disponivel and estoque.frequencia and estoque.apresentacao.razao_prescricao_comercial and estoque.prescricao else 0
-		if ((duracao <= 7) and (estoque.morador.responsavel.telegram_id)):
-			requests.get(f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage?chat_id={estoque.morador.responsavel.telegram_id}&text=Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque")
+		
+		if (estoque.estimativa_duracao() <= 7):
+			#Verifica se o responsavel tem telegram cadastrado
+			if (estoque.morador.responsavel.telegram_id):
+				url = f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage"
+				dados_post = {
+					'chat_id': estoque.morador.responsavel.telegram_id,
+					'text': f"Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque\nVerifique a necessidade de uma nova aquisição"
+				}
+
+				x = requests.post(url, json = dados_post)
+
+				#requests.get(f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage?chat_id={estoque.morador.responsavel.telegram_id}&text=Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque")
+			if (estoque.morador.responsavel.email):
+				
+				mensagem = render_to_string('email_templates/basic_email.html', {
+						'title': "Medicamento acabando - Lembremed",
+						'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}." 
+									f"\n<br />O medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} foi recém administrado agora tem 7 dias ou menos de estoque disponível."
+									f"\n<br />Verifique a necessidade de uma nova aquisição."
+				})
+				
+				send_mail(subject="Medicamento acabando - Lembremed",
+					message = mensagem,
+					html_message = mensagem,
+					from_email=settings.EMAIL_HOST_USER,
+					recipient_list=[estoque.morador.responsavel.email],
+					fail_silently=True,  # Set to True to suppress exceptions
+				)
 
 		return HttpResponse("Administração cadastrada com sucesso!")
 

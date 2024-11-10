@@ -20,18 +20,22 @@ def adiciona_contexto(func):
 			usuario = Profissional.objects.filter(usuario=request.user).first()
 			if (usuario):
 				contexto_padrao = {'usuario': usuario}
+				contexto_padrao['instituicao'] = usuario.instituicao
 			else:
 				usuario = Instituicao.objects.filter(usuario=request.user).first()
 				if (usuario):
 					contexto_padrao = {'usuario': usuario}
+					contexto_padrao['instituicao'] = usuario
 
-			#Verifica se tem medicamento a vencer ou a faltar
-			contexto_padrao['estoque_acabando'] = []
-			estoque = Estoque.objects.all()
-			for item in estoque:
-				if (item.estimativa_duracao() <= 7):
-					contexto_padrao['estoque_acabando'].append(item)
-			contexto_padrao['estoque_vencendo'] = Estoque.objects.filter(validade__lte=date.today() + timedelta(days=7))
+			#Verifica se eh uma instituicao ou profissional
+			if (contexto_padrao.get('instituicao', None)):
+				#Verifica se tem medicamento a vencer ou a faltar
+				contexto_padrao['estoque_acabando'] = []
+				estoque = Estoque.objects.filter(morador__instituicao=contexto_padrao['instituicao'])
+				for item in estoque:
+					if (item.estimativa_duracao() <= 7):
+						contexto_padrao['estoque_acabando'].append(item)
+				contexto_padrao['estoque_vencendo'] = Estoque.objects.filter(validade__lte=date.today() + timedelta(days=7))
 
 
 

@@ -150,3 +150,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 TELEGRAM_TOKEN = '8162836094:AAHQunZn3Vibglmi4OI8nCFBbsaviwBTXis'
+
+
+#https://stackoverflow.com/questions/70910699/start-telegram-bot-on-django-project
+#$ DJANGO_SETTINGS_MODULE=yourapp.settings telegram_bot.py

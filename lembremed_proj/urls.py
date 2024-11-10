@@ -24,6 +24,8 @@ from django.conf.urls.static import static
 
 from django.shortcuts import render
 
+
+
 #Pagina principal do site
 @adiciona_contexto
 def index_principal(request, contexto_padrao):
@@ -34,11 +36,11 @@ urlpatterns = [
 	#Desse jeito não carrega o contexto corretamente, para trazer o nome do usuario
 	#path('', adiciona_contexto(TemplateView.as_view(template_name='index.html')), name='index'),
 	re_path(r'^$', index_principal, name='index'),
-	path('', adiciona_contexto(TemplateView.as_view(template_name='index.html')), name='index'),
 	path('admin/', admin.site.urls),
 	path('accounts/', include('django.contrib.auth.urls')),
 	path('morador/', include('lembremed.urls_morador')),
 	path('profissional/', include('lembremed.urls_profissional')),
 	path('medicamento/', include('lembremed.urls_medicamento')),
 	path('instituicao/', include('lembremed.urls_instituicao')),
+	path('notificacao/', include('lembremed.urls_notificacao')),
 ] #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
