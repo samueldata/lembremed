@@ -89,7 +89,7 @@ async def mensagem_recebida(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 
 	else:
 		await update.message.reply_text(
-			"Desculpe, não consegui encontrar o resonsavel..."
+			"Desculpe, não consegui encontrar o responsável..."
 		)
 
 
