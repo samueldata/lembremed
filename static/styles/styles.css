@@ -55,10 +55,13 @@ nav {
 
 .login {
     display: flex;
-    align-content: center;
+    align-content: space-around;
     justify-content: center;
     width: 100%;
     background-color: #298377;
+    min-height: 85%;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 .formLogin {
@@ -69,7 +72,8 @@ nav {
     padding: 20px;
     margin-block: 5%;
     box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.4);
-    gap: 5px
+    gap: 5px;
+    max-block-size: max-content;
 }
 
 .formLogin h1 {
@@ -268,14 +272,20 @@ nav a:focus {
     background-color: #298377;
     padding-top: 100px;
     padding-bottom: 210px;
+    padding: 20px;
     display: flex;
+    align-items: center;
     justify-content: center;
+    flex-direction: column; /* Para alinhar o conteúdo na direção vertical */
+    min-height: 100vh; /* Garante que a altura mínima seja 100% da altura da tela */
 }
+
 
 .feature-title {
     width: 100%;
     text-align: center;
     margin-bottom: 1em;
+    margin-top: 15px;
 }
 
 .feature img {
@@ -468,6 +478,7 @@ footer p {
 .instituicoes-container,
 .medicamentos-container {
     max-width: 1200px;
+    min-width: 95%;
     margin: 0 auto;
     margin-inline: 10px;
     padding: 20px;

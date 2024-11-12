@@ -60,7 +60,7 @@
 													
 												<button class="btn btn-primary" 
 													onclick="if (confirm('Confirma a administração de {{ estoque_associado.estoque.medicamento.principio }}?')) { carregar_pagina_popuploading('administrar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Administrando {{ estoque_associado.estoque.medicamento.principio }}...'); }">
-												<button>Medicar</button>
+													Medicar</button>
 											{% endif %}
 										</div>
 									</td>
@@ -157,7 +157,7 @@
 
 		{% comment %} Fim versão Mobile de exibição {% endcomment %}
 		{% else %}
-			<p style="text-align: center;">Não temos nenhum medicamento cadastrado para o morador :(</p>
+			<p style="text-align: center;">Não temos nenhum medicamento cadastrado para o hóspede :(</p>
 		{% endif %}
 		<button class="btn-cadastrar"
 			onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar medicamento');">Cadastrar Novo
