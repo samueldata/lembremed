@@ -5,7 +5,7 @@
 {% block title %}Lembre-MEd - Moradores{% endblock %}
 
 {% block content %}
-<main class="main-content" >
+<main class="main-content">
 	<section class="moradores-container">
 		<h2 class="section-title">MORADORES</h2>
 		<div class="moradores-filter">
@@ -14,7 +14,6 @@
 				style="width: 100%; padding: 10px; margin-bottom: 20px;">
 		</div>
 		{% if lista_moradores %}
-
 			<div class="moradores-cards">
 				{% for morador in lista_moradores %}
 					<div class="morador-card">
@@ -22,21 +21,20 @@
 							<p>Nome: <strong>{{ morador.nome }}</strong></p>
 							<p>CPF: {{ morador.cpf }}</p>
 							<p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
-					</div>
-					<div class="morador-actions">
-						<button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Morador</button>
-						<button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
-					</div>
-
-					{% if perms.lembremed.pode_medicar_morador %}
-						<div class="morador-actions">
-							<a href="/medicamento/{{ morador.cpf }}">Medicamentos</a>
 						</div>
-					{% endif %}
-				</div>
+						<div class="morador-actions">
+							<button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Morador</button>
+							<button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
+						</div>
+
+						{% if perms.lembremed.pode_medicar_morador %}
+							<div class="morador-actions">
+								<a href="/medicamento/{{ morador.cpf }}">Medicamentos</a>
+							</div>
+						{% endif %}
+					</div>
 				{% endfor %}
 			</div>
-		
 		{% else %}
 			<p style="text-align: center;">Não temos nenhum morador cadastrado no nosso sistema ainda :(</p>
 		{% endif %}
@@ -44,6 +42,7 @@
 			onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar morador');">Cadastrar Novo Morador</button>
 	</section>
 </main>
+
 <script src="{% static 'scripts/filter.js' %}"></script>
 <script>
 	$(document).ready(function() {
