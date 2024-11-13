@@ -6,19 +6,18 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import permission_required
 from lembremed.decorators import adiciona_contexto
 
-#teste
-
 #Pagina principal dos instituicoes
 #Lista todos os instituicoes
 @adiciona_contexto
-@permission_required('lembremed.pode_gerenciar_instituicao')
-def instituicao_listar(request, contexto_padrao):
-	instituicoes = Instituicao.objects.all()
-	context = {'lista_instituicoes': instituicoes}
+def notificacao_listar(request, contexto_padrao):
+	#Variaveis que jah estao no contexto padrao
+	#contexto_padrao['estoque_acabando']
+	#contexto_padrao['estoque_vencendo']
 
-	return render(request, 'instituicao/index.html', {**context, **contexto_padrao})
+	return render(request, 'notificacao/index.html', contexto_padrao)
 
 
+"""
 @permission_required('lembremed.pode_gerenciar_instituicao')
 def instituicao_editar(request, pcnpj):
 	instituicao = Instituicao.objects.filter(cnpj=pcnpj)[0]
@@ -81,3 +80,4 @@ def instituicao_excluir(request, pcnpj):
 		return HttpResponse("excluido com sucesso")
 	else:
 		return HttpResponse("Erro ao localizar cnpj")
+"""

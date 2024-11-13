@@ -1,5 +1,7 @@
 import csv
-from .models import Medicamento
+from .models import Medicamento, Responsavel
+#from django.contrib.auth import get_user_model
+
 
 def popular_tabela_com_csv():
 	#https://stackoverflow.com/questions/17912307/u-ufeff-in-python-string
