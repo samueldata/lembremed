@@ -63,6 +63,7 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
   - Nome completo
   - Data de nascimento
   - CPF
+  - Informações de contato de referência
 
 4. Cadastro de Medicamentos por Morador
 - Descrição: Cada morador pode ter seus medicamentos registrados individualmente.
