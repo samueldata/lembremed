@@ -1,10 +1,6 @@
-body{
-    background-color: #D8EBDE;
-}
-body.white-bg{
+.container{
     background-color: #fff;
 }
-
 .text-custom{
     color: #028B2F;
 }
@@ -23,10 +19,4 @@ li{
     width: 45px;
     height: 70px;
     margin-right: 5px;
-}
-main{
-    background-color: white;
-}
-footer{
-    background-color: #fff;
 }
