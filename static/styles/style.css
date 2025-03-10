@@ -9,6 +9,13 @@
     background-color: #FAF9F6;
 }
 
+.btn-custom{
+    background-color: #028B2F;
+    margin-right: 10px;
+}
+.btn-custom:hover{
+    background-color: #05a83b;
+}
 /* style.css*/
 li{
     margin-left: 20px;
@@ -26,5 +33,17 @@ li{
     width: 45px;
     height: 70px;
     margin-right: 5px;
+}
+
+section{
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.hero{
+    border-radius: 40px;
+    border: 1px solid #028B2F;
+    width: 500px;
+    height: 333px;
 }
 
