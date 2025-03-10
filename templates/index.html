@@ -4,48 +4,83 @@
 
 {% block content %}
 
-  <main class="bg-custom-1">
-    <section class="container">
-    
-        <div class="row">
-          <div class="col">
-            <div>
-              <h1>Segurança e Praticidade</h1>
-              <h3>na administração de remédios.</h3>
-            </div>
-            <div class="d-grid d-md-block">
-              <button class="btn btn-custom" type="button">Button</button>
-              <button class="btn btn-custom" type="button">Button</button>
+  <main>
+    <section class="home padding bg-custom-1">
+      <div class="container">
+        <div class="row align-items-center justify-content-center g-0 p-5">
+          <!-- Texto -->
+          <div class="col-md-6 text-md-start text-center">
+            <h1 class="fw-bold text-success">Segurança e praticidade</h1>
+            <h3 class="text-muted">na administração de remédios.</h3>
+            <div class="button mt-3">
+              <button class="btn btn-success me-2" type="button">Login</button>
+              <button class="btn btn-outline-success" type="button">Saiba +</button>
             </div>
           </div>
-          <div class="col">
-            <img src="{% static 'images/imagem-hero.jpg' %}" alt="Profissional cuidando da hospede" class="hero">
+          <!-- Imagem -->
+          <div class="col-md-6 d-flex justify-content-center">
+            <img src="{% static 'images/imagem-hero.jpg' %}" alt="Profissional cuidando da hóspede" class="hero img-fluid rounded">
           </div>
         </div>
-
-     
-
-
-
+      </div>
     </section>
 
-    <div class="bg-custom-2">
-      <section class="container">
-        <div class="circulo">
-        </div>
-        <div class="feature-title">
-          <h2>CONTROLE EFICIENTE DE MEDICAMENTOS</h2>
-        </div>
-        <div class="feature">
-          <img src="{% static 'images/pills_1685785.png' %}" alt="Cadastro de Medicamentos">
-          <p>Cadastro de Medicamentos por Morador: Registre os medicamentos para cada morador ou paciente de forma abrangente. Inclua informações como princípio ativo, apresentação, dosagem prescrita, quantidade disponível, frequência e horários de administração.</p>
-        </div>
-        <div class="feature">
-          <img src="{% static 'images/wall-clock_833602.png' %}" alt="Controle de Estoque">
-          <p>Controle de Estoque Dinâmico: Mantenha um registro atualizado do estoque de medicamentos por morador e por medicamento. Nosso sistema calcula o tempo restante de estoque para cada medicamento e paciente, auxiliando no controle e gestão eficientes dos recursos disponíveis.</p>
-        </div>
-      </section>
-    </div>
+    <section class="Saiba+ padding bg-custom-2">
+      <div class="container ">
+        <div class="row g-4 align-items-center justify-content-center"> <!-- Linha para os dois primeiros cards -->
+        
+          <!-- Primeiro card -->
+          <div class="col-md-4 mb-2 me-4"> <!-- Coluna que ocupa metade da linha em telas médias e maiores -->
+            <div class="card custom-card" style="width: 100%;">
+              <div class="card-body">
+                <h2 class="card-title text-custom">Cadastro</h2>
+                <h4 class="card-subtitle mb-2 text-custom">de Medicamentos por Morador</h4>
+                <p class="card-text">Registre os medicamentos para cada morador ou paciente de forma abrangente. Inclua informações como princípio ativo, apresentação, dosagem prescrita, quantidade disponível, frequência e horários de administração.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Segundo card -->
+          <div class="col-md-4 mb-2"> <!-- Coluna que ocupa metade da linha em telas médias e maiores -->
+            <div class="card custom-card" style="width: 100%;">
+              <div class="card-body">
+                <h2 class="card-title text-custom">Cadastro</h2>
+                <h4 class="card-subtitle mb-2 text-custom">de Estoque Dinâmico</h4>
+                <p class="card-text">Mantenha um registro atualizado do estoque de medicamentos por morador e por medicamento. Nosso sistema calcula o tempo restante de estoque para cada medicamento e paciente, auxiliando no controle e gestão eficientes dos recursos disponíveis.</p>
+              </div>
+            </div>
+          </div>
+      
+        </div> <!-- Fim da primeira linha -->
+        
+        <div class="row mt-4 align-items-center justify-content-center"> <!-- Linha para os dois próximos cards -->
+        
+          <!-- Terceiro card -->
+          <div class="col-md-4 mb-2 me-4"> <!-- Coluna que ocupa metade da linha em telas médias e maiores -->
+            <div class="card custom-card" style="width: 100%;">
+              <div class="card-body">
+                <h2 class="card-title text-custom">Cadastro</h2>
+                <h4 class="card-subtitle mb-2 text-custom">de Estoque Dinâmico</h4>
+                <p class="card-text">Mantenha um registro atualizado do estoque de medicamentos por morador e por medicamento. Nosso sistema calcula o tempo restante de estoque para cada medicamento e paciente, auxiliando no controle e gestão eficientes dos recursos disponíveis.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quarto card -->
+          <div class="col-md-4 mb-2"> <!-- Coluna que ocupa metade da linha em telas médias e maiores -->
+            <div class="card custom-card" style="width: 100%;">
+              <div class="card-body">
+                <h2 class="card-title text-custom">Cadastro</h2>
+                <h4 class="card-subtitle mb-2 text-custom">de Estoque Dinâmico</h4>
+                <p class="card-text">Mantenha um registro atualizado do estoque de medicamentos por morador e por medicamento. Nosso sistema calcula o tempo restante de estoque para cada medicamento e paciente, auxiliando no controle e gestão eficientes dos recursos disponíveis.</p>
+              </div>
+            </div>
+          </div>
+      
+        </div> <!-- Fim da segunda linha -->
+      </div>
+      
+    </section>
 
   </main>
 
