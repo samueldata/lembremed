@@ -1,0 +1,32 @@
+body{
+    background-color: #D8EBDE;
+}
+body.white-bg{
+    background-color: #fff;
+}
+
+.text-custom{
+    color: #028B2F;
+}
+li{
+    margin-left: 20px;
+}
+.nav-link{
+    font-weight: 400;
+}
+
+.nav-link:hover{
+ font-weight: 600;
+}
+    
+.logo{
+    width: 45px;
+    height: 70px;
+    margin-right: 5px;
+}
+main{
+    background-color: white;
+}
+footer{
+    background-color: #fff;
+}
