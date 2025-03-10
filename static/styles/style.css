@@ -1,9 +1,15 @@
-.container{
-    background-color: #fff;
-}
+/* customizações do Bootstrap*/
 .text-custom{
     color: #028B2F;
 }
+.bg-custom-1{
+    background-color: #D8EBDE;
+}
+.bg-custom-2{
+    background-color: #FAF9F6;
+}
+
+/* style.css*/
 li{
     margin-left: 20px;
 }
@@ -13,6 +19,7 @@ li{
 
 .nav-link:hover{
  font-weight: 600;
+ color: #028B2F;
 }
     
 .logo{
@@ -20,3 +27,4 @@ li{
     height: 70px;
     margin-right: 5px;
 }
+
