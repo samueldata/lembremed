@@ -12,8 +12,8 @@
           <div class="title">
             <h1 class="fw-bold text-success">Segurança e praticidade</h1>
             <h3 class="text-muted">na administração de remédios.</h3>
-            <button class="btn btn-success me-2 mb-2" type="button">Login</button>
-            <button class="btn btn-outline-success mb-2" type="button">Saiba +</button>
+            <button class="btn btn-success me-2 mb-2" data-bs-toggle="modal" data-bs-target="#janela" type="button">Login</button>
+            <button class="btn btn-outline-success mb-2" type="button" onclick="location.href='#saiba+'">Saiba +</button>
           </div>   
           <!-- Imagem -->
            <div class="picture">
@@ -24,7 +24,7 @@
       </div>
     </section>
 
-    <section class="padding bg-custom-2">
+    <section id="saiba+" class="padding bg-custom-2">
       <div class="container">
 
         <h1>Nossas soluções</h1>
@@ -74,5 +74,8 @@
     </section>
 
   </main>
+
+    <!-- Inclui o modal -->
+    {% include '_login_modal.html' %}
 
   {% endblock %}

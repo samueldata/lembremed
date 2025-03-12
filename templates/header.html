@@ -3,7 +3,7 @@
     <nav class=" container navbar navbar-expand-lg">
         <div class="container">
           <!-- Logo e Nome -->
-          <a class="navbar-brand d-flex align-items-center" href="#">
+          <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
             <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo"> <!-- Adicione sua logo -->
             <span class="fw-bold text-custom">Lembre-MEd</span>
           </a>
@@ -23,7 +23,7 @@
 
               <!-- Link "Saiba +" -->
               <li class="nav-item">
-                <a class="nav-link text-custom" href="#">Saiba +</a>
+                <a class="nav-link text-custom" href="#saiba+">Saiba +</a>
               </li>
 
               <!-- Verifica se o usuário está autenticado -->
@@ -51,7 +51,7 @@
               {% else %}
                 <!-- Link para login se o usuário não estiver autenticado -->
                 <li class="nav-item">
-                  <a class="nav-link text-custom" href="{% url 'login' %}">Login</a>
+                  <a class="nav-link text-custom" href="#janela" data-bs-toggle="modal" data-bs-target="#janela"">Login</a>
                 </li>
               {% endif %}
 
