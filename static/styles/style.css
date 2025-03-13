@@ -30,16 +30,16 @@
     color: #FAF9F6;
 }
 
-.gradient-custom {
-    /* fallback for old browsers */
-    background: #6a11cb;
-    
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
-    
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
-    }
+.card{
+    width: 500px;
+    height: 270px;
+    margin: 50px 40px 50px 40px;
+    padding: 30px;
+    border: #028B2F solid 4px;
+    border-radius: 30px;
+    background-color: transparent
+}
+
 
 
 
@@ -57,13 +57,20 @@ section {
     display: flex;
     align-items: center;
 }
+
 h1,h2{
     color: #028B2F;
 }
 h5,p{
     color: #4f5757;
 }
-/* style.css*/
+
+
+
+
+
+
+/*Home*/
 
 li{
     margin-left: 20px;
@@ -120,27 +127,46 @@ button{
     margin: 0 50px 0 50px;
 }
 
-.card{
-    width: 500px;
-    height: 270px;
-    margin: 50px 40px 50px 40px;
-    padding: 30px;
-    border: #028B2F solid 4px;
-    border-radius: 30px;
-    background-color: transparent
-}
-
 .icon-card {
-    width: 40px;
+    width: 45px;
     height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #198754;
+    fill: #198754;
     position: absolute;
     bottom: 15px;
     right: 15px;
 }
+
+
+
+
+
+
+/*Esqueci minha senha*/
+
+.ForgotPassword{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.formForgotPassword{
+    height: 500px;
+    width: 400px;
+    border: #028B2F solid 2px;
+    border-radius: 40px;
+    padding: 100px
+
+
+}
+
+
+
+
+
 
 footer{
     padding: 20px;
