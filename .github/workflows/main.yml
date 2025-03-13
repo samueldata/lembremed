@@ -54,6 +54,7 @@ jobs:
         run: |
           mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "DROP DATABASE IF EXISTS lembremed;"
           mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE DATABASE lembremed;"
+          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "DROP USER IF EXISTS 'testuser'@'%';"
           mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE USER 'testuser'@'%' IDENTIFIED BY 'password';"
           mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'testuser'@'%';"
           mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "FLUSH PRIVILEGES;"
