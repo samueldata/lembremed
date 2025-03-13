@@ -45,7 +45,7 @@ class Profissional(models.Model):
 
 class Medicamento(models.Model):
 	codigo = models.AutoField(primary_key=True)
-	principio = models.CharField(max_length=255)
+	principio = models.CharField(max_length=1024)
 
 	def __str__(self):
 		return self.principio
