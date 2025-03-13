@@ -1,0 +1,108 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - ci-cd
+  pull_request:
+    branches:
+      - ci-cd
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: nova_senha_secreta
+          MYSQL_DATABASE: lembremed
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install -r requirements.txt
+
+      - name: Esperar pelo MySQL
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" --silent; do
+            echo "Esperando pelo MySQL..."
+            sleep 5
+          done
+
+      - name: Configurar banco de dados
+        run: |
+          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE DATABASE lembremed;"
+          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE USER 'testuser'@'%' IDENTIFIED BY 'password';"
+          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'testuser'@'%';"
+          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "FLUSH PRIVILEGES;"
+
+      - name: Definir variável de ambiente do Django
+        run: echo "DJANGO_SETTINGS_MODULE=lembremed_proj.settings" >> $GITHUB_ENV
+
+      - name: Migrar banco de dados
+        run: python manage.py migrate
+
+      - name: Rodar testes
+        run: pytest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Migrar banco de dados
+        run: python manage.py migrate
+
+      - name: Coletar arquivos estáticos
+        run: python manage.py collectstatic --noinput
+
+      - name: Deploy para o servidor
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER: ${{ secrets.SERVER }}
+          USER: ${{ secrets.USER }}
+        run: |
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
+            cd /path/to/your/project
+            git pull origin main
+            source env/bin/activate
+            pip install -r requirements.txt
+            python manage.py migrate
+            python manage.py collectstatic --noinput
+            sudo systemctl restart your-gunicorn-service
+            sudo systemctl restart your-nginx-service
+          EOF
