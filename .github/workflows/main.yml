@@ -18,7 +18,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: nova_senha_secreta
           MYSQL_DATABASE: lembremed
-          MYSQL_USER: testuser
+          MYSQL_USER: lembremed 
           MYSQL_PASSWORD: g14UNIVESP
         ports:
           - 3306:3306
@@ -54,9 +54,9 @@ jobs:
         run: |
           mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "DROP DATABASE IF EXISTS lembremed;"
           mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE DATABASE lembremed;"
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "DROP USER IF EXISTS 'testuser'@'%';"
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE USER 'testuser'@'%' IDENTIFIED BY 'password';"
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'testuser'@'%';"
+          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "DROP USER IF EXISTS 'lembremed'@'%';"
+          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE USER 'lembremed'@'%' IDENTIFIED BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'%';"
           mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "FLUSH PRIVILEGES;"
 
       - name: Definir variável de ambiente do Django
@@ -94,7 +94,7 @@ jobs:
 
       - name: Deploy para o servidor
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY || '' }}
           SERVER: ${{ secrets.SERVER }}
           USER: ${{ secrets.USER }}
         run: |
