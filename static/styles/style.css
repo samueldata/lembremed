@@ -22,11 +22,10 @@
 .btn-custom{
     background-color: #028B2F;
     margin-right: 10px;
+    color: #FAF9F6;
 }
 .btn-custom:hover{
     background-color: #05a83b;
-}
-.btn-text-color {
     color: #FAF9F6;
 }
 
@@ -138,35 +137,6 @@ button{
     bottom: 15px;
     right: 15px;
 }
-
-
-
-
-
-
-/*Esqueci minha senha*/
-
-.ForgotPassword{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.formForgotPassword{
-    height: 500px;
-    width: 400px;
-    border: #028B2F solid 2px;
-    border-radius: 40px;
-    padding: 100px
-
-
-}
-
-
-
-
-
 
 footer{
     padding: 20px;
