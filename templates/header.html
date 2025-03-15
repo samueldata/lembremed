@@ -1,160 +1,73 @@
 {% load static %}
 <header class="bg-custom-1">
-    <nav class=" container navbar navbar-expand-lg">
+    <nav class="container navbar navbar-expand-lg">
         <div class="container">
-          <!-- Logo e Nome -->
-          <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
-            <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo"> <!-- Adicione sua logo -->
-            <span class="fw-bold text-custom">Lembre-MEd</span>
-          </a>
-      
-          <!-- Botão Hamburguer (Mobile) -->
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          
-          <!-- Itens do Menu -->
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-              <!-- Home Link -->
-              <li class="nav-item">
-                <a class="nav-link text-custom" href="{% url 'index' %}">Home</a>
-              </li>
+            <!-- Logo e Nome -->
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+                <span class="fw-bold text-custom">Lembre-MEd</span>
+            </a>
 
-              <!-- Link "Saiba +" -->
-              <li class="nav-item">
-                <a class="nav-link text-custom" href="#saiba+">Saiba +</a>
-              </li>
+            <!-- Botão Hamburguer (Mobile) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-              <!-- Verifica se o usuário está autenticado -->
-              {% if user.is_authenticated %}
-                <li class="nav-item">
-                  <span class="nav-link">Olá, {{ user.username }}!</span> <!-- Exibe o nome do usuário -->
-                </li>
+            <!-- Itens do Menu -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Aproxima os itens do nome "Lembre-MEd" -->
+                <ul class="navbar-nav align-items-center me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-custom {% if request.resolver_match.url_name == 'index' %}fw-bold{% endif %}" href="{% url 'index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-custom {% if request.resolver_match.url_name == 'saiba_mais' %}fw-bold{% endif %}" href="#saiba+">Saiba +</a>
+                    </li>
 
-                <!-- Verifica permissões de gerenciamento -->
-                {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-                  <li class="nav-item">
-                    <a class="nav-link text-custom" href="{% url 'notificacao_listar' %}">
-                      <img style="width: 1em;" src="{% static 'images/notification.png' %}" alt="Notificação">
-                    </a>
-                  </li>
-                {% endif %}
-
-                <!-- Link para sair (Logout) -->
-                <li class="nav-item">
-                  <a class="nav-link text-custom" href="#" onclick="$('#logout_form')[0].submit()">SAIR</a>
-                  <form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
-                    {% csrf_token %}
-                  </form>
-                </li>
-              {% else %}
-                <!-- Link para login se o usuário não estiver autenticado -->
-                <li class="nav-item">
-                  <a class="btn btn-outline-success mb-2" href="#janela" data-bs-toggle="modal" data-bs-target="#janela">Login</a>
-                </li>
-              {% endif %}
-
-              <!-- Verifica permissões do usuário para mostrar opções adicionais -->
-              {% if perms.lembremed.pode_gerenciar_instituicao %}
-                <li class="nav-item">
-                  <a class="nav-link text-custom" href="{% url 'instituicao_listar' %}">Instituições</a>
-                </li>
-              {% endif %}
-              
-              {% if perms.lembremed.pode_gerenciar_morador %}
-                <li class="nav-item">
-                  <a class="nav-link text-custom" href="{% url 'morador_listar' %}">Moradores</a>
-                </li>
-              {% endif %}
-              
-              {% if perms.lembremed.pode_gerenciar_profissional %}
-                <li class="nav-item">
-                  <a class="nav-link text-custom" href="{% url 'profissional_listar' %}">Profissionais</a>
-                </li>
-              {% endif %}
-
-            </ul>
-          </div>
-        </div>
-      </nav>
-</header>
-
-
-
-   <!--
-    <div class="brand-container">
-        <a href="/" class="brand-container"><img src="{% static 'images/logo.png' %}" alt="Lembre-MEd Logo" /></a>
-        <h1>Lembre-MEd</h1>
-    </div>
-    
-    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-
-    <nav id="navbar">
-        <div class="nav-user">
-            {% if user.is_authenticated %}
-                Olá,
-                {% block nome_usuario %}
-                    {{ usuario.nome }}!
-                {% endblock %}
-            {% endif %}
-        </div>
-        <div class="nav-buttons">
-            <ul>
-                {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-                    {% if estoque_acabando or estoque_vencendo %}
-                        <li>
-                            <a href="{% url 'notificacao_listar' %}"><img style="width: 1em;" src="/static/images/notification.png"></a>
+                    {% if perms.lembremed.pode_gerenciar_instituicao %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'instituicao_listar' %}fw-bold{% endif %}" href="{% url 'instituicao_listar' %}">Instituições</a>
                         </li>
                     {% endif %}
-                {% endif %}
-                <li>
-                    <a href="{% url 'index' %}">HOME</a>
-                </li>
-                {% if perms.lembremed.pode_gerenciar_instituicao %}
-                    {# o super usuario tem todas as permissoes #}
-                    {# % if request.user.is_superuser % #}
-                    <li>
-                        <a href="{% url 'instituicao_listar' %}">INSTITUIÇÕES</a>
-                    </li>
-                    {% endif %}
-                {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-                    {% if not request.user.is_superuser %}
-                        <li>
-                            <a href="{% url 'morador_listar' %}">HÓSPEDES</a> </li>
-                    {% endif %}
-                {% endif %}
-                {% if perms.lembremed.pode_gerenciar_profissional %}
-                    {% if not request.user.is_superuser %}
-                        <li>
-                            <a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a>
+                    {% if perms.lembremed.pode_gerenciar_morador %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'morador_listar' %}fw-bold{% endif %}" href="{% url 'morador_listar' %}">Moradores</a>
                         </li>
                     {% endif %}
-                {% endif %}
+                    {% if perms.lembremed.pode_gerenciar_profissional %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'profissional_listar' %}fw-bold{% endif %}" href="{% url 'profissional_listar' %}">Profissionais</a>
+                        </li>
+                    {% endif %}
+                </ul>
 
-                {% if user.is_authenticated %}
-                    <li>
-                        <a href="#" onclick="$('#logout_form')[0].submit()">SAIR</a>
-                    </li>
-                    <form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
-                        {% csrf_token %}
-                    </form>
-                {% else %}
-                    <li>
-                        <a href="{% url 'login' %}">LOGIN</a>
-                    </li>
-                {% endif %}
-            </ul>
+                <!-- Mantém a parte de login na posição original -->
+                <ul class="navbar-nav align-items-center ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item d-flex align-items-center ms-3">
+                            <img src="{% static 'images/default-user.svg' %}" alt="Usuário" class="rounded-circle">
+                            <span class="nav-link">{{ user.username }}</span>
+                        </li>
+                        {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+                            <li class="nav-item">
+                                <a class="nav-link text-custom {% if request.resolver_match.url_name == 'notificacao_listar' %}fw-bold{% endif %}" href="{% url 'notificacao_listar' %}">
+                                    <img src="{% static 'images/notification.png' %}" alt="Notificação" style="width: 1em;">
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom" href="#" onclick="document.getElementById('logout_form').submit();">SAIR</a>
+                            <form id="logout_form" method="post" action="/accounts/logout/" style="display: none;">
+                                {% csrf_token %}
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-success mb-2" href="#janela" data-bs-toggle="modal" data-bs-target="#janela">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </nav>
-
-    
-    <script>
-        function toggleMenu() {
-            var navbar = document.getElementById('navbar')
-            navbar.classList.toggle('show')
-        }
-    </script>
-
-    -->
 </header>

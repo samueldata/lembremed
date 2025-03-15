@@ -82,7 +82,11 @@ li{
  font-weight: 600;
  color: #028B2F;
 }
-    
+
+.rounded-circle{
+    width: 35px; 
+    height: 35px; 
+}
 .logo{
     width: 45px;
     height: 70px;
