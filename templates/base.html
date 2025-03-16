@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="{% static 'scripts/popup.js' %}" ></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"M></script>
   	<title>{% block title %}Lembre-MEd - Controle de Medicamentos{% endblock %}</title>
 	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -13,11 +14,11 @@
 <body>
 	<!-- Modal -->
 	<div class="modal fade" id="getCodeModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="myModalLabel"> API CODE </h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content shadow-lg">
+				<div class="modal-header bg-custom-1 text-white">
+					<h2 class="modal-title" id="myModalLabel"> API CODE </h2>
+					<button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body" id="getCode" style="overflow-x: scroll;">
 					<!-- ajax success content here. -->

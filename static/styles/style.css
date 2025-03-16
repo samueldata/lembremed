@@ -1,8 +1,12 @@
 /*customização Modal de Login*/
-.form-control,.form-select:focus {
-    border-color: #028B2F !important; /* Altera a cor da borda */
-    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5) !important; /* Altera a sombra ao focar */
-    outline: none !important; /* Remove a borda padrão do navegador */
+.form-control, .form-select{
+    border-color: none !important; 
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: #028B2F !important; 
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5) !important; 
+    outline: none !important; 
 }
 
 
@@ -55,6 +59,13 @@ body, html {
 }
 section {
     height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+section.paginas {
+    height: auto !important; 
+    padding: 100px 0 100px 0;
     display: flex;
     align-items: center;
 }
@@ -149,4 +160,28 @@ footer{
       bottom: 0;
       width: 100%;
       text-align: center;
+}
+
+/*Instituição*/
+
+.form-group{
+    position: relative;
+}
+.instituicao{
+    background-color: #FAF9F6;
+    min-width: 100%;
+    padding: 50px;
+    border: #028B2F solid 2px;
+    border-radius: 30px;
+    
+}
+.instituicao-card{
+    display: flex;
+    width: 80%;
+    margin: 30px 40px 30px 40px;
+    padding: 30px;
+    border: #028B2F solid 4px;
+    border-radius: 30px;
+    background-color: transparent
+
 }
