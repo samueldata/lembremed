@@ -1,183 +1,102 @@
-<div class="modal fade" id="janela">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg rounded-4">
-            <div class="modal-header bg-custom-1 text-white">
-                <h2 class="modal-title" id="modalTitle">Login</h2>
-                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
+{% extends "base.html" %}
 
-                <!-- Tela de Login -->
-                <div id="loginContainer">
-                    <div class="alert alert-danger d-none" id="loginError" role="alert">
-                        <p>Ops! Parece que seu login ou senha estão incorretos. <br> Por favor, verifique e tente novamente.</p>
-                    </div>
-                    
-                    <div class="login">
-                        <form method="post" class="formLogin" onsubmit="handleLogin(event)">
-                            {% csrf_token %}
-                            <p class="text-muted">Digite os seus dados de acesso no campo abaixo.</p>
+{% block content %}
 
-                            <label for="user_type" class="form-label">Selecione o tipo de usuário:</label>
-                            <select id="user_type" name="user_type" class="form-select mb-3" required onchange="applyMaskAndShowFields()">
-                                <option value="" disabled selected>Selecione...</option>
-                                <option value="administrador">Administrador</option>
-                                <option value="instituicao">Instituição</option>
-                                <option value="profissional">Profissional</option>
-                            </select>
+  {% if form.errors %}
+  <div class="popUp-failLogin">
+    <p>Your username and password didn't match. Please try again.</p>
+  </div>
+  {% endif %}
 
-                            <div id="loginFields" class="mt-3" style="display:none;">
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Usuário</label>
-                                    <input type="text" id="username" name="username" class="form-control rounded-3" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Senha</label>
-                                    <div class="position-relative">
-                                        <input type="password" id="password" name="password" class="form-control rounded-3 pe-5" required>
-                                        <i class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer"
-                                           id="togglePassword" onclick="togglePasswordVisibility()"
-                                           style="cursor: pointer; font-size: 1.2rem;"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="alert alert-danger d-none" id="loginError" role="alert"></div>
-
-                            <div class="d-flex flex-column justify-content-center align-items-center gap-3">
-                                <a href="#" class="text-primary" onclick="showPasswordRecovery()">Esqueci minha senha</a>
-                                <input type="submit" value="Acessar" class="btn btn-custom btn-text-color px-4 w-100 rounded-3" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                
-                <div id="passwordRecoveryContainer" class="d-none">
-                    <div class="login">
-                        <form id="passwordRecoveryForm" method="post" class="formForgotPassword" onsubmit="sendRecoveryEmail(event)">
-                            {% csrf_token %}
-                            <p class="text-muted">Digite seu e-mail para receber um link de redefinição de senha.</p>
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+    {% else %}
+      <p>Please login to see this page.</p>
+    {% endif %}
+  {% endif %}
   
-                            <div class="mb-3">
-                                <label for="email" class="form-label">E-mail</label>
-                                <input type="email" id="email" name="email" class="form-control rounded-3" placeholder="Digite seu e-mail" required>
-                            </div>
-  
-                            <div class="d-flex flex-column justify-content-center align-items-center gap-3">
-                                <input type="submit" class="btn btn-custom btn-text-color px-4 w-100 rounded-3" value="Redefinir senha">
-                                <a href="#" class="text-primary" onclick="showLogin()">Voltar para Login</a>
-                            </div>
-                        </form>
-  
-                        <!-- Mensagem de sucesso -->
-                        <div id="emailSuccessMessage" class="alert alert-success d-none mt-3">
-                            <p>E-mail enviado com sucesso! Verifique sua caixa de entrada e a pasta de spam para redefinir sua senha.</p>
-                            <button class="btn btn-custom btn-text-color px-4 w-100 rounded-3 mt-2" onclick="showLogin()">Voltar para Login</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="login">
+    <form method="post" class="formLogin" action="{% url 'login' %}">
+      {% csrf_token %}
+        <h1>Login</h1>
+        <p>Digite os seus dados de acesso no campo abaixo.</p>
+        
+        <!-- Campo select obrigatório -->
+        <label for="user_type">Selecione o tipo de usuário:</label>
+        <select id="user_type" name="user_type" required onchange="applyMaskAndShowFields()">
+          <option value="" disabled selected>Selecione...</option>
+          <option value="administrador">Administrador</option>
+          <option value="instituicao">Instituição</option>
+          <option value="profissional">Profissional</option>
+        </select>
+        <br>
+        <!-- Ocultar inicialmente os campos de usuário e senha -->
+        <div id="loginFields" style="display:none;">
+          <table>
+            <tr>
+              <td>{{ form.username.label_tag }}</td>
+            </tr>
+            <tr>
+              <td><input type="text" id="username" name="username" value="{{ form.username.value }}" required></td>
+            </tr>
+            <tr>
+              <td>{{ form.password.label_tag }}</td>
+            </tr>
+            <tr>
+              <td>{{ form.password }}</td>
+            </tr>
+          </table>
         </div>
-    </div>
-</div>
 
-<script>
+        <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
+        <input type="submit" value="Acessar" class="btn" />
+    </form>
+  </div>
 
-    //Permite trocar entre perfis de login
+  <!-- Script para aplicar máscaras e exibir os campos -->
+  <script>
     function applyMaskAndShowFields() {
-        var userType = document.getElementById('user_type').value;
-        var usernameField = document.getElementById('username');
-        var loginFields = document.getElementById('loginFields');
+      var userType = document.getElementById('user_type').value;
+      var usernameField = document.getElementById('username');
+      var loginFields = document.getElementById('loginFields');
+      
+      // Exibe os campos de login
+      loginFields.style.display = 'block';
 
-        loginFields.style.display = 'block';
-        usernameField.value = '';
+      // Limpa o valor do campo ao trocar a seleção
+      usernameField.value = '';
+
+      // Remove qualquer máscara existente
+      usernameField.value = usernameField.value.replace(/\D/g, '');
+
+      if (userType === 'instituicao') {
+        // Aplica máscara de CNPJ (xx.xxx.xxx/xxxx-xx)
+        usernameField.placeholder = 'Digite o CNPJ (xx.xxx.xxx/xxxx-xx)';
+        $(usernameField).mask('00.000.000/0000-00');
+      } else if (userType === 'profissional') {
+        // Aplica máscara de CPF (xxx.xxx.xxx-xx)
+        usernameField.placeholder = 'Digite o CPF (xxx.xxx.xxx-xx)';
+        $(usernameField).mask('000.000.000-00');
+      } else {
+        // Remove a máscara para Administrador
+        usernameField.placeholder = 'Digite seu login';
         $(usernameField).unmask();
-
-        if (userType === 'instituicao') {
-            usernameField.placeholder = 'Digite o CNPJ (xx.xxx.xxx/xxxx-xx)';
-            $(usernameField).mask('00.000.000/0000-00');
-        } else if (userType === 'profissional') {
-            usernameField.placeholder = 'Digite o CPF (xxx.xxx.xxx-xx)';
-            $(usernameField).mask('000.000.000-00');
-        } else {
-            usernameField.placeholder = 'Digite seu login';
-        }
+      }
     }
 
-    function togglePasswordVisibility() {
-        var passwordField = document.getElementById("password");
-        var toggleIcon = document.getElementById("togglePassword");
+    // Não exibir os campos até o tipo de usuário ser selecionado
+    window.onload = function() {
+      var userType = document.getElementById('user_type').value;
+      if (userType === '') {
+        document.getElementById('loginFields').style.display = 'none';
+      }
+    };
+  </script>
 
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            toggleIcon.classList.remove("bi-eye");
-            toggleIcon.classList.add("bi-eye-slash");
-        } else {
-            passwordField.type = "password";
-            toggleIcon.classList.remove("bi-eye-slash");
-            toggleIcon.classList.add("bi-eye");
-        }
-    }
+  <!-- Importar jQuery e jQuery Mask Plugin -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
-    //Gera mensagem de erro, ao errar a senha
-    function handleLogin(event) {
-        event.preventDefault();
-
-        var form = event.target;
-        var formData = new FormData(form);
-
-        fetch(form.action, {
-            method: "POST",
-            body: formData,
-            headers: {
-                "X-Requested-With": "XMLHttpRequest"
-            }
-        })
-        .then(response => response.text())
-        .then(html => {
-            var parser = new DOMParser();
-            var doc = parser.parseFromString(html, "text/html");
-
-            var errorDiv = doc.querySelector(".alert-danger");
-            if (errorDiv) {
-                document.getElementById("loginError").innerHTML = errorDiv.innerHTML;
-                document.getElementById("loginError").classList.remove("d-none");
-            } else {
-                window.location.reload();
-            }
-        })
-        .catch(error => console.error("Erro ao tentar fazer login:", error));
-    }
-
-
-    //Recupareação de senha
-    function showPasswordRecovery() {
-        document.getElementById('loginContainer').classList.add('d-none');
-        document.getElementById('passwordRecoveryContainer').classList.remove('d-none');
-        document.getElementById('modalTitle').innerText = 'Recuperação de Senha';
-    }
-
-    function showLogin() {
-        document.getElementById('passwordRecoveryContainer').classList.add('d-none');
-        document.getElementById('loginContainer').classList.remove('d-none');
-        document.getElementById('modalTitle').innerText = 'Login';
-    }
-
-    // Simula envio do e-mail e exibe a mensagem de sucesso
-    function sendRecoveryEmail(event) {
-        event.preventDefault();
-        document.getElementById('passwordRecoveryForm').classList.add('d-none');
-        document.getElementById('emailSuccessMessage').classList.remove('d-none');
-    }
-
-
-    // Evita que o navegador exiba mensagem de alerta ao atualizar a página
-    document.addEventListener("DOMContentLoaded", function() {
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-    });
-
-</script>
-
-
+{% endblock %}

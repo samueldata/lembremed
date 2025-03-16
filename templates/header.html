@@ -13,9 +13,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- Itens do Menu -->
+            <!-- Itens do Menu(navegação) -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- Aproxima os itens do nome "Lembre-MEd" -->
                 <ul class="navbar-nav align-items-center me-auto">
                     <li class="nav-item">
                         <a class="nav-link text-custom {% if request.resolver_match.url_name == 'index' %}fw-bold{% endif %}" href="{% url 'index' %}">Home</a>
@@ -23,7 +22,6 @@
                     <li class="nav-item">
                         <a class="nav-link text-custom {% if request.resolver_match.url_name == 'saiba_mais' %}fw-bold{% endif %}" href="#saiba+">Saiba +</a>
                     </li>
-
                     {% if perms.lembremed.pode_gerenciar_instituicao %}
                         <li class="nav-item">
                             <a class="nav-link text-custom {% if request.resolver_match.url_name == 'instituicao_listar' %}fw-bold{% endif %}" href="{% url 'instituicao_listar' %}">Instituições</a>
@@ -41,25 +39,27 @@
                     {% endif %}
                 </ul>
 
-                <!-- Mantém a parte de login na posição original -->
+                <!-- Itens menu(Login) -->
                 <ul class="navbar-nav align-items-center ms-auto">
                     {% if user.is_authenticated %}
-                        <li class="nav-item d-flex align-items-center ms-3">
-                            <img src="{% static 'images/default-user.svg' %}" alt="Usuário" class="rounded-circle">
-                            <span class="nav-link">{{ user.username }}</span>
-                        </li>
-                        {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-                            <li class="nav-item">
-                                <a class="nav-link text-custom {% if request.resolver_match.url_name == 'notificacao_listar' %}fw-bold{% endif %}" href="{% url 'notificacao_listar' %}">
-                                    <img src="{% static 'images/notification.png' %}" alt="Notificação" style="width: 1em;">
+                        <li class="nav-item dropdown d-flex align-items-center">
+                            {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+                                <a class="nav-link" href="{% url 'notificacao_listar' %}" style="margin-right: 10px;">
+                                    <img src="{% static 'images/notification.svg' %}" alt="Notificação" style="width: 1.5em;">
                                 </a>
-                            </li>
-                        {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link text-custom" href="#" onclick="document.getElementById('logout_form').submit();">SAIR</a>
-                            <form id="logout_form" method="post" action="/accounts/logout/" style="display: none;">
-                                {% csrf_token %}
-                            </form>
+                            {% endif %}
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{% static 'images/default-user.svg' %}" alt="Usuário" class="rounded-circle" style="width: 30px; height: 30px; margin-right: 5px;">
+                                {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="document.getElementById('logout_form').submit();">Sair</a>
+                                    <form id="logout_form" method="post" action="/accounts/logout/" style="display: none;">
+                                        {% csrf_token %}
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     {% else %}
                         <li class="nav-item">
