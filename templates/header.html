@@ -1,62 +1,73 @@
 {% load static %}
-<header>
-  <div class="brand-container">
-    <a href="/" class="brand-container"><img src="{% static 'images/logo.png' %}" alt="LembreMED Logo" /></a>
-    <h1>LembreMED</h1>
-  </div>
-  <nav>
-    <div class="nav-user">
-      
+<header class="bg-custom-1">
+    <nav class="container navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo e Nome -->
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+                <span class="fw-bold text-custom">Lembre-MEd</span>
+            </a>
 
+            <!-- Botão Hamburguer (Mobile) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-      {% if user.is_authenticated %}
-        Olá, 
-        {% block nome_usuario %}
-          {{ usuario.nome }}!
-        {% endblock %}
-        
-      {% endif %}
-    </div>
-    <div class="nav-buttons">
-      <ul>
-        <li>
-          <a href="{% url 'index' %}">HOME</a>
-        </li>
-        {% if perms.lembremed.pode_gerenciar_instituicao %}
-        {# o super usuario tem todas as permissoes #}
-        {# % if request.user.is_superuser % #}
-          <li>
-            <a href="{% url 'instituicao_listar' %}">INSTITUIÇÕES</a>
-          </li>
-        {% endif %}
-        {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-        {% if not request.user.is_superuser %}
-          <li>
-            <a href="{% url 'morador_listar' %}">MORADORES</a>
-          </li>
-        {% endif %}
-        {% endif %}
-        {% if perms.lembremed.pode_gerenciar_profissional %}
-        {% if not request.user.is_superuser %}
-          <li>
-            <a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a>
-          </li>
-        {% endif %}
-        {% endif %}
+            <!-- Itens do Menu(navegação) -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav align-items-center me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-custom {% if request.resolver_match.url_name == 'index' %}fw-bold{% endif %}" href="{% url 'index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-custom {% if request.resolver_match.url_name == 'saiba_mais' %}fw-bold{% endif %}" href="#saiba+">Saiba +</a>
+                    </li>
+                    {% if perms.lembremed.pode_gerenciar_instituicao %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'instituicao_listar' %}fw-bold{% endif %}" href="{% url 'instituicao_listar' %}">Instituições</a>
+                        </li>
+                    {% endif %}
+                    {% if perms.lembremed.pode_gerenciar_morador %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'morador_listar' %}fw-bold{% endif %}" href="{% url 'morador_listar' %}">Moradores</a>
+                        </li>
+                    {% endif %}
+                    {% if perms.lembremed.pode_gerenciar_profissional %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'profissional_listar' %}fw-bold{% endif %}" href="{% url 'profissional_listar' %}">Profissionais</a>
+                        </li>
+                    {% endif %}
+                </ul>
 
-        {% if user.is_authenticated %}
-          <li>
-            <a href="#" onclick="$('#logout_form')[0].submit()">SAIR</a>
-          </li>
-          <form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
-            {% csrf_token %}
-          </form>
-        {% else %}
-          <li>
-            <a href="{% url 'login' %}">LOGIN</a>
-          </li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
+                <!-- Itens menu(Login) -->
+                <ul class="navbar-nav align-items-center ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown d-flex align-items-center">
+                            {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+                                <a class="nav-link" href="{% url 'notificacao_listar' %}" style="margin-right: 10px;">
+                                    <img src="{% static 'images/notification.svg' %}" alt="Notificação" style="width: 1.5em;">
+                                </a>
+                            {% endif %}
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{% static 'images/default-user.svg' %}" alt="Usuário" class="rounded-circle" style="width: 30px; height: 30px; margin-right: 5px;">
+                                {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="document.getElementById('logout_form').submit();">Sair</a>
+                                    <form id="logout_form" method="post" action="/accounts/logout/" style="display: none;">
+                                        {% csrf_token %}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-success mb-2" href="#janela" data-bs-toggle="modal" data-bs-target="#janela">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 </header>

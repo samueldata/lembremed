@@ -1,0 +1,212 @@
+/*customização Modal de Login*/
+.form-control, .form-select{
+    border-color: none !important; 
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: #028B2F !important; 
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5) !important; 
+    outline: none !important; 
+}
+
+
+
+
+/* customizações do Bootstrap*/
+.text-custom{
+    color: #028B2F;
+}
+.bg-custom-1{
+    background-color: #D8EBDE;
+}
+.bg-custom-2{
+    background-color: #FAF9F6;
+}
+
+.btn-custom{
+    background-color: #028B2F;
+    margin-right: 10px;
+    color: #FAF9F6;
+}
+.btn-custom:hover{
+    background-color: #05a83b;
+    color: #FAF9F6;
+}
+
+
+
+.card{
+    width: 500px;
+    height: 270px;
+    margin: 50px 40px 50px 40px;
+    padding: 30px;
+    border: #028B2F solid 4px;
+    border-radius: 30px;
+    background-color: transparent
+}
+
+
+
+
+
+
+
+/* customizações geral*/
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+section.paginas {
+    height: auto !important; 
+    min-height: 100vh;
+    padding: 100px 0 100px 0;
+    display: flex;
+    align-items: center;
+}
+
+h1,h2{
+    color: #028B2F;
+}
+h5,p{
+    color: #4f5757;
+}
+
+
+
+
+
+
+/*Home*/
+
+li{
+    margin-left: 20px;
+}
+.nav-link{
+    font-weight: 400;
+}
+
+.nav-link:hover{
+ font-weight: 600;
+ color: #028B2F;
+}
+
+.rounded-circle{
+    width: 35px; 
+    height: 35px; 
+}
+.logo{
+    width: 45px;
+    height: 70px;
+    margin-right: 5px;
+}
+.home{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+
+}
+.title{
+    width: 40%;
+}
+.picture{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+.picture img{
+    max-width: 100%;
+    height: auto;
+    border: #028B2F solid 4px;
+    border-radius: 40px;
+}
+button{
+    margin-top: 20px;
+}
+
+.solucoes{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.card-grid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 50px 0 50px;
+}
+
+.icon-card {
+    width: 45px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    fill: #198754;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+footer{
+    padding: 20px;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+}
+
+/*Instituição*/
+
+.form-group{
+    position: relative;
+}
+.instituicao{
+    background-color: #FAF9F6;
+    min-width: 100%;
+    padding: 50px;
+    border: #028B2F solid 2px;
+    border-radius: 30px;
+    
+}
+.instituicao-card{
+    display: flex;
+    width: 80%;
+    margin: 30px 40px 30px 40px;
+    padding: 30px;
+    border: #028B2F solid 4px;
+    border-radius: 30px;
+    background-color: transparent
+
+}
+
+
+
+/*Profissionais*/
+.profissional{
+    background-color: #FAF9F6;
+    min-width: 100%;
+    padding: 50px;
+    border: #028B2F solid 2px;
+    border-radius: 30px;
+    
+}
+.filter-icon{
+    height: 48px;
+    margin-right: 10px;
+}
+.profissionais-filter{
+    display: flex;
+    align-items: center;
+}
+#searchInput{
+    border-radius: 20px;
+    margin: 20px 0 20px 0;
+}

@@ -1,6 +1,10 @@
 __pycache__/
 *.py[cod]
+*.coder
+*.coderignore
 
 *.sqlite3
 static_collected/
 lembremed/migrations/00*
+.vscode/
+TODO.md

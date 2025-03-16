@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}LembreMED - Notificações{% endblock %}
+
+{% block content %}
+<main class="main-content">
+	<section class="instituicoes-container">
+		<h2 class="section-title">Notificações</h2>
+		{% if estoque_acabando %}
+			<div class="moradores-cards">
+				{% for estoque in estoque_acabando %}
+					<div class="instituicao-card">
+						<div class="instituicao-info">
+							<p><strong>Estoque acabando!</strong></p>
+							<p>Hóspede: <strong>{{ estoque.morador.nome }}</strong></p>
+							<p>Medicamento: <span><strong>{{ estoque.medicamento.principio }}</strong> {{ estoque.apresentacao.unidade_prescricao }}</span></p>
+							<p>Duração do estoque: <span><strong>{{ estoque.estimativa_duracao|floatformat:0 }}</strong> dia(s)</span></p>
+						</div>
+						<!-- div class="instituicao-actions">
+							<button class="btn btn-primary" 
+							onclick="carregar_pagina_popup('/medicamento/{{ estoque.morador.cpf }}/editar/{{ estoque.codigo }}', 'GET', {}, 'Alterar {{ estoque.medicamento.principio }}'); setTimeout(function() { $('#form_estoque').attr('action', '/medicamento/{{ estoque.morador.cpf }}/salvar/')}, 950) ">
+							Editar</button>
+						</div -->
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="no-instituicoes">Nenhuma notificação :)</p>
+		{% endif %}
+	</section>
+</main>
+<script>
+	$(document).ready(function() {
+		// Máscara de CNPJ
+		$('.cnpj').mask('00.000.000/0000-00');
+
+		// Formata cada CNPJ para o padrão brasileiro
+		$('.cnpj').each(function() {
+			var cnpj = $(this).text().replace(/\D/g, ''); // Remove não dígitos
+			if (cnpj.length === 14) {
+				cnpj = cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+				$(this).text(cnpj);
+			}
+		});
+	});
+</script>
+
+{% endblock %}

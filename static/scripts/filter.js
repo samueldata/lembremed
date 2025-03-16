@@ -1,3 +1,8 @@
+function deaccent(text) {
+    //https://stackoverflow.com/questions/5700636/using-javascript-to-perform-text-matches-with-without-accented-characters
+    return text.normalize('NFD').replace(/\p{Diacritic}/gu, '');
+}
+
 function filterMoradores() {
     var input = document.getElementById('searchInput');
     var filter = input.value.toUpperCase();
@@ -10,7 +15,7 @@ function filterMoradores() {
         var cpf = card.querySelectorAll('.morador-info p')[1].textContent.toUpperCase(); // Assumindo que o CPF é o segundo <p>
 
         // Verifica se o texto inserido no input está no nome ou no CPF
-        if (name.indexOf(filter) > -1 || cpf.indexOf(filter) > -1) {
+        if (deaccent(name).indexOf(deaccent(filter)) > -1 || deaccent(cpf).indexOf(deaccent(filter)) > -1) {
             card.style.display = "";
         } else {
             card.style.display = "none";
@@ -32,10 +37,10 @@ function filterMedicamentos() {
         var estoque = card.querySelectorAll('.details td')[7].textContent.toUpperCase(); 
 
         // Verifica se o texto inserido no input está no nome ou no CPF
-        if (name.indexOf(filter) > -1 || 
-            concentracao.indexOf(filter) > -1 || 
-            horarios.indexOf(filter) > -1 || 
-            estoque.indexOf(filter) > -1) {
+        if (deaccent(name).indexOf(deaccent(filter)) > -1 || 
+            deaccent(concentracao).indexOf(deaccent(filter)) > -1 || 
+            deaccent(horarios).indexOf(deaccent(filter)) > -1 || 
+            deaccent(estoque).indexOf(deaccent(filter)) > -1) {
             card.style.display = "";
         } else {
             card.style.display = "none";

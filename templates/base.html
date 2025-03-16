@@ -2,39 +2,39 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="{% static 'scripts/popup.js' %}" ></script>
-    <title>{% block title %}LembreMED - Controle de Medicamentos{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="{% static 'scripts/popup.js' %}" ></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"M></script>
+  	<title>{% block title %}Lembre-MEd - Controle de Medicamentos{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="{% static 'styles/style.css' %}">
 </head>
 <body>
-    <!-- Modal -->
-    <div class="modal fade" id="getCodeModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel"> API CODE </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="getCode" style="overflow-x: scroll;">
-                    <!-- ajax success content here. -->
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-    {% include 'header.html' %}
-    
-    {% block content %}
-    <!-- Este bloco será sobrescrito pelo conteúdo das páginas filhas -->
-    {% endblock %}
+	<!-- Modal -->
+	<div class="modal fade" id="getCodeModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content shadow-lg">
+				<div class="modal-header bg-custom-1 text-white">
+					<h2 class="modal-title" id="myModalLabel"> API CODE </h2>
+					<button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="getCode" style="overflow-x: scroll;">
+					<!-- ajax success content here. -->
+				</div>
+			</div>
+		</div>
+	</div>
 
-    {% include 'footer.html' %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	{% include 'header.html' %}
+
+	{% block content %}
+	<!-- Este bloco será sobrescrito pelo conteúdo das páginas filhas -->
+	{% endblock %}
+
+	{% include 'footer.html' %}
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
