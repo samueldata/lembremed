@@ -5,9 +5,10 @@
 {% block title %}Lembre-MEd - Instituição{% endblock %}
 
 {% block content %}
-<main class="main-content">
-	<section class="instituicoes-container">
-		<h2 class="section-title">INSTITUIÇÕES</h2>
+<main>
+	<section class=".bg-custom-1">
+		<div class="container">
+			<h2 class="section-title">INSTITUIÇÕES</h2>
 		{% if lista_instituicoes %}
 			<div class="moradores-cards">
 				{% for instituicao in lista_instituicoes %}
@@ -28,8 +29,14 @@
 		{% endif %}
 
 		<button class="btn-cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar instituição');">Cadastrar Nova Instituição</button>
+		</div>
+		
 	</section>
 </main>
+
+
+
+
 <script>
 	$(document).ready(function() {
 		// Máscara de CNPJ
