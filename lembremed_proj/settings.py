@@ -1,3 +1,7 @@
+# Substituindo o MySQLdb pelo PyMySQL para compatibilidade com o ambiente de desenvolvimento.
+# O pacote mysqlclient apresentou problemas de instalação, e o PyMySQL foi usado como alternativa.
+import pymysql
+pymysql.install_as_MySQLdb()
 """
 Django settings for lembremed_proj project.
 

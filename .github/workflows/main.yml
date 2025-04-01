@@ -94,14 +94,15 @@ jobs:
 
       - name: Deploy para o servidor
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY || '' }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER: ${{ secrets.SERVER }}
           USER: ${{ secrets.USER }}
         run: |
           ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
             cd /path/to/your/project
             git pull origin main
-            source env/bin/activate
+            source env/bin/activate            set DJANGO_SETTINGS_MODULE=lembremed_proj.settings
+            pytest
             pip install -r requirements.txt
             python manage.py migrate
             python manage.py collectstatic --noinput
