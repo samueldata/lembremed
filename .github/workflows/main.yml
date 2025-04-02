@@ -40,10 +40,12 @@ jobs:
       run: |
         mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP DATABASE IF EXISTS lembremed;"
         mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE lembremed;"
-        mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP USER IF EXISTS 'lembremed'@'localhost';"
+        mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP USER IF EXISTS 'lembremed'@'%';"
         mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE USER 'lembremed'@'%' IDENTIFIED BY 'g14UNIVESP';"
         mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "ALTER USER 'lembremed'@'%' IDENTIFIED WITH mysql_native_password BY 'g14UNIVESP';"
         mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'%' WITH GRANT OPTION;"
+        mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE test_lembremed;"
+        mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON test_lembremed.* TO 'lembremed'@'%' WITH GRANT OPTION;"
         mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "FLUSH PRIVILEGES;"
 
     - name: Run tests
