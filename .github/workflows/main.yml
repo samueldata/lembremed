@@ -21,15 +21,15 @@ jobs:
           --health-retries 3
 
     steps:
-      - name: Checkout code
+      - name: Baixar código do repositório
         uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Configurar ambiente Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Instalar dependências
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -55,17 +55,17 @@ jobs:
           python manage.py migrate
           sleep 10
 
-      - name: Popular banco de dados
+      - name: Popular banco de dados com dados iniciais
         run: python manage.py populate_db
 
       - name: Coletar arquivos estáticos
         run: python manage.py collectstatic --noinput
 
-      - name: Criar usuário administrativo
+      - name: Criar usuário administrador
         run: |
           echo "from django.contrib.auth.models import User; User.objects.create_superuser('lembremed', 'lembremed@lembremed.com', 'g14UNIVESP')" | python manage.py shell
 
-      - name: Run tests
+      - name: Executar testes automatizados
         env:
           DATABASE_URL: mysql+pymysql://lembremed:g14UNIVESP@127.0.0.1/lembremed
         run: |
