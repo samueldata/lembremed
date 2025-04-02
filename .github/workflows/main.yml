@@ -1,12 +1,6 @@
 name: CI/CD Pipeline
 
-on:
-  push:
-    branches:
-      - ci-cd
-  pull_request:
-    branches:
-      - ci-cd
+on: [push, pull_request]
 
 jobs:
   test:
@@ -16,7 +10,7 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: nova_senha_secreta
+          MYSQL_ROOT_PASSWORD: g14UNIVESP
           MYSQL_DATABASE: lembremed
           MYSQL_USER: lembremed
           MYSQL_PASSWORD: g14UNIVESP
