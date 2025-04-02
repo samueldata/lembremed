@@ -1,0 +1,134 @@
+name: CI/CD Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.USER }}
+          MYSQL_USER: ${{ secrets.USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      # Checkout do repositório
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      # Instalar Python
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # Instalar dependências
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install -r requirements.txt
+
+      # Esperar pelo MySQL
+      - name: Esperar pelo MySQL
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" --silent; do
+            echo "Esperando pelo MySQL..."
+            sleep 5
+          done
+
+      # Configurar banco de dados
+      - name: Configurar banco de dados
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        run: |
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP DATABASE IF EXISTS lembremed;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE lembremed;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP USER IF EXISTS 'lembremed'@'localhost';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE USER 'lembremed'@'localhost' IDENTIFIED BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "ALTER USER 'lembremed'@'localhost' IDENTIFIED WITH mysql_native_password BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'localhost' WITH GRANT OPTION;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "FLUSH PRIVILEGES;"
+
+
+      # Definir variável de ambiente do Django
+      - name: Definir variável de ambiente do Django
+        run: echo "DJANGO_SETTINGS_MODULE=lembremed_proj.settings" >> $GITHUB_ENV
+
+      # Migrar banco de dados
+      - name: Migrar banco de dados
+        run: python manage.py migrate
+
+      # Rodar testes
+      - name: Rodar testes
+        env:
+          DATABASE_URL: mysql+pymysql://lembremed:g14UNIVESP@127.0.0.1/lembremed
+        run: python manage.py test --noinput
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      # Checkout do repositório
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      # Instalar Python
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # Instalar dependências
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Migrar banco de dados
+      - name: Migrar banco de dados
+        run: python manage.py migrate
+
+      # Coletar arquivos estáticos
+      - name: Coletar arquivos estáticos
+        run: python manage.py collectstatic --noinput
+
+      # Criar usuário administrativo
+      - name: Criar usuário administrativo
+        run: |
+          echo "from django.contrib.auth.models import User; \
+          User.objects.create_superuser('lembremed', 'lembremed@lembremed.com', 'g14UNIVESP')" | python manage.py shell
+
+      # Deploy para o servidor
+      - name: Deploy para o servidor
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER: ${{ secrets.SERVER }}
+          USER: ${{ secrets.USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
+            cd /caminho/para/projeto
+            git pull origin main
+            source env/bin/activate
+            export DJANGO_SETTINGS_MODULE=lembremed_proj.settings
+            pip install -r requirements.txt
+            python manage.py migrate
+            python manage.py collectstatic --noinput
+            sudo systemctl restart seu-servico-gunicorn
+            sudo systemctl restart seu-servico-nginx
+          EOF
