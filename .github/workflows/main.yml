@@ -18,7 +18,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: nova_senha_secreta
           MYSQL_DATABASE: lembremed
-          MYSQL_USER: lembremed 
+          MYSQL_USER: lembremed
           MYSQL_PASSWORD: g14UNIVESP
         ports:
           - 3306:3306
@@ -29,20 +29,24 @@ jobs:
           --health-retries=3
 
     steps:
+      # Checkout do repositório
       - name: Checkout do repositório
         uses: actions/checkout@v3
 
+      # Instalar Python
       - name: Instalar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
+      # Instalar dependências
       - name: Instalar dependências
         run: |
           python -m pip install --upgrade pip
           pip install pytest
           pip install -r requirements.txt
 
+      # Esperar pelo MySQL
       - name: Esperar pelo MySQL
         run: |
           while ! mysqladmin ping -h"127.0.0.1" --silent; do
@@ -50,21 +54,26 @@ jobs:
             sleep 5
           done
 
+      # Configurar banco de dados
       - name: Configurar banco de dados
         run: |
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "DROP DATABASE IF EXISTS lembremed;"
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE DATABASE lembremed;"
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "DROP USER IF EXISTS 'lembremed'@'%';"
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "CREATE USER 'lembremed'@'%' IDENTIFIED BY 'g14UNIVESP';"
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'%';"
-          mysql -h 127.0.0.1 -u root -pnova_senha_secreta -e "FLUSH PRIVILEGES;"
+          mysql -h 127.0.0.1 -u root -proot -e "DROP DATABASE IF EXISTS lembremed;"
+          mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE lembremed;"
+          mysql -h 127.0.0.1 -u root -proot -e "DROP USER IF EXISTS 'lembremed'@'localhost';"
+          mysql -h 127.0.0.1 -u root -proot -e "CREATE USER 'lembremed'@'localhost' IDENTIFIED BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -proot -e "ALTER USER 'lembremed'@'localhost' IDENTIFIED WITH mysql_native_password BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'localhost' WITH GRANT OPTION;"
+          mysql -h 127.0.0.1 -u root -proot -e "FLUSH PRIVILEGES;"
 
+      # Definir variável de ambiente do Django
       - name: Definir variável de ambiente do Django
         run: echo "DJANGO_SETTINGS_MODULE=lembremed_proj.settings" >> $GITHUB_ENV
 
+      # Migrar banco de dados
       - name: Migrar banco de dados
         run: python manage.py migrate
 
+      # Rodar testes
       - name: Rodar testes
         run: pytest
 
@@ -73,39 +82,54 @@ jobs:
     needs: test
 
     steps:
+      # Checkout do repositório
       - name: Checkout do repositório
         uses: actions/checkout@v3
 
+      # Instalar Python
       - name: Instalar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
+      # Instalar dependências
       - name: Instalar dependências
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Migrar banco de dados
       - name: Migrar banco de dados
         run: python manage.py migrate
 
+      # Coletar arquivos estáticos
       - name: Coletar arquivos estáticos
         run: python manage.py collectstatic --noinput
 
+      # Criar usuário administrativo
+      - name: Criar usuário administrativo
+        run: |
+          echo "from django.contrib.auth.models import User; \
+          User.objects.create_superuser('lembremed', 'lembremed@lembremed.com', 'g14UNIVESP')" | python manage.py shell
+
+      # Deploy para o servidor
       - name: Deploy para o servidor
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER: ${{ secrets.SERVER }}
           USER: ${{ secrets.USER }}
         run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
-            cd /path/to/your/project
+            cd /caminho/para/projeto
             git pull origin main
-            source env/bin/activate            set DJANGO_SETTINGS_MODULE=lembremed_proj.settings
-            pytest
+            source env/bin/activate
+            export DJANGO_SETTINGS_MODULE=lembremed_proj.settings
             pip install -r requirements.txt
             python manage.py migrate
             python manage.py collectstatic --noinput
-            sudo systemctl restart your-gunicorn-service
-            sudo systemctl restart your-nginx-service
+            sudo systemctl restart seu-servico-gunicorn
+            sudo systemctl restart seu-servico-nginx
           EOF
