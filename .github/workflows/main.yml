@@ -74,7 +74,7 @@ jobs:
       - name: Rodar testes
         env:
           DATABASE_URL: mysql+pymysql://lembremed:g14UNIVESP@127.0.0.1/lembremed
-        run: pytest
+        run: python manage.py test --noinput
 
   deploy:
     runs-on: ubuntu-latest
