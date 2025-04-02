@@ -50,7 +50,10 @@ jobs:
           mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "FLUSH PRIVILEGES;"
 
       - name: Migrar banco de dados
-        run: python manage.py migrate
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+          sleep 10
 
       - name: Popular banco de dados
         run: python manage.py populate_db
@@ -60,8 +63,7 @@ jobs:
 
       - name: Criar usuário administrativo
         run: |
-          echo "from django.contrib.auth.models import User; \n"
-          "User.objects.create_superuser('lembremed', 'lembremed@lembremed.com', 'g14UNIVESP')" | python manage.py shell
+          echo "from django.contrib.auth.models import User; User.objects.create_superuser('lembremed', 'lembremed@lembremed.com', 'g14UNIVESP')" | python manage.py shell
 
       - name: Run tests
         env:
