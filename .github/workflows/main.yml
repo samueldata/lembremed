@@ -52,6 +52,9 @@ jobs:
       - name: Migrar banco de dados
         run: python manage.py migrate
 
+      - name: Popular banco de dados
+        run: python manage.py populate_db
+
       - name: Coletar arquivos estáticos
         run: python manage.py collectstatic --noinput
 
