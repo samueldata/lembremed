@@ -10,10 +10,10 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: g14UNIVESP
-          MYSQL_DATABASE: lembremed
-          MYSQL_USER: lembremed
-          MYSQL_PASSWORD: g14UNIVESP
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.USER }}
+          MYSQL_USER: ${{ secrets.USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
         ports:
           - 3306:3306
         options: >-
@@ -50,14 +50,17 @@ jobs:
 
       # Configurar banco de dados
       - name: Configurar banco de dados
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
         run: |
-          mysql -h 127.0.0.1 -u root -proot -e "DROP DATABASE IF EXISTS lembremed;"
-          mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE lembremed;"
-          mysql -h 127.0.0.1 -u root -proot -e "DROP USER IF EXISTS 'lembremed'@'localhost';"
-          mysql -h 127.0.0.1 -u root -proot -e "CREATE USER 'lembremed'@'localhost' IDENTIFIED BY 'g14UNIVESP';"
-          mysql -h 127.0.0.1 -u root -proot -e "ALTER USER 'lembremed'@'localhost' IDENTIFIED WITH mysql_native_password BY 'g14UNIVESP';"
-          mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'localhost' WITH GRANT OPTION;"
-          mysql -h 127.0.0.1 -u root -proot -e "FLUSH PRIVILEGES;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP DATABASE IF EXISTS lembremed;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE lembremed;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP USER IF EXISTS 'lembremed'@'localhost';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE USER 'lembremed'@'localhost' IDENTIFIED BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "ALTER USER 'lembremed'@'localhost' IDENTIFIED WITH mysql_native_password BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'localhost' WITH GRANT OPTION;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "FLUSH PRIVILEGES;"
+
 
       # Definir variável de ambiente do Django
       - name: Definir variável de ambiente do Django
@@ -69,6 +72,8 @@ jobs:
 
       # Rodar testes
       - name: Rodar testes
+        env:
+          DATABASE_URL: mysql+pymysql://lembremed:g14UNIVESP@127.0.0.1/lembremed
         run: pytest
 
   deploy:
