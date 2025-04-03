@@ -170,21 +170,22 @@ footer{
 }
 .instituicao{
     background-color: #FAF9F6;
-    min-width: 100%;
-    padding: 50px;
+    min-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
     border: #028B2F solid 2px;
-    border-radius: 30px;
+    border-radius: 12px;
     
 }
 .instituicao-card{
     display: flex;
     width: 80%;
     margin: 30px 40px 30px 40px;
-    padding: 30px;
-    border: #028B2F solid 4px;
-    border-radius: 30px;
-    background-color: transparent
-
+    padding: 1rem 1.5rem;
+    border: #028B2F solid 2px;
+    border-radius: 10px;
+    background-color: transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 
