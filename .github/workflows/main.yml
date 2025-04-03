@@ -1,0 +1,73 @@
+name: CI/CD Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: lembremed
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v2
+
+      - name: Configurar ambiente Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Configurar banco de dados
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        run: |
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP DATABASE IF EXISTS lembremed;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE lembremed;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP USER IF EXISTS 'lembremed'@'%';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE USER 'lembremed'@'%' IDENTIFIED BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "ALTER USER 'lembremed'@'%' IDENTIFIED WITH mysql_native_password BY 'g14UNIVESP';"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'%' WITH GRANT OPTION;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP DATABASE IF EXISTS test_lembremed;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE test_lembremed;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "GRANT ALL PRIVILEGES ON test_lembremed.* TO 'lembremed'@'%' WITH GRANT OPTION;"
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "FLUSH PRIVILEGES;"
+
+      - name: Migrar banco de dados
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+          sleep 10
+
+      - name: Popular banco de dados com dados iniciais
+        run: python manage.py populate_db
+
+      - name: Coletar arquivos estáticos
+        run: python manage.py collectstatic --noinput
+
+      - name: Criar usuário administrador
+        run: |
+          echo "from django.contrib.auth.models import User; User.objects.create_superuser('lembremed', 'lembremed@lembremed.com', 'g14UNIVESP')" | python manage.py shell
+
+      - name: Executar testes automatizados
+        env:
+          DATABASE_URL: mysql+pymysql://lembremed:g14UNIVESP@127.0.0.1/lembremed
+        run: |
+          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP DATABASE IF EXISTS test_lembremed;"
+          pytest
