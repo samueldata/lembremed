@@ -70,4 +70,4 @@ jobs:
           DATABASE_URL: mysql+pymysql://lembremed:g14UNIVESP@127.0.0.1/lembremed
         run: |
           mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "DROP DATABASE IF EXISTS test_lembremed;"
-          pytest --ds=lembremed_proj.settings --reuse-db --noinput
+          pytest
