@@ -1,4 +1,4 @@
-<h1 align="center"> Grupo 014 - UNIVESP Projeto Integrador :) </h1>
+<h1 align="center"> Grupo 14 - UNIVESP Projeto Integrador :) </h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/PI-concluído_com_sucesso-green" alt="PI concluído com sucesso"/>
@@ -63,6 +63,7 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
   - Nome completo
   - Data de nascimento
   - CPF
+  - Informações de contato de referência
 
 4. Cadastro de Medicamentos por Morador
 - Descrição: Cada morador pode ter seus medicamentos registrados individualmente.
