@@ -5,31 +5,36 @@
 {% block title %}Lembre-MEd - Instituição{% endblock %}
 
 {% block content %}
-<main class="main-content">
-	<section class="instituicoes-container">
-		<h2 class="section-title">INSTITUIÇÕES</h2>
-		{% if lista_instituicoes %}
-			<div class="moradores-cards">
-				{% for instituicao in lista_instituicoes %}
-					<div class="instituicao-card">
+<main>
+	<section class="paginas bg-custom-2">
+		<div class="container d-flex justify-content-center align-items-center">
+			<div class="instituicao">
+				<h2 class="section-title">INSTITUIÇÕES</h2>
+				{% if lista_instituicoes %}
+				<div class="instituicoes-cards">
+					{% for instituicao in lista_instituicoes %}
+					<div class="instituicao-card d-flex flex-column">
 						<div class="instituicao-info">
 							<p>Nome: <strong>{{ instituicao.nome }}</strong></p>
 							<p>CNPJ: <span class="cnpj">{{ instituicao.cnpj }}</span></p>
 						</div>
+
 						<div class="instituicao-actions">
-							<button onclick="carregar_pagina_popup('editar/{{ instituicao.cnpj }}', 'GET', {}, 'Alterar {{ instituicao.nome }}')">Editar Instituição</button>
-							<button onclick="if (confirm('Confirma a exclusão de {{ instituicao.nome }}?')) { carregar_pagina_popuploading('excluir/{{ instituicao.cnpj }}', 'GET', {}, 'Excluindo {{ instituicao.cnpj }}...'); }">Excluir</button>
+							<button class="btn btn-custom me-2 mb-2" onclick="carregar_pagina_popup('editar/{{ instituicao.cnpj }}', 'GET', {}, 'Editar informações {{ instituicao.nome }}')">Editar Instituição</button>
+							<button class="btn btn-danger me-2 mb-2" onclick="if (confirm('Confirma a exclusão de {{ instituicao.nome }}?')) { carregar_pagina_popuploading('excluir/{{ instituicao.cnpj }}', 'GET', {}, 'Excluindo {{ instituicao.cnpj }}...'); }">Excluir</button>
 						</div>
 					</div>
-				{% endfor %}
+					{% endfor %}
+				</div>
+				{% else %}
+				<p class="no-instituicoes">Nenhuma instituição cadastrada no nosso sistema ainda :</p>
+				{% endif %}
+				<button class="btn btn-custom me-2 mb-2" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar instituição');">Cadastrar Nova Instituição</button>
 			</div>
-		{% else %}
-			<p class="no-instituicoes">Nenhuma instituição cadastrada no nosso sistema ainda :(</p>
-		{% endif %}
-
-		<button class="btn-cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar instituição');">Cadastrar Nova Instituição</button>
+		</div>
 	</section>
 </main>
+
 <script>
 	$(document).ready(function() {
 		// Máscara de CNPJ
@@ -44,6 +49,31 @@
 			}
 		});
 	});
+
+	// Função para adicionar uma nova instituição 
+	function adicionarInstituicao(novaInstituicao) {
+		let container = document.querySelector('.moradores-cards'); // Contêiner correto
+		if (!container) return;
+
+		let novoCard = document.createElement('div');
+		novoCard.classList.add('instituicao-card', 'd-flex', 'flex-column');
+
+		novoCard.innerHTML = `
+			<div class="instituicao-info">
+				<p>Nome: <strong>${novaInstituicao.nome}</strong></p>
+				<p>CNPJ: <span class="cnpj">${novaInstituicao.cnpj}</span></p>
+			</div>
+			<div class="instituicao-actions">
+				<button onclick="carregar_pagina_popup('editar/${novaInstituicao.cnpj}', 'GET', {}, 'Alterar ${novaInstituicao.nome}')">Editar Instituição</button>
+				<button onclick="if (confirm('Confirma a exclusão de ${novaInstituicao.nome}?')) { carregar_pagina_popup('excluir/${novaInstituicao.cnpj}', 'GET', {}, 'Excluindo ${novaInstituicao.cnpj}...'); }">Excluir</button>
+			</div>
+		`;
+
+		container.appendChild(novoCard); // Adiciona o card como um novo irmão, não dentro de outro card
+
+		// Aplicar máscara ao novo CNPJ
+		$(novoCard).find('.cnpj').mask('00.000.000/0000-00');
+	}
 </script>
 
 {% endblock %}
