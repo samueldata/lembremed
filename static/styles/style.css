@@ -102,8 +102,8 @@ li{
     height: 35px; 
 }
 .logo{
-    width: 45px;
-    height: 70px;
+    width: 100px;
+    height: auto;
     margin-right: 5px;
 }
 .home{
