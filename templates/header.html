@@ -37,6 +37,11 @@
                             <a class="nav-link text-custom {% if request.resolver_match.url_name == 'profissional_listar' %}fw-bold{% endif %}" href="{% url 'profissional_listar' %}">Profissionais</a>
                         </li>
                     {% endif %}
+                    {% if perms.lembremed.pode_gerenciar_profissional %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'profissional_listar' %}fw-bold{% endif %}" href="{% url 'relatorios' %}">Relatórios</a>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 <!-- Itens menu(Login) -->
