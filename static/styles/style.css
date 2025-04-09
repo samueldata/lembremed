@@ -80,9 +80,6 @@ h5,p{
 
 
 
-
-
-
 /*Home*/
 
 li{
@@ -210,4 +207,389 @@ footer{
 #searchInput{
     border-radius: 20px;
     margin: 20px 0 20px 0;
+}
+
+
+/*Moradores*/
+.moradores{
+    background-color: #FAF9F6;
+    min-width: 100%;
+    padding: 50px;
+    border: #028B2F solid 2px;
+    border-radius: 30px;
+    
+}
+.filter-icon{
+    height: 48px;
+    margin-right: 10px;
+}
+.moradores-filter{
+    display: flex;
+    align-items: center;
+}
+#searchInput{
+    border-radius: 20px;
+    margin: 20px 0 20px 0;
+}
+
+/* Centraliza o conteúdo da seção de notificações */
+.notificacoes-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 3rem 1rem;
+	min-height: 60vh;
+	text-align: center;
+}
+
+/* Título grande e centralizado */
+.notificacoes-title {
+	font-size: 2rem;
+	margin-bottom: 1.5rem;
+	color: #333;
+}
+
+/* Container das mensagens de vazio */
+.notificacoes-vazia-container {
+	margin-top: 1rem;
+}
+
+/* Texto da mensagem de vazio */
+.notificacoes-vazia {
+	font-size: 1.2rem;
+	color: #6c757d;
+}
+
+/* Cards (quando houver) */
+.notificacoes-cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	justify-content: center;
+	width: 100%;
+}
+
+.notificacao-card {
+	background: #f8f9fa;
+	border-radius: 12px;
+	padding: 1.5rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	max-width: 400px;
+	text-align: center;
+}
+
+.alerta {
+	color: #dc3545;
+	font-weight: bold;
+	font-size: 1.1rem;
+	margin-bottom: 0.5rem;
+}
+
+
+/* Melhorias gerais */
+input.form-control, .form-select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Reponsividade */
+
+/* Reponsividade Home */
+
+@media (max-width: 768px) {
+    section {
+        height: auto !important;
+        display: flex;
+        align-items: center;
+    }
+    
+    h1{
+        margin-top: 50px;
+    }
+    
+    .card{
+        width: 400px;
+        height: auto;
+        padding: 30px;
+        border: #028B2F solid 4px;
+        border-radius: 30px;
+        background-color: transparent
+    }
+
+    .card p{
+       font-size: 14px;
+    }
+    
+    .card-grid{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+    }
+}
+
+@media (max-width: 425px) {
+    section {
+        height: auto !important;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card{
+        width: 370px;
+        height: auto;
+        padding: 30px;
+        border: #028B2F solid 4px;
+        border-radius: 30px;
+        background-color: transparent
+    }
+    
+    .card-grid{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+    }
+}
+
+@media (max-width: 375px) {
+    section {
+        height: auto !important;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card{
+        width: 280px;
+        height: auto;
+        padding: 30px;
+        border: #028B2F solid 4px;
+        border-radius: 30px;
+        background-color: transparent
+    }
+    
+    .card-grid{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+    }
+}
+
+@media (max-width: 320px) {
+    section {
+        height: auto !important;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card{
+        width: 240px;
+        height: auto;
+        padding: 30px;
+        border: #028B2F solid 4px;
+        border-radius: 30px;
+        background-color: transparent
+    }
+    
+    .card-grid{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .icon-card {
+        width: 30px;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        fill: #198754;
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
+
+
+
+/*Responsividade Instituição*/
+@media (max-width: 768px) {
+    .instituicao, .profissional, .moradores {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .instituicao-card {
+        width: 100%;
+        margin: 20px 0;
+        padding: 20px;
+        flex-direction: column;
+    }
+
+    .instituicao-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .instituicao-actions button {
+        width: 100%;
+    }
+
+    .form-custom {
+        width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100% !important;
+    }
+
+    .container.d-flex {
+        flex-direction: column;
+        padding: 0 15px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+}
+
+
+/* Responsividade Moradores */
+@media (max-width: 768px) {
+    .moradores, .profissional {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .profissional-card {
+        width: 100% !important;
+        margin: 20px 0 !important;
+        padding: 20px !important;
+        flex-direction: column;
+    }
+
+    .profissional-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .profissional-actions button,
+    .profissional-actions a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .moradores-filter {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .filter-icon {
+        display: none;
+    }
+
+    #searchInput {
+        width: 100% !important;
+    }
+
+    .form-custom {
+        width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    button.btn {
+        width: 100% !important;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+}
+
+
+/* Responsividade Profissionais */
+
+@media (max-width: 768px) {
+    .profissional {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .profissional-card {
+        width: 100% !important;
+        margin: 20px 0 !important;
+        padding: 20px !important;
+        flex-direction: column;
+    }
+
+    .profissional-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .profissional-actions button,
+    .profissional-actions a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .profissionais-filter {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .filter-icon {
+        display: none;
+    }
+
+    #searchInput {
+        width: 100% !important;
+    }
+
+    .form-custom {
+        width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100% !important;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .form-text {
+        font-size: 0.85rem;
+    }
 }
