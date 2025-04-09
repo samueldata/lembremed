@@ -33,7 +33,7 @@
                     {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
                         {% if not request.user.is_superuser %}
                             <li class="nav-item">
-                                <a class="nav-link text-custom {% if request.resolver_match.url_name == 'morador_listar' %}fw-bold{% endif %}" href="{% url 'morador_listar' %}">Moradores</a>
+                                <a class="nav-link text-custom {% if request.resolver_match.url_name == 'morador_listar' %}fw-bold{% endif %}" href="{% url 'morador_listar' %}">Hóspedes</a>
                             </li>
                         {% endif %}
                     {% endif %}

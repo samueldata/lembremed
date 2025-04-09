@@ -1,52 +1,65 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block title %}Lembre-MEd - Hóspedes{% endblock %}
 
 {% block content %}
-<main class="main-content">
+<main>
     <section class="paginas bg-custom-2">
-        <div class="container">
+        <div class="container d-flex justify-content-center align-items-center">
             <div class="moradores">
                 <h2 class="section-title">HÓSPEDES</h2>
-                <div class="moradores-filter">
+
+                <div class="moradores-filter mb-4">
                     <img class="filter-icon" src="{% static 'images/filter_icon.svg' %}" alt="Buscar">
-                    <input type="text" id="searchInput" placeholder="Buscar por nome ou CPF..." onkeyup="filterProfissionais()"
-                        style="width: 100%; padding: 10px; margin-bottom: 20px;">
+                    <input type="text" id="searchInput" placeholder="Buscar por nome ou CPF..." onkeyup="filterProfissionais()" class="form-control">
                 </div>
+
                 {% if lista_moradores %}
                 <div class="profissionais-cards">
                     {% for morador in lista_moradores %}
-                        <div class="profissional-card d-flex flex-column">
-                            <div class="profissional-info">
-                                <p>Nome: <strong>{{ morador.nome }}</strong></p>
-                                <p>CPF: <span class="cpf">{{ morador.cpf }}</span></p>
-                                <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
-                                <div class="responsavel-info mt-3">
-                                    <p><strong>Responsável:</strong></p>
-                                    <p>Nome: {{ morador.responsavel.nome }}</p>
-                                    <p>CPF: {{ morador.responsavel.cpf }}</p>
-                                    <p>E-mail: {{ morador.responsavel.email }}</p>
-                                    <p>Telefone: {{ morador.responsavel.telefone }}</p>
-                                </div>
-                                <div class="profissional-actions">
-                                    <button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Hóspede</button>
-                                    <button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
-                                </div>
-                                {% if perms.lembremed.pode_medicar_morador %}
-                                <div class="profissional-actions">
-                                    <a href="/medicamento/{{ morador.cpf }}">Medicamentos</a>
-                                </div>
-                                {% endif %}
+                    <div class="profissional-card">
+                        <div class="profissional-info">
+                            <p>Nome: <strong>{{ morador.nome }}</strong></p>
+                            <p>CPF: <span class="cpf">{{ morador.cpf }}</span></p>
+                            <p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
+
+                            <div class="responsavel-info mt-3">
+                                <p><strong>Responsável:</strong></p>
+                                <p>Nome: {{ morador.responsavel.nome }}</p>
+                                <p>CPF: {{ morador.responsavel.cpf }}</p>
+                                <p>E-mail: {{ morador.responsavel.email }}</p>
+                                <p>Telefone: {{ morador.responsavel.telefone }}</p>
                             </div>
                         </div>
+
+                        <div class="profissional-actions mt-3">
+                            <button class="btn btn-custom me-2 mb-2"
+                                onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">
+                                Editar Hóspede
+                            </button>
+
+                            <button class="btn btn-danger me-2 mb-2"
+                                onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">
+                                Excluir
+                            </button>
+
+                            <button class="btn btn-custom-outline mb-2">
+                                {% if perms.lembremed.pode_medicar_morador %}
+                                <a href="/medicamento/{{ morador.cpf }}" >Medicamentos</a>
+                                {% endif %}
+                            </button>
+                            
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
                 {% else %}
-                    <p class="no-profissionais">Não temos nenhum hóspede cadastrado no nosso sistema ainda :(</p>
+                <p class="no-instituicoes">Nenhum hóspede cadastrado no nosso sistema ainda :(</p>
                 {% endif %}
-                <button class="btn btn-custom me-2 mb-2" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar hóspede');">Cadastrar Novo Hóspede</button>
+
+                <button class="btn btn-custom me-2 mb-2"
+                    onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar hóspede');">Cadastrar Novo Hóspede</button>
             </div>
         </div>
     </section>
@@ -70,14 +83,9 @@
                 }
             }
         }
-    </script>
 
-    <script>
         $(document).ready(function () {
-            // Aplica a máscara de CPF
             $('.cpf').mask('000.000.000-00');
-
-            // Formata cada CPF para o padrão brasileiro
             $('.cpf').each(function () {
                 var cpf = $(this).text().replace(/\D/g, '');
                 if (cpf.length === 11) {

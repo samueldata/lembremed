@@ -33,6 +33,25 @@
     color: #FAF9F6;
 }
 
+.btn-custom-outline{
+    border: #028B2F solid 2px;
+    margin-right: 10px;
+    
+    text-decoration: none;
+}
+
+.btn-custom-outline a{
+    text-decoration: none;
+    color: #028B2F;
+}
+.btn-custom-outline:hover{
+    background-color: #028B2F;
+}
+.btn-custom-outline a:hover{
+    text-decoration: none;
+    color: #FAF9F6;
+}
+
 
 
 .card{
@@ -174,8 +193,10 @@ footer{
     border-radius: 12px;
     
 }
-.instituicao-card{
+.instituicao-card,
+.profissional-card{
     display: flex;
+    flex-direction: column;
     width: 80%;
     margin: 30px 40px 30px 40px;
     padding: 1rem 1.5rem;
@@ -286,6 +307,92 @@ footer{
 	font-size: 1.1rem;
 	margin-bottom: 0.5rem;
 }
+
+
+/*Medicamentos */
+
+.medicamentos-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.medicamento-card-mobile,
+.medicamento-card-desktop {
+    border: 2px solid #028B2F;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.medicamento-actions,
+.medicamento-actions-mobile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+
+
+.estoque-baixo {
+    background-color: #dc3545;
+    color: #fff;
+    text-align: center;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.ultima-admin {
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    color: #555;
+}
+
+.btn-cadastrar {
+    background-color: #028B2F;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 30px auto 10px auto;
+    display: block;
+    border: none;
+    transition: 0.3s ease;
+}
+.btn-cadastrar:hover {
+    background-color: #05a83b;
+}
+
+.table-medicamento-desktop {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-medicamento-desktop th, .table-medicamento-desktop td {
+    padding: 0.5rem;
+    vertical-align: middle;
+}
+.btn-cadastrar {
+    background-color: #028B2F;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 30px auto;
+    display: block;
+    text-align: center;
+    border: none;
+}
+.btn-cadastrar:hover {
+    background-color: #05a83b;
+}
+
+
+
+
+
 
 
 /* Melhorias gerais */
@@ -593,3 +700,7 @@ input.form-control, .form-select {
         font-size: 0.85rem;
     }
 }
+
+
+
+/* Medicamentos  */
