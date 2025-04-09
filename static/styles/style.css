@@ -36,8 +36,8 @@
 .btn-custom-outline{
     border: #028B2F solid 2px;
     margin-right: 10px;
-    
     text-decoration: none;
+    color: #028B2F;
 }
 
 .btn-custom-outline a{
@@ -46,6 +46,7 @@
 }
 .btn-custom-outline:hover{
     background-color: #028B2F;
+    color: #FAF9F6;
 }
 .btn-custom-outline a:hover{
     text-decoration: none;
@@ -314,86 +315,67 @@ footer{
 .medicamentos-container{
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
-.medicamento-card-mobile,
-.medicamento-card-desktop {
-    border: 2px solid #028B2F;
-    border-radius: 10px;
-    padding: 1rem;
-    margin: 20px auto;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.medicamento-actions,
-.medicamento-actions-mobile {
+.medicamento-control {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 1rem;
+    justify-content: center;
+    align-items: stretch;
+    border-top: solid 10px #028B2F
 }
 
-
-
-.estoque-baixo {
-    background-color: #dc3545;
-    color: #fff;
+.medicamento-control h1 {
+    color: #2a7c6f;
     text-align: center;
-    padding: 0.75rem;
-    margin-top: 1rem;
-    border-radius: 5px;
-    font-weight: bold;
+    margin-top: 1em;
 }
 
-.ultima-admin {
-    font-size: 0.95rem;
-    margin-top: 1rem;
-    color: #555;
-}
-
-.btn-cadastrar {
-    background-color: #028B2F;
-    color: #fff;
-    padding: 10px 20px;
+.medicamento-control .feature {
+    flex: 1 1 200px;
+    box-shadow: 5px 20px 15px 1px rgba(0, 0, 0, 0.2);
+    text-align: justify;
+    margin: 10px;
+    margin-bottom: 80px;
+    padding: 20px;
     border-radius: 8px;
-    margin: 30px auto 10px auto;
-    display: block;
-    border: none;
-    transition: 0.3s ease;
-}
-.btn-cadastrar:hover {
-    background-color: #05a83b;
+    display: flex;
+    align-items: center;
+    max-width: 500px;
 }
 
-.table-medicamento-desktop {
-    width: 100%;
-    border-collapse: collapse;
-}
-.table-medicamento-desktop th, .table-medicamento-desktop td {
-    padding: 0.5rem;
-    vertical-align: middle;
-}
-.btn-cadastrar {
-    background-color: #028B2F;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    margin: 30px auto;
-    display: block;
-    text-align: center;
-    border: none;
-}
-.btn-cadastrar:hover {
-    background-color: #05a83b;
+.medicamento-control .feature img {
+    width: 100px;
+    margin-right: 20px;
+    display: flex;
+    align-items: normal;
+    height: 50px;
+    width: 50px;
+    margin-left: 10px;
+    margin-bottom: 13%;
 }
 
+.medicamentos-cards-desktop{
+    display: none;
+}
 
+.medicamento-card-mobile {
+    margin-top: 20px;
+    padding: 50px;
+    border: solid 4px #028B2F;
+    border-radius: 30px;
+}
+.estoque-baixo{
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 20px 0;
+    padding: 5px;
+    width: 600px;
+    border-radius: 15px;
+    background-color: rgb(219, 53, 69);
 
-
-
-
+}
 
 /* Melhorias gerais */
 input.form-control, .form-select {
