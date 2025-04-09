@@ -61,7 +61,7 @@
 
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{% static 'images/default-user.svg' %}" alt="Usuário" class="rounded-circle" style="width: 30px; height: 30px; margin-right: 5px;">
-                                {% block nome_usuario %}Olá, {{ usuario.nome }}{% endblock %}
+                                {% block nome_usuario %}{{ usuario.nome }}{% endblock %}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li>
