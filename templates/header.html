@@ -19,23 +19,31 @@
                     <li class="nav-item">
                         <a class="nav-link text-custom {% if request.resolver_match.url_name == 'index' %}fw-bold{% endif %}" href="{% url 'index' %}">Home</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link text-custom {% if request.resolver_match.url_name == 'saiba_mais' %}fw-bold{% endif %}" href="#saiba+">Saiba +</a>
                     </li>
+
                     {% if perms.lembremed.pode_gerenciar_instituicao %}
                         <li class="nav-item">
                             <a class="nav-link text-custom {% if request.resolver_match.url_name == 'instituicao_listar' %}fw-bold{% endif %}" href="{% url 'instituicao_listar' %}">Instituições</a>
                         </li>
                     {% endif %}
-                    {% if perms.lembremed.pode_gerenciar_morador %}
-                        <li class="nav-item">
-                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'morador_listar' %}fw-bold{% endif %}" href="{% url 'morador_listar' %}">Moradores</a>
-                        </li>
+
+                    {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+                        {% if not request.user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link text-custom {% if request.resolver_match.url_name == 'morador_listar' %}fw-bold{% endif %}" href="{% url 'morador_listar' %}">Moradores</a>
+                            </li>
+                        {% endif %}
                     {% endif %}
+
                     {% if perms.lembremed.pode_gerenciar_profissional %}
-                        <li class="nav-item">
-                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'profissional_listar' %}fw-bold{% endif %}" href="{% url 'profissional_listar' %}">Profissionais</a>
-                        </li>
+                        {% if not request.user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link text-custom {% if request.resolver_match.url_name == 'profissional_listar' %}fw-bold{% endif %}" href="{% url 'profissional_listar' %}">Profissionais</a>
+                            </li>
+                        {% endif %}
                     {% endif %}
                 </ul>
 
@@ -44,13 +52,16 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown d-flex align-items-center">
                             {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-                                <a class="nav-link" href="{% url 'notificacao_listar' %}" style="margin-right: 10px;">
-                                    <img src="{% static 'images/notification.svg' %}" alt="Notificação" style="width: 1.5em;">
-                                </a>
+                                {% if estoque_acabando or estoque_vencendo %}
+                                    <a class="nav-link" href="{% url 'notificacao_listar' %}" style="margin-right: 10px;">
+                                        <img src="{% static 'images/notification.svg' %}" alt="Notificação" style="width: 1.5em;">
+                                    </a>
+                                {% endif %}
                             {% endif %}
+
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{% static 'images/default-user.svg' %}" alt="Usuário" class="rounded-circle" style="width: 30px; height: 30px; margin-right: 5px;">
-                                {{ user.username }}
+                                {% block nome_usuario %}{{ usuario.nome }}{% endblock %}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li>
