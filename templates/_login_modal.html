@@ -6,15 +6,12 @@
                 <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-
-                <!-- Tela de Login -->
                 <div id="loginContainer">
                     <div class="alert alert-danger d-none" id="loginError" role="alert">
-                        <p>Ops! Parece que seu login ou senha estão incorretos. <br> Por favor, verifique e tente novamente.</p>
+                        <p>Senha incorreta. Por favor, tente novamente.</p>
                     </div>
-                    
                     <div class="login">
-                        <form method="post" class="formLogin" action="{% url 'login' %}">
+                        <form id="loginForm" method="post" class="formLogin" action="{% url 'login' %}">
                             {% csrf_token %}
                             <p class="text-muted">Digite os seus dados de acesso no campo abaixo.</p>
 
@@ -42,38 +39,11 @@
                                 </div>
                             </div>
 
-                            <div class="alert alert-danger d-none" id="loginError" role="alert"></div>
-
                             <div class="d-flex flex-column justify-content-center align-items-center gap-3">
-                                <a href="#" class="text-primary" onclick="showPasswordRecovery()">Esqueci minha senha</a>
-                                <input type="submit" value="Acessar" class="btn btn-custom btn-text-color px-4 w-100 rounded-3" />
+                                <a href="{% url 'password_reset' %}" class="text-primary">Esqueci minha senha</a>
+                                <button type="submit" class="btn btn-custom btn-text-color px-4 w-100 rounded-3">Acessar</button>
                             </div>
                         </form>
-                    </div>
-                </div>
-                
-                <div id="passwordRecoveryContainer" class="d-none">
-                    <div class="login">
-                        <form id="passwordRecoveryForm" method="post" class="formForgotPassword" onsubmit="sendRecoveryEmail(event)">
-                            {% csrf_token %}
-                            <p class="text-muted">Digite seu e-mail para receber um link de redefinição de senha.</p>
-  
-                            <div class="mb-3">
-                                <label for="email" class="form-label">E-mail</label>
-                                <input type="email" id="email" name="email" class="form-control rounded-3" placeholder="Digite seu e-mail" required>
-                            </div>
-  
-                            <div class="d-flex flex-column justify-content-center align-items-center gap-3">
-                                <input type="submit" class="btn btn-custom btn-text-color px-4 w-100 rounded-3" value="Redefinir senha">
-                                <a href="#" class="text-primary" onclick="showLogin()">Voltar para Login</a>
-                            </div>
-                        </form>
-  
-                        <!-- Mensagem de sucesso -->
-                        <div id="emailSuccessMessage" class="alert alert-success d-none mt-3">
-                            <p>E-mail enviado com sucesso! Verifique sua caixa de entrada e a pasta de spam para redefinir sua senha.</p>
-                            <button class="btn btn-custom btn-text-color px-4 w-100 rounded-3 mt-2" onclick="showLogin()">Voltar para Login</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -82,8 +52,34 @@
 </div>
 
 <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-    //Permite trocar entre perfis de login
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+    }
+})
+.then(response => {
+    if (response.redirected) {
+        // Se o login for bem-sucedido, o Django redireciona
+        window.location.href = response.url;
+    } else {
+        // Se falhar, mostra o erro e mantém o modal
+        document.getElementById('loginError').classList.remove('d-none');
+    }
+})
+.catch(error => {
+    console.error('Erro:', error);
+});
+
+    });
+
     function applyMaskAndShowFields() {
         var userType = document.getElementById('user_type').value;
         var usernameField = document.getElementById('username');
@@ -103,7 +99,7 @@
             usernameField.placeholder = 'Digite seu login';
         }
     }
-    //troca visibilidade da senha
+
     function togglePasswordVisibility() {
         var passwordField = document.getElementById("password");
         var toggleIcon = document.getElementById("togglePassword");
@@ -119,34 +115,15 @@
         }
     }
 
-    //Recupareação de senha
-    function showPasswordRecovery() {
-        document.getElementById('loginContainer').classList.add('d-none');
-        document.getElementById('passwordRecoveryContainer').classList.remove('d-none');
-        document.getElementById('modalTitle').innerText = 'Recuperação de Senha';
-    }
-
-    function showLogin() {
-        document.getElementById('passwordRecoveryContainer').classList.add('d-none');
-        document.getElementById('loginContainer').classList.remove('d-none');
-        document.getElementById('modalTitle').innerText = 'Login';
-    }
-
-    // Simula envio do e-mail e exibe a mensagem de sucesso
-    function sendRecoveryEmail(event) {
-        event.preventDefault();
-        document.getElementById('passwordRecoveryForm').classList.add('d-none');
-        document.getElementById('emailSuccessMessage').classList.remove('d-none');
-    }
-
-
-    // Evita que o navegador exiba mensagem de alerta ao atualizar a página
     document.addEventListener("DOMContentLoaded", function() {
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
     });
-
 </script>
+
+<!-- Import jQuery and jQuery Mask Plugin -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 
