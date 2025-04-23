@@ -396,6 +396,7 @@ footer {
     padding: 50px;
     border: solid 4px #028B2F;
     border-radius: 30px;
+    width: 50%;
 }
 
 .estoque-baixo {
@@ -403,7 +404,7 @@ footer {
     justify-content: center;
     margin: 20px 0 20px 0;
     padding: 5px;
-    width: 600px;
+    width: 100%;
     border-radius: 15px;
     background-color: rgb(219, 53, 69);
 
@@ -415,6 +416,32 @@ input.form-control,
     width: 100%;
     box-sizing: border-box;
 }
+
+/* Recuparação de senha */
+
+.ForgotPassword{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    height: 100%;
+}
+
+
+.ForgotPassword td input {
+    width: 150%;
+    padding: 10px;
+    border-radius: 10px;
+    border: #028B2F solid 2px;
+    margin-bottom: 20px;
+}
+
+.ForgotPassword input {
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
 
 /* Reponsividade */
 
@@ -429,7 +456,7 @@ input.form-control,
         align-items: center;
     }
 
-    .home{
+    .home {
         justify-content: space-evenly;
     }
 
@@ -486,6 +513,7 @@ input.form-control,
         width: 100%;
         padding: 20px;
     }
+
     h1 {
         margin-top: 50px;
     }
@@ -511,7 +539,7 @@ input.form-control,
 
     }
 
-   
+
 }
 
 @media (max-width: 425px) {
@@ -786,6 +814,24 @@ input.form-control,
 
 /* Medicamentos  */
 
+@media (max-width: 1024px) {
+    .medicamentos-cards-desktop {
+        display: none;
+    }
+
+    .medicamento-card-mobile {
+        display: block;
+        margin-bottom: 20px;
+        width: 70%;
+    }
+
+    .medicamento-actions-mobile button {
+        width: 100%;
+    }
+
+
+}
+
 @media (max-width: 768px) {
     .medicamentos-cards-desktop {
         display: none;
@@ -794,10 +840,20 @@ input.form-control,
     .medicamento-card-mobile {
         display: block;
         margin-bottom: 20px;
+        width: 70%;
     }
 
     .medicamento-actions-mobile button {
         width: 100%;
+    }
+
+    .estoque-baixo {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .ultima-admin {
+        font-size: 13px;
     }
 }
 
