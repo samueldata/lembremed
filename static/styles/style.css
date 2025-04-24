@@ -1,41 +1,68 @@
 /*customização Modal de Login*/
-.form-control, .form-select{
-    border-color: none !important; 
+.form-control,
+.form-select {
+    border-color: none !important;
 }
+
 .form-control:focus,
 .form-select:focus {
-    border-color: #028B2F !important; 
-    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5) !important; 
-    outline: none !important; 
+    border-color: #028B2F !important;
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5) !important;
+    outline: none !important;
 }
 
 
 
 
 /* customizações do Bootstrap*/
-.text-custom{
+.text-custom {
     color: #028B2F;
 }
-.bg-custom-1{
+
+.bg-custom-1 {
     background-color: #D8EBDE;
 }
-.bg-custom-2{
+
+.bg-custom-2 {
     background-color: #FAF9F6;
 }
 
-.btn-custom{
+.btn-custom {
     background-color: #028B2F;
     margin-right: 10px;
     color: #FAF9F6;
 }
-.btn-custom:hover{
+
+.btn-custom:hover {
     background-color: #05a83b;
+    color: #FAF9F6;
+}
+
+.btn-custom-outline {
+    border: #028B2F solid 2px;
+    margin-right: 10px;
+    text-decoration: none;
+    color: #028B2F;
+}
+
+.btn-custom-outline a {
+    text-decoration: none;
+    color: #028B2F;
+}
+
+.btn-custom-outline:hover {
+    background-color: #028B2F;
+    color: #FAF9F6;
+}
+
+.btn-custom-outline a:hover {
+    text-decoration: none;
     color: #FAF9F6;
 }
 
 
 
-.card{
+.card {
     width: 500px;
     height: 270px;
     margin: 50px 40px 50px 40px;
@@ -52,11 +79,13 @@
 
 
 /* customizações geral*/
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     height: 100%;
 }
+
 section {
     height: 100vh;
     display: flex;
@@ -64,17 +93,20 @@ section {
 }
 
 section.paginas {
-    height: auto !important; 
+    height: auto !important;
     min-height: 100vh;
     padding: 100px 0 100px 0;
     display: flex;
     align-items: center;
 }
 
-h1,h2{
+h1,
+h2 {
     color: #028B2F;
 }
-h5,p{
+
+h5,
+p {
     color: #4f5757;
 }
 
@@ -82,59 +114,66 @@ h5,p{
 
 /*Home*/
 
-li{
+li {
     margin-left: 20px;
 }
-.nav-link{
+
+.nav-link {
     font-weight: 400;
 }
 
-.nav-link:hover{
- font-weight: 600;
- color: #028B2F;
+.nav-link:hover {
+    font-weight: 600;
+    color: #028B2F;
 }
 
-.rounded-circle{
-    width: 35px; 
-    height: 35px; 
+.rounded-circle {
+    width: 35px;
+    height: 35px;
 }
-.logo{
+
+.logo {
     width: 100px;
     height: auto;
     margin-right: 5px;
 }
-.home{
+
+.home {
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
 
 }
-.title{
+
+.title {
     width: 40%;
 }
-.picture{
+
+.picture {
     width: 50%;
     display: flex;
     justify-content: center;
 }
-.picture img{
+
+.picture img {
     max-width: 100%;
     height: auto;
     border: #028B2F solid 4px;
     border-radius: 40px;
 }
-button{
+
+button {
     margin-top: 20px;
 }
 
-.solucoes{
+.solucoes {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
-.card-grid{
+.card-grid {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -153,29 +192,33 @@ button{
     right: 15px;
 }
 
-footer{
+footer {
     padding: 20px;
-      bottom: 0;
-      width: 100%;
-      text-align: center;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
 }
 
 /*Instituição*/
 
-.form-group{
+.form-group {
     position: relative;
 }
-.instituicao{
+
+.instituicao {
     background-color: #FAF9F6;
     min-width: 900px;
     margin: 0 auto;
     padding: 2rem;
     border: #028B2F solid 2px;
     border-radius: 12px;
-    
+
 }
-.instituicao-card{
+
+.instituicao-card,
+.profissional-card {
     display: flex;
+    flex-direction: column;
     width: 80%;
     margin: 30px 40px 30px 40px;
     padding: 1rem 1.5rem;
@@ -188,128 +231,240 @@ footer{
 
 
 /*Profissionais*/
-.profissional{
+.profissional {
     background-color: #FAF9F6;
     min-width: 100%;
     padding: 50px;
     border: #028B2F solid 2px;
     border-radius: 30px;
-    
+
 }
-.filter-icon{
+
+.filter-icon {
     height: 48px;
     margin-right: 10px;
 }
-.profissionais-filter{
+
+.profissionais-filter {
     display: flex;
     align-items: center;
 }
-#searchInput{
+
+#searchInput {
     border-radius: 20px;
     margin: 20px 0 20px 0;
 }
 
 
 /*Moradores*/
-.moradores{
+.moradores {
     background-color: #FAF9F6;
     min-width: 100%;
     padding: 50px;
     border: #028B2F solid 2px;
     border-radius: 30px;
-    
+
 }
-.filter-icon{
+
+.filter-icon {
     height: 48px;
     margin-right: 10px;
 }
-.moradores-filter{
+
+.moradores-filter {
     display: flex;
     align-items: center;
 }
-#searchInput{
+
+#searchInput {
     border-radius: 20px;
     margin: 20px 0 20px 0;
 }
 
 /* Centraliza o conteúdo da seção de notificações */
 .notificacoes-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 3rem 1rem;
-	min-height: 60vh;
-	text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    min-height: 60vh;
+    text-align: center;
+    height: auto;
 }
 
 /* Título grande e centralizado */
 .notificacoes-title {
-	font-size: 2rem;
-	margin-bottom: 1.5rem;
-	color: #333;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
 }
 
 /* Container das mensagens de vazio */
 .notificacoes-vazia-container {
-	margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 /* Texto da mensagem de vazio */
 .notificacoes-vazia {
-	font-size: 1.2rem;
-	color: #6c757d;
+    font-size: 1.2rem;
+    color: #6c757d;
 }
 
 /* Cards (quando houver) */
 .notificacoes-cards {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 1.5rem;
-	justify-content: center;
-	width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    width: 100%;
 }
 
 .notificacao-card {
-	background: #f8f9fa;
-	border-radius: 12px;
-	padding: 1.5rem;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	width: 100%;
-	max-width: 400px;
-	text-align: center;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
 }
 
 .alerta {
-	color: #dc3545;
-	font-weight: bold;
-	font-size: 1.1rem;
-	margin-bottom: 0.5rem;
+    color: #dc3545;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
 }
 
 
+/*Medicamentos */
+
+.medicamentos-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.medicamento-control {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    border-top: solid 10px #028B2F
+}
+
+.medicamento-control h1 {
+    color: #2a7c6f;
+    text-align: center;
+    margin-top: 1em;
+}
+
+.medicamento-control .feature {
+    flex: 1 1 200px;
+    box-shadow: 5px 20px 15px 1px rgba(0, 0, 0, 0.2);
+    text-align: justify;
+    margin: 10px;
+    margin-bottom: 80px;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    max-width: 500px;
+}
+
+.medicamento-control .feature img {
+    width: 100px;
+    margin-right: 20px;
+    display: flex;
+    align-items: normal;
+    height: 50px;
+    width: 50px;
+    margin-left: 10px;
+    margin-bottom: 13%;
+}
+
+.medicamentos-cards-desktop {
+    display: none;
+}
+
+.medicamento-card-mobile {
+    margin-top: 20px;
+    padding: 50px;
+    border: solid 4px #028B2F;
+    border-radius: 30px;
+    width: 50%;
+}
+
+.estoque-baixo {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 20px 0;
+    padding: 5px;
+    width: 100%;
+    border-radius: 15px;
+    background-color: rgb(219, 53, 69);
+
+}
+
 /* Melhorias gerais */
-input.form-control, .form-select {
+input.form-control,
+.form-select {
     width: 100%;
     box-sizing: border-box;
 }
+
+/* Recuparação de senha */
+
+.ForgotPassword{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    height: 100%;
+}
+
+
+.ForgotPassword td input {
+    width: 150%;
+    padding: 10px;
+    border-radius: 10px;
+    border: #028B2F solid 2px;
+    margin-bottom: 20px;
+}
+
+.ForgotPassword input {
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
 
 /* Reponsividade */
 
 /* Reponsividade Home */
 
-@media (max-width: 768px) {
+
+@media (max-width: 1024px) {
+
     section {
         height: auto !important;
         display: flex;
         align-items: center;
     }
-    
-    h1{
+
+    .home {
+        justify-content: space-evenly;
+    }
+
+    h1 {
         margin-top: 50px;
     }
-    
-    .card{
+
+    .card {
         width: 400px;
         height: auto;
         padding: 30px;
@@ -318,17 +473,73 @@ input.form-control, .form-select {
         background-color: transparent
     }
 
-    .card p{
-       font-size: 14px;
+    .card p {
+        font-size: 14px;
     }
-    
-    .card-grid{
+
+    .card-grid {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
 
     }
+
+    .icon-card {
+        width: 30px;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        fill: #198754;
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        height: auto !important;
+        display: flex;
+        align-items: center;
+    }
+
+    .home .picture {
+        display: none;
+    }
+
+    .home .title {
+        width: 100%;
+        padding: 20px;
+    }
+
+    h1 {
+        margin-top: 50px;
+    }
+
+    .card {
+        width: 400px;
+        height: auto;
+        padding: 30px;
+        border: #028B2F solid 4px;
+        border-radius: 30px;
+        background-color: transparent
+    }
+
+    .card p {
+        font-size: 14px;
+    }
+
+    .card-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+
 }
 
 @media (max-width: 425px) {
@@ -337,8 +548,8 @@ input.form-control, .form-select {
         display: flex;
         align-items: center;
     }
-    
-    .card{
+
+    .card {
         width: 370px;
         height: auto;
         padding: 30px;
@@ -346,8 +557,8 @@ input.form-control, .form-select {
         border-radius: 30px;
         background-color: transparent
     }
-    
-    .card-grid{
+
+    .card-grid {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -362,8 +573,8 @@ input.form-control, .form-select {
         display: flex;
         align-items: center;
     }
-    
-    .card{
+
+    .card {
         width: 280px;
         height: auto;
         padding: 30px;
@@ -371,8 +582,8 @@ input.form-control, .form-select {
         border-radius: 30px;
         background-color: transparent
     }
-    
-    .card-grid{
+
+    .card-grid {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -387,8 +598,8 @@ input.form-control, .form-select {
         display: flex;
         align-items: center;
     }
-    
-    .card{
+
+    .card {
         width: 240px;
         height: auto;
         padding: 30px;
@@ -396,8 +607,8 @@ input.form-control, .form-select {
         border-radius: 30px;
         background-color: transparent
     }
-    
-    .card-grid{
+
+    .card-grid {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -423,7 +634,10 @@ input.form-control, .form-select {
 
 /*Responsividade Instituição*/
 @media (max-width: 768px) {
-    .instituicao, .profissional, .moradores {
+
+    .instituicao,
+    .profissional,
+    .moradores {
         padding: 30px 20px;
         border-radius: 20px;
     }
@@ -472,7 +686,9 @@ input.form-control, .form-select {
 
 /* Responsividade Moradores */
 @media (max-width: 768px) {
-    .moradores, .profissional {
+
+    .moradores,
+    .profissional {
         padding: 30px 20px;
         border-radius: 20px;
     }
@@ -591,5 +807,108 @@ input.form-control, .form-select {
 
     .form-text {
         font-size: 0.85rem;
+    }
+}
+
+
+
+/* Medicamentos  */
+
+@media (max-width: 1024px) {
+    .medicamentos-cards-desktop {
+        display: none;
+    }
+
+    .medicamento-card-mobile {
+        display: block;
+        margin-bottom: 20px;
+        width: 70%;
+    }
+
+    .medicamento-actions-mobile button {
+        width: 100%;
+    }
+
+
+}
+
+@media (max-width: 768px) {
+    .medicamentos-cards-desktop {
+        display: none;
+    }
+
+    .medicamento-card-mobile {
+        display: block;
+        margin-bottom: 20px;
+        width: 70%;
+    }
+
+    .medicamento-actions-mobile button {
+        width: 100%;
+    }
+
+    .estoque-baixo {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .ultima-admin {
+        font-size: 13px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .medicamento-card-mobile {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .medicamento-actions-mobile button {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .estoque-baixo {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .ultima-admin {
+        font-size: 12px;
+    }
+}
+
+
+@media (max-width: 425px) {
+    .medicamento-card-mobile {
+        padding: 20px;
+        font-size: 13px;
+        width: 100%;
+    }
+
+    .medicamento-actions-mobile button {
+        font-size: 11px;
+        padding: 6px;
+    }
+
+    .estoque-baixo {
+        font-size: 9px;
+        padding: 4px;
+        width: 100%;
+    }
+
+    .ultima-admin {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 320px) {
+    .estoque-baixo {
+        font-size: 8px;
+    }
+
+    .ultima-admin {
+        font-size: 8px;
     }
 }
