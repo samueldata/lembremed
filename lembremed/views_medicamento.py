@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from lembremed.models import Estoque, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao
+from lembremed.models import Estoque, Horario, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao, HORA_CHOICES
 from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
 from datetime import datetime
@@ -10,6 +10,8 @@ import re
 from decimal import Decimal
 import requests
 from django.conf import settings
+
+from pprint import pprint
 
 #teste amanda
 
@@ -54,16 +56,17 @@ def medicamento_listar(request, pcpf, contexto_padrao):
 
 	estoques = Estoque.objects.filter(morador=morador)
 
-	estoques_administrados = []
+	lista_estoques = []
 	for estoque in estoques:
 		ultima_administracao = Administra.objects.filter(estoque=estoque).order_by('-dthr_administracao').first()
-		estoques_administrados.append({ #Cria o objeto com o estoque e sua ultima administracao
+		lista_estoques.append({ #Cria o objeto com o estoque e sua ultima administracao
 			'estoque': estoque,
 			'ultima_administracao': ultima_administracao,
-			'duracao': ((estoque.qtd_disponivel * estoque.apresentacao.razao_prescricao_comercial) / (estoque.frequencia * estoque.prescricao)) if estoque.qtd_disponivel and estoque.frequencia and estoque.apresentacao.razao_prescricao_comercial and estoque.prescricao else 0
+			'duracao': estoque.estimativa_duracao(),
+			'horarios': '  / '.join([HORA_CHOICES[h.hora][1] for h in estoque.horarios.all()]),
 		})
 
-	context = {'lista_estoques': estoques_administrados, 'morador': morador}
+	context = {'lista_estoques': lista_estoques, 'morador': morador}
 
 	return render(request, 'medicamento/index.html', {**context, **contexto_padrao})
 
@@ -79,6 +82,8 @@ def medicamento_editar(request, pcpf, pcodigo):
 		'estoque': estoque,
 		'arr_medicamentos': arr_medicamentos,
 		'arr_apresentacoes': arr_apresentacoes,
+		'HORA_CHOICES': HORA_CHOICES,
+		'horarios_selecionados': [h.hora for h in estoque.horarios.all()],
 		}
 	return render(request, 'medicamento/cadastro.html', context)
 
@@ -92,6 +97,8 @@ def medicamento_cadastrar(request, pcpf):
 		'cpf': pcpf,
 		'arr_medicamentos': arr_medicamentos,
 		'arr_apresentacoes': arr_apresentacoes,
+		'HORA_CHOICES': HORA_CHOICES,
+		'horarios_selecionados': [],
 		}
 	return render(request, 'medicamento/cadastro.html', context)
 
@@ -109,7 +116,8 @@ def medicamento_salvar(request, pcpf):
 		pprescricao = pprescricao if pprescricao > 0 else 1
 		pfrequencia = Decimal(request.POST.get('frequencia'))
 		pfrequencia = pfrequencia if pfrequencia > 0 else 1
-		phorarios = request.POST.get('horarios')
+		phorarios = request.POST.getlist('hora')
+		pprint(phorarios)
 		pqtd_disponivel = request.POST.get('qtd_disponivel')
 		pqtd_alterar = request.POST.get('qtd_alterar')
 
@@ -122,7 +130,6 @@ def medicamento_salvar(request, pcpf):
 			estoque.validade = pvalidade
 			estoque.prescricao = pprescricao
 			estoque.frequencia = pfrequencia
-			estoque.horarios = phorarios
 			pqtd_alterar = re.findall(r'^(\+|\-)(\d+|\d+\.\d+)$', pqtd_alterar)
 
 			if (len(pqtd_alterar) == 1):
@@ -133,6 +140,10 @@ def medicamento_salvar(request, pcpf):
 				else:
 					estoque.qtd_disponivel -= Decimal(pqtd_alterar)
 			estoque.save()
+
+			estoque.horarios.all().delete()
+			for h in phorarios:
+				Horario.objects.create(estoque=estoque, hora=int(h))
 
 			if (estoque.estimativa_duracao() <= 7):
 				#Verifica se o responsavel tem telegram cadastrado
@@ -147,25 +158,25 @@ def medicamento_salvar(request, pcpf):
 
 					#requests.get(f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage?chat_id={estoque.morador.responsavel.telegram_id}&text=Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque")
 				if (estoque.morador.responsavel.email):
-					
+
 					mensagem = render_to_string('email_templates/basic_email.html', {
 							'title': "Medicamento acabando - Lembremed",
-							'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}." 
+							'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}."
 										f"\n<br />O medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} foi recém administrado agora tem 7 dias ou menos de estoque disponível."
 										f"\n<br />Verifique a necessidade de uma nova aquisição."
 					})
-					
+
 					send_mail(subject="Medicamento acabando - Lembremed",
 						message = mensagem,
 						html_message = mensagem,
-						from_email=settings.EMAIL_HOST_USER,
-						recipient_list=[estoque.morador.responsavel.email],
-						fail_silently=True,  # Set to True to suppress exceptions
+						from_email = settings.EMAIL_HOST_USER,
+						recipient_list = [estoque.morador.responsavel.email],
+						fail_silently = True,  # Set to True to suppress exceptions
 					)
 
 
 		else:
-			Estoque.objects.create(
+			estoque = Estoque.objects.create(
 				morador = Morador.objects.get(cpf=pcpf),
 				medicamento = Medicamento.objects.get(codigo=pcodigo_medicamento),
 				apresentacao = papresentacao,
@@ -173,10 +184,11 @@ def medicamento_salvar(request, pcpf):
 				validade = pvalidade,
 				prescricao = pprescricao,
 				frequencia = pfrequencia,
-				horarios = phorarios,
 				qtd_disponivel = pqtd_disponivel,
 			)
 
+			for h in phorarios:
+				Horario.objects.create(estoque=estoque, hora=int(h))
 
 		# Após criar o usuário, atribua o papel associado
 
@@ -218,7 +230,7 @@ def medicamento_administrar(request, pcpf, pcodigo):
 			estoque = estoque,
 			dthr_administracao = datetime.now(),
 		)
-		
+
 		if (estoque.estimativa_duracao() <= 7):
 			#Verifica se o responsavel tem telegram cadastrado
 			if (estoque.morador.responsavel.telegram_id):
@@ -232,14 +244,14 @@ def medicamento_administrar(request, pcpf, pcodigo):
 
 				#requests.get(f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage?chat_id={estoque.morador.responsavel.telegram_id}&text=Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque")
 			if (estoque.morador.responsavel.email):
-				
+
 				mensagem = render_to_string('email_templates/basic_email.html', {
 						'title': "Medicamento acabando - Lembremed",
-						'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}." 
+						'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}."
 									f"\n<br />O medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} foi recém administrado agora tem 7 dias ou menos de estoque disponível."
 									f"\n<br />Verifique a necessidade de uma nova aquisição."
 				})
-				
+
 				send_mail(subject="Medicamento acabando - Lembremed",
 					message = mensagem,
 					html_message = mensagem,

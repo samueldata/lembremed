@@ -78,7 +78,7 @@
 										{{ estoque_associado.estoque.frequencia }} x dia
 									</td>
 									<td>
-										{{ estoque_associado.estoque.horarios }}
+										{{ estoque_associado.horarios }}
 									</td>
 									<td>
 										{{ estoque_associado.estoque.qtd_disponivel|stringformat:".2f" }}
@@ -122,7 +122,7 @@
 				<p><strong>Concentração:</strong> {{ estoque_associado.estoque.concentracao }}</p>
 				<p><strong>Prescrição:</strong> {{ estoque_associado.estoque.prescricao|stringformat:".2f" }} {{ estoque_associado.estoque.apresentacao.unidade_prescricao }}</p>
 				<p><strong>Frequência:</strong> {{ estoque_associado.estoque.frequencia }} x dia</p>
-				<p><strong>Horários:</strong> {{ estoque_associado.estoque.horarios }}</p>
+				<p><strong>Horários:</strong> {{ estoque_associado.horarios }}</p>
 				<p><strong>Qtd. disponível:</strong> {{ estoque_associado.estoque.qtd_disponivel|stringformat:".2f" }} {{ estoque_associado.estoque.apresentacao.unidade_comercial }}</p>
 				<p><strong>Duração estoque:</strong> Aproximadamente {{ estoque_associado.duracao|floatformat:0 }} dia(s)</p>
 				
