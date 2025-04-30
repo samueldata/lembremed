@@ -116,8 +116,8 @@ def medicamento_salvar(request, pcpf):
 		pprescricao = pprescricao if pprescricao > 0 else 1
 		pfrequencia = Decimal(request.POST.get('frequencia'))
 		pfrequencia = pfrequencia if pfrequencia > 0 else 1
+		pcontinuo = True if request.POST.get('continuo') == 'S' else False
 		phorarios = request.POST.getlist('hora')
-		pprint(phorarios)
 		pqtd_disponivel = request.POST.get('qtd_disponivel')
 		pqtd_alterar = request.POST.get('qtd_alterar')
 
@@ -130,6 +130,7 @@ def medicamento_salvar(request, pcpf):
 			estoque.validade = pvalidade
 			estoque.prescricao = pprescricao
 			estoque.frequencia = pfrequencia
+			estoque.continuo = pcontinuo
 			pqtd_alterar = re.findall(r'^(\+|\-)(\d+|\d+\.\d+)$', pqtd_alterar)
 
 			if (len(pqtd_alterar) == 1):
@@ -184,6 +185,7 @@ def medicamento_salvar(request, pcpf):
 				validade = pvalidade,
 				prescricao = pprescricao,
 				frequencia = pfrequencia,
+				continuo = pcontinuo,
 				qtd_disponivel = pqtd_disponivel,
 			)
 

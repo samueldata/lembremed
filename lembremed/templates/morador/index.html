@@ -35,13 +35,13 @@
 						<div class="morador-actions">
 							<button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Hóspede</button>
 							<button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
-						</div>
-
-						{% if perms.lembremed.pode_medicar_morador %}
-							<div class="morador-actions">
+							
+							{% if perms.lembremed.pode_medicar_morador %}
 								<a href="/medicamento/{{ morador.cpf }}">Medicamentos</a>
-							</div>
-						{% endif %}
+
+								<button onclick="carregar_pagina_popup('saida/{{ morador.cpf }}', 'GET', {}, 'Efetuar saida de {{ morador.nome }}')">Efetuar saída</button>
+							{% endif %}
+						</div>
 					</div>
 				{% endfor %}
 			</div>

@@ -6,6 +6,21 @@
 		<input type="hidden" name="edit" value="1" />
 	{% endif %}
 
+
+	<div class="form-group">
+		<label>Tipo de uso</label>
+		
+		<input type="radio" name="continuo" id="continuo-S" class="btn-check" value="S" autocomplete="off" {% if estoque and estoque.continuo %} checked {% endif %} />
+		<label class="btn btn-outline-secondary d-inline" for="continuo-S">Cont&iacute;nuo</label>
+
+		<input type="radio" name="continuo" id="continuo-N" class="btn-check" value="N" autocomplete="off" {% if estoque and not estoque.continuo %} checked {% endif %} />
+		<label class="btn btn-outline-secondary d-inline" for="continuo-N">Espor&aacute;dico</label><br>
+
+		#TODO
+		falta colocar a quantidade de dias que serah administrado caso seja esporadico
+	</div>
+
+
 	<div class="form-group">
 		<label for="nome_medicamento">Medicamento:</label>
 		<input name="codigo_medicamento" id="codigo_medicamento" type="hidden" value="{{ estoque.medicamento.codigo }}">
@@ -33,19 +48,23 @@
 		{% endfor %}
 		</select>
 	</div>
+
 	<div class="form-group">
 		<label for="concentracao">Concentração:</label>
 		<input name="concentracao" type="text" id="concentracao" value="{{ estoque.concentracao }}" class="form-control" />
 	</div>
+
 	<div class="form-group">
 		<label for="validade">Validade:</label>
 		<input name="validade" type="date" id="validade" value="{{ estoque.validade|date:'Y-m-d' }}" class="form-control" />
 	</div>
+
 	<div class="form-group">
 		<label for="prescricao">Dosagem prescrita:</label>
 		<input name="prescricao" type="text" id="prescricao" value="{{ estoque.prescricao|stringformat:".2f" }}" class="form-control" />
 		<span id="tipagem_dosagem">&nbsp;</span>
 	</div>
+
 	<div class="form-group">
 		<label for="frequencia">Frequência:</label>
 		<input name="frequencia" type="number" id="frequencia" value="{{ estoque.frequencia }}" class="form-control" />
