@@ -84,7 +84,7 @@ class Estoque(models.Model):
 	frequencia = models.IntegerField(default=1)
 	validade = models.DateField()
 	continuo = models.BooleanField(default=True)
-	dias_uso = models.IntegerField(default=1)
+	dias_uso = models.IntegerField(null=True, default=0)
 	dthr_alteracao = models.DateTimeField(null=True)
 
 	def estimativa_duracao(self): #Duracao estimada em dias

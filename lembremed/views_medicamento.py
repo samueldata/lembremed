@@ -4,14 +4,14 @@ from django.template.loader import render_to_string
 from lembremed.models import Estoque, Horario, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao, HORA_CHOICES
 from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
-from datetime import datetime
+from django.utils import timezone
 from django.core.mail import send_mail
 import re
 from decimal import Decimal
 import requests
 from django.conf import settings
 
-from pprint import pprint
+#from pprint import pprint
 
 #teste amanda
 
@@ -117,6 +117,7 @@ def medicamento_salvar(request, pcpf):
 		pfrequencia = Decimal(request.POST.get('frequencia'))
 		pfrequencia = pfrequencia if pfrequencia > 0 else 1
 		pcontinuo = True if request.POST.get('continuo') == 'S' else False
+		pdias_uso = int(request.POST.get('dias_uso')) if pcontinuo == False else None
 		phorarios = request.POST.getlist('hora')
 		pqtd_disponivel = request.POST.get('qtd_disponivel')
 		pqtd_alterar = request.POST.get('qtd_alterar')
@@ -131,6 +132,8 @@ def medicamento_salvar(request, pcpf):
 			estoque.prescricao = pprescricao
 			estoque.frequencia = pfrequencia
 			estoque.continuo = pcontinuo
+			estoque.dias_uso = pdias_uso
+			estoque.dthr_alteracao = timezone.now()
 			pqtd_alterar = re.findall(r'^(\+|\-)(\d+|\d+\.\d+)$', pqtd_alterar)
 
 			if (len(pqtd_alterar) == 1):
@@ -186,13 +189,13 @@ def medicamento_salvar(request, pcpf):
 				prescricao = pprescricao,
 				frequencia = pfrequencia,
 				continuo = pcontinuo,
+				dias_uso = pdias_uso,
+				dthr_alteracao = timezone.now(),
 				qtd_disponivel = pqtd_disponivel,
 			)
 
 			for h in phorarios:
 				Horario.objects.create(estoque=estoque, hora=int(h))
-
-		# Após criar o usuário, atribua o papel associado
 
 		return HttpResponse("medicamento salvo com sucesso")
 	else:
@@ -230,7 +233,7 @@ def medicamento_administrar(request, pcpf, pcodigo):
 			profissional = Profissional.objects.get(usuario=request.user),
 			morador = estoque.morador,
 			estoque = estoque,
-			dthr_administracao = datetime.now(),
+			dthr_administracao = timezone.now(),
 		)
 
 		if (estoque.estimativa_duracao() <= 7):
