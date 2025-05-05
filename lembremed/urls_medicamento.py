@@ -9,4 +9,5 @@ urlpatterns = [
 	re_path(r'^(?P<pcpf>[\d\.-]+)/salvar/$', views_medicamento.medicamento_salvar, name='medicamento_salvar'),
 	re_path(r'^(?P<pcpf>[\d\.-]+)/excluir/(?P<pcodigo>\d+)/$', views_medicamento.medicamento_excluir, name='medicamento_excluir'),
 	re_path(r'^(?P<pcpf>[\d\.-]+)/administrar/(?P<pcodigo>\d+)/$', views_medicamento.medicamento_administrar, name='medicamento_administrar'),
+	re_path(r'^(?P<pcpf>[\d\.-]+)/salvar_administracao/(?P<pcodigo>\d+)/$', views_medicamento.medicamento_salvar_administracao, name='medicamento_salvar_administracao'),
 ]

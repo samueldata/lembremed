@@ -1,73 +1,73 @@
 {% load static %}
 <header>
-    <div class="brand-container">
-        <a href="/" class="brand-container"><img src="{% static 'images/logo.png' %}" alt="Lembre-MEd Logo" /></a>
-        <h1>Lembre-MEd</h1>
-    </div>
+	<div class="brand-container">
+		<a href="/" class="brand-container"><img src="{% static 'images/logo.png' %}" alt="Lembre-MEd Logo" /></a>
+		<h1>Lembre-MEd</h1>
+	</div>
 
-    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+	<div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
-    <nav id="navbar">
-        <div class="nav-user">
-            {% if user.is_authenticated %}
-                Olá,
-                {% block nome_usuario %}
-                    {{ usuario.nome }}!
-                {% endblock %}
-            {% endif %}
-        </div>
-        <div class="nav-buttons">
-            <ul>
-                {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-                    {% if estoque_acabando or estoque_vencendo %}
-                        <li>
-                            <a href="{% url 'notificacao_listar' %}"><img style="width: 1em;" src="/static/images/notification.png"></a>
-                        </li>
-                    {% endif %}
-                {% endif %}
-                <li>
-                    <a href="{% url 'index' %}">HOME</a>
-                </li>
-                {% if perms.lembremed.pode_gerenciar_instituicao %}
-                    {# o super usuario tem todas as permissoes #}
-                    {# % if request.user.is_superuser % #}
-                    <li>
-                        <a href="{% url 'instituicao_listar' %}">INSTITUIÇÕES</a>
-                    </li>
-                    {% endif %}
-                {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-                    {% if not request.user.is_superuser %}
-                        <li>
-                            <a href="{% url 'morador_listar' %}">HÓSPEDES</a> </li>
-                    {% endif %}
-                {% endif %}
-                {% if perms.lembremed.pode_gerenciar_profissional %}
-                    {% if not request.user.is_superuser %}
-                        <li>
-                            <a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
+	<nav id="navbar">
+		<div class="nav-user">
+			{% if user.is_authenticated %}
+				Olá,
+				{% block nome_usuario %}
+					{{ usuario.nome }}!
+				{% endblock %}
+			{% endif %}
+		</div>
+		<div class="nav-buttons">
+			<ul>
+				{% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+					{% if estoque_acabando or estoque_vencendo %}
+						<li>
+							<a href="{% url 'notificacao_listar' %}"><img style="width: 1em;" src="/static/images/notification.png"></a>
+						</li>
+					{% endif %}
+				{% endif %}
+				<li>
+					<a href="{% url 'index' %}">HOME</a>
+				</li>
+				{% if perms.lembremed.pode_gerenciar_instituicao %}
+					{# o super usuario tem todas as permissoes #}
+					{# % if request.user.is_superuser % #}
+					<li>
+						<a href="{% url 'instituicao_listar' %}">INSTITUIÇÕES</a>
+					</li>
+					{% endif %}
+				{% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+					{% if not request.user.is_superuser %}
+						<li>
+							<a href="{% url 'morador_listar' %}">HÓSPEDES</a> </li>
+					{% endif %}
+				{% endif %}
+				{% if perms.lembremed.pode_gerenciar_profissional %}
+					{% if not request.user.is_superuser %}
+						<li>
+							<a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a>
+						</li>
+					{% endif %}
+				{% endif %}
 
-                {% if user.is_authenticated %}
-                    <li>
-                        <a href="#" onclick="$('#logout_form')[0].submit()">SAIR</a>
-                    </li>
-                    <form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
-                        {% csrf_token %}
-                    </form>
-                {% else %}
-                    <li>
-                        <a href="{% url 'login' %}">LOGIN</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
-    <script>
-        function toggleMenu() {
-            var navbar = document.getElementById('navbar')
-            navbar.classList.toggle('show')
-        }
-    </script>
+				{% if user.is_authenticated %}
+					<li>
+						<a href="#" onclick="$('#logout_form')[0].submit()">SAIR</a>
+					</li>
+					<form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
+						{% csrf_token %}
+					</form>
+				{% else %}
+					<li>
+						<a href="{% url 'login' %}">LOGIN</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
+	<script>
+		function toggleMenu() {
+			var navbar = document.getElementById('navbar');
+			navbar.classList.toggle('show');
+		}
+	</script>
 </header>

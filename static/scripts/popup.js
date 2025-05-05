@@ -10,7 +10,7 @@ function carregar_pagina_popup(purl, pmethod, pdata, ptitulo) {
 		url: purl,
 		data: pdata,
 		success: function(msg) {
-			abrir_popup(ptitulo, msg);
+			abrir_popup(ptitulo.replace('/comprimido/','<br />'), msg);
 		}
 	});
 }
@@ -60,3 +60,31 @@ function envia_e_recarregar(event) {
 		}
 	});
 }
+
+function submitar(url, metodo = 'POST') {
+	// Divide a URL base dos parâmetros
+	const [action, query] = url.split('?');
+	
+
+	// Cria o form
+	const form = document.createElement('form');
+	form.method = metodo;
+	form.action = action;
+
+	//Verifica se tem parametros
+	if (query) {
+		// Converte os parâmetros da query string em campos hidden
+		const params = new URLSearchParams(query);
+		for (const [key, value] of params.entries()) {
+			const input = document.createElement('input');
+			input.type = 'hidden';
+			input.name = key;
+			input.value = value;
+			form.appendChild(input);
+		}
+	}
+
+	// Adiciona o form ao DOM e envia
+	document.body.appendChild(form);
+	form.submit();
+	}

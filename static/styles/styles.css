@@ -7,6 +7,35 @@ html {
 	color: #333;
 }
 
+
+/***********************************************
+			INICIO HEADER.HTML
+************************************************/
+
+.brand-container img {
+	margin-left: 10px;
+	max-width: 30px;
+	height: auto;
+}
+
+.brand-container {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.brand-container .logo-icon {
+	height: 50px;
+	width: auto;
+}
+
+.brand-container h1 {
+	font-size: 24px;
+	font-family: 'Myriad Pro', sans-serif;
+	margin: 0;
+	color: #eee;
+}
+
 header {
 	background-color: #298377;
 	background-image: url("/static/images/background.jpeg");
@@ -20,12 +49,6 @@ header {
 	position: relative;
 }
 
-.menu-toggle {
-	display: none;
-	font-size: 2rem;
-	cursor: pointer;
-	color: white;
-}
 
 /* Estilos para navegação desktop */
 nav {
@@ -47,6 +70,135 @@ nav {
 	text-decoration: none;
 }
 
+nav ul {
+	list-style-type: none;
+	display: flex;
+	margin-bottom: 0;
+}
+
+nav li {
+	margin-right: 20px;
+}
+
+nav a {
+	color: #eee;
+	text-decoration: none;
+	font-weight: bold;
+	text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+	padding: 10px 15px;
+	border-radius: 20px;
+	background-color: transparent;
+	transition: background-color 0.3s;
+}
+
+nav a:hover,
+nav a:focus {
+	background-color: #76af9f;
+	color: #eee;
+	text-decoration: none;
+}
+
+.active {
+	color: #ff0000;
+	text-shadow: #333 0 -2px;
+}
+
+.nav-user {
+	text-align: center;
+	color: #eee;
+}
+/***********************************************
+			FIM HEADER.HTML
+************************************************/
+
+
+
+/***********************************************
+			INICIO INDEX.HTML (HOME)
+************************************************/
+
+.feature-title {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 1em;
+	margin-top: 15px;
+}
+
+.feature img {
+	margin-right: 1em;
+	width: 50px;
+}
+
+.feature p {
+	color: #333;
+	padding: 0;
+	font-size: 1em;
+}
+
+.banner {
+	background: url(/static/images/background.jpg);
+	background-size: cover;
+	background-repeat: no-repeat no-repeat;
+	height: 633px;
+}
+
+.circulo {
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	margin: 10px;
+	margin-top: 50px;
+	margin-right: 800px;
+	background: #2c8d7e
+}
+
+.highlight-items {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: stretch;
+	border-top: solid 10px #004d40;
+}
+
+.highlight-items h1 {
+	color: #2a7c6f;
+	text-align: center;
+	margin-top: 1em;
+}
+
+.highlight-items .feature {
+	flex: 1 1 200px;
+	box-shadow: 5px 20px 15px 1px rgba(0, 0, 0, 0.2);
+	text-align: justify;
+	margin: 10px;
+	margin-bottom: 80px;
+	padding: 20px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	max-width: 500px;
+}
+
+.highlight-items .feature img {
+	width: 100px;
+	margin-right: 20px;
+	display: flex;
+	align-items: normal;
+	height: 50px;
+	width: 50px;
+	margin-left: 10px;
+	margin-bottom: 13%;
+}
+
+/***********************************************
+			FIM INDEX.HTML (HOME)
+************************************************/
+
+
+
+/***********************************************
+			INICIO LOGIN.HTML
+************************************************/
 .popUp-failLogin {
 	display: flex;
 	justify-content: center;
@@ -110,6 +262,16 @@ nav {
 	background-color: #144a41;
 }
 
+.formLogin input.btn:hover {
+	background-color: #144a41;
+}
+/***********************************************
+			FIM LOGIN.HTML
+************************************************/
+
+/***********************************************
+			INICIO PASSWORD_RESET_FORM.HTML
+************************************************/
 .ForgotPassword {
 	display: flex;
 	flex-direction: column;
@@ -163,10 +325,13 @@ nav {
 	border-radius: 50px;
 }
 
-.formLogin input.btn:hover {
-	background-color: #144a41;
-}
+/***********************************************
+			FIM PASSWORD_RESET_FORM.HTML
+************************************************/
 
+/***********************************************
+			INICIO PASSWORD_RESET_DONE.HTML
+************************************************/
 .reset_password_done {
 	display: flex;
 	justify-content: center;
@@ -178,6 +343,13 @@ nav {
 	font-size: 30px;
 }
 
+/***********************************************
+			FIM PASSWORD_RESET_DONE.HTML
+************************************************/
+
+/***********************************************
+			INICIO LOGGET_OUT.HTML
+************************************************/
 .logout {
 	display: flex;
 	flex-direction: column;
@@ -206,67 +378,13 @@ button .btn .Logout {
 button .btn .Logout:hover {
 	background: #144a41;
 }
+/***********************************************
+			FIM LOGGET_OUT.HTML
+************************************************/
 
-.brand-container img {
-	margin-left: 10px;
-	max-width: 30px;
-	height: auto;
-}
-
-.brand-container {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-}
-
-.brand-container .logo-icon {
-	height: 50px;
-	width: auto;
-}
-
-.brand-container h1 {
-	font-size: 24px;
-	font-family: 'Myriad Pro', sans-serif;
-	margin: 0;
-	color: #eee;
-}
-
-nav ul {
-	list-style-type: none;
-	display: flex;
-	margin-bottom: 0;
-}
-
-nav li {
-	margin-right: 20px;
-}
-
-nav a {
-	color: #eee;
-	text-decoration: none;
-	font-weight: bold;
-	text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
-	padding: 10px 15px;
-	border-radius: 20px;
-	background-color: transparent;
-	transition: background-color 0.3s;
-}
-
-nav a:hover,
-nav a:focus {
-	background-color: #76af9f;
-	color: #eee;
-	text-decoration: none;
-}
-
-.active {
-	color: #26a69a;
-}
-
-.nav-user {
-	text-align: center;
-	color: #eee;
-}
+/***********************************************
+			INICIO LISTAS
+************************************************/
 
 .main-content {
 	background-color: #298377;
@@ -275,28 +393,9 @@ nav a:focus {
 	padding: 20px;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	/*justify-content: center;*/
 	flex-direction: column; /* Para alinhar o conteúdo na direção vertical */
-	min-height: 100vh; /* Garante que a altura mínima seja 100% da altura da tela */
-}
-
-
-.feature-title {
-	width: 100%;
-	text-align: center;
-	margin-bottom: 1em;
-	margin-top: 15px;
-}
-
-.feature img {
-	margin-right: 1em;
-	width: 50px;
-}
-
-.feature p {
-	color: #333;
-	padding: 0;
-	font-size: 1em;
+	min-height: calc(100vh - 150px); /* Garante que a altura mínima seja 100% da altura da tela */
 }
 
 #searchInput {
@@ -306,11 +405,185 @@ nav a:focus {
 	border-radius: 20px;
 }
 
+.filter-icon {
+	height: 48px;
+	margin-right: 10px;
+}
+
+.section-title {
+	text-align: center;
+	color: #004d40;
+	margin-bottom: 20px;
+}
+
+.no-items-list {
+	text-align: center;
+}
+
+.list-filter {
+	display: flex;
+	align-items: normal;
+	margin-bottom: 20px;
+}
+
+.list-container {
+	width: calc(100% - 5px);
+	margin: 0 auto;
+	margin-inline: 10px;
+	padding: 20px;
+	background-color: #eee;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+.btn-cadastrar {
+	display: block;
+	width: calc(100% - 30px);
+	padding: 10px;
+	background-color: #004d40;
+	color: white;
+	text-align: center;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.btn-cadastrar:hover {
+	background-color: #00251a;
+}
+
+.coluna.action button {
+	padding: 5px 10px;
+	margin: 0.25rem;
+	background-color: #2c8d7e;
+	color: white;
+	text-decoration: none;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.coluna.action a:hover {
+	background-color: #00796b;
+}
+
+.coluna.action button:focus {
+	border-color: #00251a;
+}
+
+.coluna .dropdown {
+	vertical-align: top;
+}
+
+.linha:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.linha dd {
+	margin: 0px;
+}
+
+@media (min-width: 768.001px) { /* Estilos para dispositivos desktop */
+	.linha:not(:last-child) .coluna {
+		border-bottom: 1px solid #ccc;
+	}
+
+	.lista {
+		display: table;
+		width: 100%;
+	}
+	.cabecalho{
+		display: table-header-group;
+		font-weight: bold;
+	}
+	.cabecalho .coluna{
+		border-bottom: 1px solid #000;
+	}
+	.linha {
+		display: table-row;
+	}
+	.coluna {
+		display: table-cell;
+		padding: 0.15rem 0.3rem;
+		vertical-align: top;
+		word-break: break-word;
+		overflow-wrap: break-word;
+	}
+	.coluna.action .dropdown {
+		display: inline-block;
+	}
+	.coluna.action {
+		text-align: center;
+	}
+}
+@media (max-width: 768px) {/* Estilos para dispositivos móveis */
+	.linha .coluna:not(:last-child):not(:nth-last-child(2)) {
+		border-bottom: 1px solid #aaa;
+	}
+
+	.lista {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: column;
+		width: 100%;
+		overflow-x: hidden;
+	}
+	.cabecalho,
+	.linha dd,
+	.linha dt {
+		display: none;
+	}
+	.linha {
+		position: relative; /* Necessário para dropdown se posicionar corretamente */
+		background-color: #d3d6d6;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		margin: 10px;
+		padding: 15px;
+		border-radius: 15px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+		font-size: 0.9rem;
+	}
+	.coluna {
+		padding: 4px 0;
+	}
+	.coluna.info {
+		display: block !important;
+	}
+	.coluna.action,
+	.coluna.action .dropdown {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		justify-content: center;
+
+		/*z-index: 9999;*/
+	}
+
+	/* Mostrar o rótulo antes do valor */
+	.coluna:not(:last-child)::before {
+		content: attr(data-label) ': ';
+		font-weight: bold;
+		text-align: right;
+	}
+}
+
+/***********************************************
+			FIM LISTAS
+************************************************/
+
+/***********************************************
+			INICIO CADASTRO
+************************************************/
+
 .form-custom {
 	background-color: #eee;
 	padding: 20px;
 	border-radius: 8px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 	margin: 20px 0;
 }
 
@@ -345,34 +618,13 @@ nav a:focus {
 	background-color: #00251a;
 }
 
-.filter-icon {
-	height: 48px;
-	margin-right: 10px;
-}
+/***********************************************
+			FIM CADASTRO
+************************************************/
 
-.section-title {
-	text-align: center;
-	color: #004d40;
-	margin-bottom: 20px;
-}
-
-.btn-cadastrar {
-	display: block;
-	width: 100%;
-	padding: 10px;
-	background-color: #004d40;
-	color: white;
-	text-align: center;
-	border: none;
-	border-radius: 50px;
-	cursor: pointer;
-	margin-top: 20px;
-}
-
-.btn-cadastrar:hover {
-	background-color: #00251a;
-}
-
+/***********************************************
+			INICIO FOOTER.HTML
+************************************************/
 footer {
 	display: flex;
 	justify-content: center;
@@ -386,7 +638,7 @@ footer {
 	width: 100%;
 }
 
-.footer {
+footer div {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -405,157 +657,14 @@ footer p {
 	color: #eee;
 }
 
-.no-profissionais,
-.no-instituicoes {
-	text-align: center;
-}
+/***********************************************
+			FIM FOOTER.HTML
+************************************************/
 
-.banner {
-	background: url(/static/images/background.jpg);
-	background-size: cover;
-	background-repeat: no-repeat no-repeat;
-	height: 633px;
-}
+/***********************************************
+			INICIO XXX
+************************************************/
 
-.circulo {
-	width: 80px;
-	height: 80px;
-	border-radius: 50%;
-	margin: 10px;
-	margin-top: 50px;
-	margin-right: 800px;
-	background: #2c8d7e
-}
-
-.medicamento-control {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: stretch;
-	border-top: solid 10px #004d40;
-}
-
-.medicamento-control h1 {
-	color: #2a7c6f;
-	text-align: center;
-	margin-top: 1em;
-}
-
-.medicamento-control .feature {
-	flex: 1 1 200px;
-	box-shadow: 5px 20px 15px 1px rgba(0, 0, 0, 0.2);
-	text-align: justify;
-	margin: 10px;
-	margin-bottom: 80px;
-	padding: 20px;
-	border-radius: 8px;
-	display: flex;
-	align-items: center;
-	max-width: 500px;
-}
-
-.medicamento-control .feature img {
-	width: 100px;
-	margin-right: 20px;
-	display: flex;
-	align-items: normal;
-	height: 50px;
-	width: 50px;
-	margin-left: 10px;
-	margin-bottom: 13%;
-}
-
-.moradores-filter,
-.profissionais-filter,
-.medicamentos-filter {
-	display: flex;
-	align-items: normal;
-	margin-bottom: 20px;
-}
-
-.moradores-container,
-.profissionais-container,
-.instituicoes-container,
-.medicamentos-container {
-	max-width: 1200px;
-	min-width: 95%;
-	margin: 0 auto;
-	margin-inline: 10px;
-	padding: 20px;
-	background-color: #eee;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	border-radius: 8px;
-}
-
-.moradores-cards,
-.profissionais-cards,
-.instituicoes-cards {
-	overflow-x: auto;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	flex-direction: column;
-	align-content: center;
-	white-space: nowrap;
-
-}
-
-.moradores-cards,
-.profissionais-cards {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-}
-
-.medicamentos-cards-desktop{
-	display: none;
-	overflow-x: auto;
-	white-space: nowrap;
-}
-.medicamento-card-desktop {
-	display: none;
-	background-color: #d3d6d6;
-	margin: 10px;
-	padding: 15px;
-	border-radius: 15px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 100%;
-}
-
-/* Estilo da barra de rolagem da versão tabela*/
-/* .medicamentos-cards-desktop::-webkit-scrollbar {
-	height: 8px;
-}
-
-.medicamentos-cards-desktop::-webkit-scrollbar-thumb {
-	background-color: #2a7c6f; /* Cor da barra de rolagem */
-	/*border-radius: 4px;
-}
-
-/* .medicamentos-cards-desktop::-webkit-scrollbar-track { */
-	/* background-color: #ddd; Fundo da barra de rolagem */
-/* } */
-
-.morador-card,
-.profissional-card,
-.instituicao-card {
-	width: 100%;
-	background-color: #d3d6d6;
-	margin: 10px;
-	padding: 15px;
-	border-radius: 15px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
-
-.medicamento-info-desktop {
-	display: flex;
-}
 
 
 .table-medicamento-desktop {
@@ -573,76 +682,23 @@ footer p {
 	max-width: 260px;
 }
 
-.morador-info p {
-	margin: 5px 0;
-	display: flex;
-	flex-wrap: wrap;
-	word-break: break-word;
-	word-wrap: break-word;
-}
-
-.morador-actions,
-.profissional-actions,
-.medicamento-actions,
-.instituicao-actions {
-	text-align: center;
-	margin-top: 10px;
-	display: flex;
-	flex-direction: row;
-}
-
-.morador-actions button,
-.morador-actions a,
-.profissional-actions button,
-.profissional-actions a,
-.medicamento-actions button,
-.medicamento-actions a,
-.instituicao-actions button,
-.instituicao-actions a {
-	padding: 5px 10px;
-	margin-right: 10px;
-	background-color: #2c8d7e;
-	color: white;
-	text-decoration: none;
-	border: none;
-	border-radius: 50px;
-	cursor: pointer;
-	align-content: center;
-}
-
-.morador-actions button:hover,
-.morador-actions a:hover,
-.profissional-actions button:hover,
-.profissional-actions a:hover,
-.medicamento-actions button:hover,
-.medicamento-actions button:focus,
-.medicamento-actions a:hover,
-.instituicao-actions button:hover,
-.instituicao-actions a:hover {
-	background-color: #00796b;
-}
-
-.medicamento-actions button:focus {
-	border-color: #00251a;
-}
-
 /* Exibir apenas a versão de cards de medicamentos*/
-.medicamento-card-mobile {
+.list-card-mobile {
 	display: block;
 	background-color: #f5f5f5;
 	padding: 15px;
 	margin-bottom: 15px;
 	border-radius: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.medicamento-info-mobile p {
+.card-info-mobile p {
 	margin: 5px 0;
 	font-size: 1rem;
 	line-height: 1.4;
 }
 
-.medicamento-actions-mobile {
+.list-mobile {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
@@ -650,7 +706,7 @@ footer p {
 	margin-top: 10px;
 }
 
-.medicamento-actions-mobile button {
+.list-actions-mobile button {
 	padding: 8px 12px;
 	background-color: #2c8d7e;
 	color: white;
@@ -658,29 +714,30 @@ footer p {
 	border-radius: 4px;
 	cursor: pointer;
 }
-.medicamento-actions-mobile button:hover {
+
+.list-actions-mobile button:hover {
 	background-color: #00251a;
 }
 
-.estoque-baixo {
-	margin-top: 10px;
-	padding: 10px;
-	background-color: #ffcccc;
-	color: #a94442;
-	border-radius: 4px;
-	text-align: center;
-}
 
-.ultima-admin {
-	margin-top: 10px;
-	font-size: 0.9rem;
-	color: #555;
-	text-align: center;
+
+@media (min-width: 768.01px) { /* Estilos para dispositivos desktop */
+	*,body, p, h1, h2, h3, h4, h5, h6, a, span, li, td, th {
+		/*color: #909000 !important;
+		/*/color: currentColor;/**/
+	}
+
+	.menu-toggle {
+		display: none;
+	}
 }
 
 
-/* Estilos para dispositivos móveis */
-@media (max-width: 768px) {
+@media (max-width: 768px) { /* Estilos para dispositivos móveis */
+	*,body, p, h1, h2, h3, h4, h5, h6, a, span, li, td, th {
+		/*color: #000090 !important;
+		/*/color: currentColor;/**/
+	}
 
 	.main-content {
 		padding-top: 20px;
@@ -691,18 +748,13 @@ footer p {
 	.menu-toggle {
 		display: block;
 		margin-right: 10px;
+		font-size: 2rem;
+		cursor: pointer;
+		color: white;
 	}
 
 	nav {
 		display: none;
-		flex-direction: column;
-		width: 100%;
-		background-color: #298377;
-		position: absolute;
-		top: 100%;
-		/* Faz o menu aparecer logo abaixo do header */
-		left: 0;
-		z-index: 1000;
 	}
 
 	.nav-buttons ul {
@@ -729,7 +781,7 @@ footer p {
 		display: none;
 	}
 
-	.medicamento-control .feature {
+	.highlight-items .feature {
 		max-width: 340px;
 	}
 
@@ -737,11 +789,13 @@ footer p {
 		display: none;
 	}
 
-	.moradores-container, .profissionais-container, .instituicoes-container {
-		max-width: 400px;
-	}
-	.morador-actions, .profissional-actions, .instituicao-actions {
+	.list-actions {
 		flex-direction: column;
 		gap: 10px;
 	}
+}
+
+@media (min-width: 768.01px) { /* Estilos para dispositivos desktop */
+}
+@media (max-width: 768px) { /* Estilos para dispositivos móveis */
 }

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Lembre-MEd - SA&Iacute;DAS{% endblock %}
+
+{% block content %}
+
+<main class="main-content" style="padding: 20px;">
+	<section class="list-container">
+		<h2 class="section-title">SA&Iacute;DAS</h2>
+			
+		<div class="text-center mb-1">
+			<h3>
+				{{ morador.nome }}
+			</h3>
+		</div>
+		
+		
+		{% if lista_saidas %}
+
+		{% comment %} Início da versão Desktop {% endcomment %}
+		<div class="list-cards-desktop">
+			<div class="list-card-desktop">
+				<div class="card-info-desktop">
+					<table class="table table-saida-desktop">
+						<thead>
+						<tr>
+							<th class="th-medicamento">Medicamento</th>
+							<th>Apresentação</th>
+							<th>Concentração</th>
+							<th>Prescrição</th>
+							<th>Frequência</th>
+							<th>Horários</th>
+							<th>Qtd. disponível</th>
+							<th>Duração estoque</th>
+						</tr>	
+						</thead>
+						{% for saida_associada in lista_saidas %}				
+							<tbody class="tbody-medicamento">
+								<tr class="details">
+									<td class="td-medicamento">
+										<span class="span-medicamento" style="word-wrap: break-word;">
+										{{ saida_associada.estoque.medicamento }}
+										</span>
+										<div class="list-actions">
+											{% if perms.lembremed.pode_medicar_morador %}
+											
+												<button class="btn btn-primary" 
+													onclick="carregar_pagina_popup('editar/{{ saida_associada.estoque.codigo }}', 'GET', {}, 'Alterar {{ saida_associada.estoque.medicamento.principio }}')">
+													Editar</button>
+												<button class="btn btn-primary" 
+													onclick="if (confirm('Confirma a exclusão deste medicamento?')) { carregar_pagina_popuploading('excluir/{{ saida_associada.estoque.codigo }}', 'GET', {}, 'Excluindo {{ saida_associada.estoque.medicamento.principio }}...'); }">
+													Excluir</button>
+													
+												<button class="btn btn-primary" 
+													onclick="if (confirm('Confirma a administração de {{ saida_associada.estoque.medicamento.principio }}?')) { carregar_pagina_popuploading('administrar/{{ saida_associada.estoque.codigo }}', 'GET', {}, 'Administrando {{ saida_associada.estoque.medicamento.principio }}...'); }">
+													Medicar</button>
+											{% endif %}
+										</div>
+									</td>
+									<td>
+										{{ saida_associada.estoque.apresentacao.unidade_prescricao }}
+									</td>
+									<td>
+										{{ saida_associada.estoque.concentracao }}
+									</td>
+									<td>
+										{{ saida_associada.estoque.prescricao|stringformat:".2f" }}
+										{{ saida_associada.estoque.apresentacao.unidade_prescricao }}
+									</td>
+									<td>
+										{{ saida_associada.estoque.frequencia }} x dia
+									</td>
+									<td>
+										{{ saida_associada.horarios }}
+									</td>
+									<td>
+										{{ saida_associada.estoque.qtd_disponivel|stringformat:".2f" }}
+										{{ saida_associada.estoque.apresentacao.unidade_comercial }}
+									</td>
+									<td>
+										Aproximadamente {{ saida_associada.duracao|floatformat:0 }} dia(s)
+									</td>
+								</tr>
+								<tr>
+									<td colspan="8">
+										{% if saida_associada.ultima_administracao %}
+											Última administração: {{ saida_associada.ultima_administracao.dthr_administracao|date:"d/m/Y H:i" }}
+											feita por {{ saida_associada.ultima_administracao.profissional.nome }}
+										{% else %}
+											Nunca administrado
+										{% endif %}
+									</td>
+								</tr>
+								{% if saida_associada.duracao <= 7 %}
+									<tr>
+										<td colspan="8" class="text-center bg-danger text-white">
+											Faltam menos de 7 dias de estoque para este medicamento
+										</td>
+									</tr>
+								{% endif %}
+							</tbody>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+		{% comment %} Fim da versão Desktop {% endcomment %}
+
+		{% comment %} Início da versão Mobile de exibição {% endcomment %}
+		{% for saida_associada in lista_saidas %}
+		<div class="list-card-mobile">
+			<div class="card-info-mobile">
+				<p><strong>Medicamento:</strong> {{ saida_associada.estoque.medicamento }}</p>
+				<p><strong>Apresentação:</strong> {{ saida_associada.estoque.apresentacao.unidade_prescricao }}</p>
+				<p><strong>Concentração:</strong> {{ saida_associada.estoque.concentracao }}</p>
+				<p><strong>Prescrição:</strong> {{ saida_associada.estoque.prescricao|stringformat:".2f" }} {{ saida_associada.estoque.apresentacao.unidade_prescricao }}</p>
+				<p><strong>Frequência:</strong> {{ saida_associada.estoque.frequencia }} x dia</p>
+				<p><strong>Horários:</strong> {{ saida_associada.horarios }}</p>
+				<p><strong>Qtd. disponível:</strong> {{ saida_associada.estoque.qtd_disponivel|stringformat:".2f" }} {{ saida_associada.estoque.apresentacao.unidade_comercial }}</p>
+				<p><strong>Duração estoque:</strong> Aproximadamente {{ saida_associada.duracao|floatformat:0 }} dia(s)</p>
+				
+				<!-- Botões de ação -->
+				<div class="list-actions-mobile">
+					{% if perms.lembremed.pode_medicar_morador %}
+						<button class="btn btn-primary" onclick="carregar_pagina_popup('editar/{{ saida_associada.estoque.codigo }}', 'GET', {}, 'Alterar {{ saida_associada.estoque.medicamento.principio }}')">Editar</button>
+						<button class="btn btn-primary" onclick="if (confirm('Confirma a exclusão deste medicamento?')) { carregar_pagina_popuploading('excluir/{{ saida_associada.estoque.codigo }}', 'GET', {}, 'Excluindo {{ saida_associada.estoque.medicamento.principio }}...'); }">Excluir</button>
+						<button class="btn btn-primary" onclick="if (confirm('Confirma a administração de {{ saida_associada.estoque.medicamento.principio }}?')) { carregar_pagina_popuploading('administrar/{{ saida_associada.estoque.codigo }}', 'GET', {}, 'Administrando {{ saida_associada.estoque.medicamento.principio }}...'); }">Medicar</button>
+					{% endif %}
+				</div>
+
+			</div>
+		</div>
+		{% endfor %}
+
+
+		{% comment %} Fim versão Mobile de exibição {% endcomment %}
+		{% else %}
+			<p style="text-align: center;">Não temos nenhum medicamento cadastrado para o hóspede :(</p>
+		{% endif %}
+		<button class="btn-cadastrar"
+			onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar medicamento');">Cadastrar Novo
+			Medicamento</button>
+	</section>
+		
+</main>
+
+<script src="{% static 'scripts/filter.js' %}"></script>
+{% endblock %}

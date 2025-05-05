@@ -76,15 +76,10 @@
 	</div>
 	<div class="form-group">
 		<label for="horarios">Horários:</label>
-
 		<div class="checkbox-grid">
 			{% for value, label in HORA_CHOICES %}
-				<label>
-				<input type="checkbox" name="hora" value="{{ value }}"
-				{% if value in horarios_selecionados %} checked {% endif %}
-				>
-				{{ label }}
-				</label>
+				<input type="checkbox" name="hora" id="horario-{{ value }}" class="btn-check" value="{{ value }}" autocomplete="off" {% if value in horarios_selecionados %} checked {% endif %} />
+				<label class="btn btn-outline-secondary d-inline" for="horario-{{ value }}">{{ label }}</label>
 			{% endfor %}
 		</div>
 	</div>
@@ -135,9 +130,9 @@ function teste_feririxXo(e) {
 */
 
 $( "form_estoque" ).on( "submit", function( event ) {
-  event.preventDefault();
-  event.stopPropagation();
-  // Do something
+	event.preventDefault();
+	event.stopPropagation();
+	// Do something
 });
 
 // Troca o submit para enviar no popup
@@ -201,8 +196,7 @@ $('input[name="continuo"]').on('change', function() {
 	
 	var uso = $('input[name="continuo"]:checked').val();
 	if (uso === 'N') {
-		$('#campo_dias_uso').fadeIn(500); // 200ms de transição
-		$('#campo_dias_uso').removeClass('d-none');
+		$('#campo_dias_uso').fadeIn(500);
 	} else {
 		$('#campo_dias_uso').fadeOut(500);
 	}

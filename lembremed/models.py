@@ -46,7 +46,7 @@ class Saida(models.Model):
 		default=SaidaChoices.TEMPORARIO,
 	)
 	dt_inicio = models.DateField()
-	dt_fim = models.DateField()
+	dt_fim = models.DateField(null=True)
 
 class Profissional(models.Model):
 	cpf = models.CharField(max_length=14, primary_key=True)
