@@ -39,6 +39,7 @@ class SaidaChoices(models.TextChoices):
 	MORTE = 'MO', 'Morte'
 
 class Saida(models.Model):
+	codigo = models.AutoField(primary_key=True)
 	morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
 	tipo = models.CharField(
 		max_length=2,
@@ -84,7 +85,7 @@ class Estoque(models.Model):
 	frequencia = models.IntegerField(default=1)
 	validade = models.DateField()
 	continuo = models.BooleanField(default=True)
-	dias_uso = models.IntegerField(null=True, default=0)
+	dias_uso = models.IntegerField(null=True, default=0) #Caso o uso nao for continuo, indica por quantos dias usar
 	dthr_alteracao = models.DateTimeField(null=True)
 
 	def estimativa_duracao(self): #Duracao estimada em dias

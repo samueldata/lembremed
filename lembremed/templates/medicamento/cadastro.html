@@ -18,7 +18,7 @@
 	</div>
 
 
-	<div id="campo_dias_uso" class="form-group {% if not estoque or estoque.continuo %} d-none {% endif %}">
+	<div id="campo_dias_uso" class="form-group" {% if not estoque or estoque.continuo %} style="display: none;" {% endif %}>
 		<label for="dias_uso">Tempo de uso:</label>
 		<input name="dias_uso" type="text" id="dias_uso" value="{% if estoque and estoque.dias_uso is not None %}{{ estoque.dias_uso }}{% endif %}" class="form-control" />
 		<small class="form-text">Quantidade de dias de uso do medicamento</small>
@@ -181,9 +181,6 @@ $("#apresentacao").on("change", function(){
 	var option = $("#apresentacao option:selected")[0];
 	var tipagem = $('#tipagem_dosagem');
 	tipagem.html(option.attributes['data-bs-prescricao'].value);
-	tipagem.addClass('d-none');
-	tipagem.fadeIn(5000);
-	tipagem.removeClass('d-none');
 	$('#tipagem_qtddisponivel').html(option.attributes['data-bs-comercial'].value);
 });
 
@@ -196,7 +193,7 @@ $('input[name="continuo"]').on('change', function() {
 	
 	var uso = $('input[name="continuo"]:checked').val();
 	if (uso === 'N') {
-		$('#campo_dias_uso').fadeIn(500);
+		$('#campo_dias_uso').removeClass('d-none').fadeIn(500);
 	} else {
 		$('#campo_dias_uso').fadeOut(500);
 	}

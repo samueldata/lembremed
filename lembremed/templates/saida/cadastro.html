@@ -1,98 +1,56 @@
-<form id="form_morador" action="salvar/" method="post" class="form-custom">
+<form id="form_saida" action="salvar/" method="post" class="form-custom">
+
 	{% csrf_token %}
-	<div class="form-group">
-		<label for="cpf">CPF:</label>
-		{% if morador %}
-			<input type="hidden" name="cpf" value="{{ morador.cpf }}" />
-			<input type="hidden" name="edit" value="1" />
-			<input type="text" id="cpf" value="{{ morador.cpf }}" disabled class="form-control" />
-		{% else %}
-			<input name="cpf" type="text" id="cpf" value="" class="form-control" />
-		{% endif %}
-	</div>
+
+	{% if saida %}
+		<input type="hidden" name="codigo" value="{{ saida.codigo }}" />
+		<input type="hidden" name="edit" value="1" />
+	{% endif %}
+
+	<input type="hidden" name="cpf" value="{{ estoque.codigo }}" />
+
 	<div class="form-group">
 		<label for="nome">Nome:</label>
-		<input name="nome" type="text" id="nome" value="{{ morador.nome }}" class="form-control" />
+		<strong id="nome">{{ morador.nome }}</strong>
 	</div>
 	<div class="form-group">
-		<label for="dt_nascimento">Dt Nascimento:</label>
-		<input name="dt_nascimento" type="date" id="dt_nascimento" value="{{ morador.dt_nascimento|date:'Y-m-d' }}" class="form-control" />
+		<label for="cpf">CPF:</label>
+		<span id="cpf">{{ morador.cpf }}</span>
 	</div>
-	<div class="">
-		<label>Responsável:</label>
-		<div class="form-group ms-3">
-			<label for="rcpf">CPF:</label>
-			<input name="rcpf" id="rcpf" value="{{ morador.responsavel.cpf }}" class="form-control" />
-		</div>
-		<div class="form-group ms-3">
-			<label for="rnome">Nome:</label>
-			<input name="rnome" id="rnome" value="{{ morador.responsavel.nome }}" class="form-control" />
-		</div>
-		<div class="form-group ms-3">
-			<label for="remail">E-mail:</label>
-			<input name="remail" id="remail" value="{{ morador.responsavel.email }}" class="form-control" />
-		</div>
-		<div class="form-group ms-3">
-			<label for="rtelefone">Telefone:</label>
-			<input name="rtelefone" id="rtelefone" value="{{ morador.responsavel.telefone }}" class="form-control" />
-		</div>
+	
+	<div class="form-group">
+		<label>Tipo de uso:</label>
+		{% for key, value in saida_choices %}
+			<input type="radio" name="tipo_saida" id="tipo_saida-{{ key }}" class="btn-check" value="{{ key }}" autocomplete="off" {% if saida %} disabled {% endif %} {% if key == saida.tipo %} checked {% endif %} />
+			<label class="btn btn-outline-secondary d-inline-block" for="tipo_saida-{{ key }}">{{ value }}</label>
+		{% endfor %}
 	</div>
+
+	{% if saida %}
+	<div class="form-group">
+		<label for="dt_inicio">Data da sa&iacute;da:</label>
+		<span id="dt_inicio">{{ saida.dt_inicio|date:"d/m/Y" }}</span>
+	</div>
+	{% endif %}
+
+	{% if saida and saida.dt_fim %}
+	<div class="form-group">
+		<label for="dt_fim">Data do retorno:</label>
+		<span id="dt_fim">{{ saida.dt_fim|date:"d/m/Y" }}</span>
+	</div>
+	{% endif %}
+
 	<button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
 <script>
-	// Troca o submit para enviar no popup
-	document.getElementById('form_morador').addEventListener('submit', envia_e_recarregar);
-</script>
-<script>
-	$(document).ready(function () {
-		var cpfmask = '000.000.000-00';
-		$('#cpf').mask(cpfmask);
-		$('#rcpf').mask(cpfmask)
-		.on('keydown', function() {
-			//Verifica se nao chegou no tamanho da mascara
-			if (this.value.length < cpfmask.length) {
-				this.tamanhoanterior = this.value.length; 
-				$(this).trigger('keyup');
-			}
-		})
-		.on('keyup', function() {
-			//Verifica se tem o tamanho da mascara e se adicionou algum caractere
-			if ((this.value.length == cpfmask.length) && (this.tamanhoanterior < this.value.length)) {
-				//Verifica se cpf jah existe no banco de dados
-				$.ajax({
-					url: "procurar_responsavel/",
-					method: "POST",
-					data: $('form').serialize(),
-					success: function(response) {
-						//Verifica se o resultado voltou dados do responsavel
-						if (response.indexOf('|') != -1) {
-							campos = response.split('|');
-							$('#rnome').val(campos[0]);
-							$('#remail').val(campos[1]);
-							$('#rtelefone').val(campos[2]);
 
-						} else {
-							//Nao encontrou o cpf do responsavel, entao habilita os campos para cadastrar
-							$('#rnome').val('');
-							$('#remail').val('');
-							$('#rtelefone').val('');
-						}
-					}
-				});
+$( "form_saida" ).on( "submit", function( event ) {
+	event.preventDefault();
+	event.stopPropagation();
+	// Do something
+});
 
-				//Indica que preencheu mais um caractere 
-				this.tamanhoanterior = this.value.length;
-			}
-		});
-		$('#rtelefone').mask('(00) 000000000');
-
-		// Evento de submit do formulário
-		$('#form_morador').on('submit', function () {
-			// Atualizar o valor do campo com apenas números, removendo caracteres nao numericos
-			$('#cpf').val( $('#cpf').val().replace(/\D/g, ''));
-			$('#rcpf').val( $('#rcpf').val().replace(/\D/g, ''));
-		});
-
-	});
+// Troca o submit para enviar no popup
+document.getElementById('form_saida').addEventListener('submit', envia_e_recarregar);
 </script>

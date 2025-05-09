@@ -521,10 +521,9 @@ button .btn .Logout:hover {
 	}
 }
 @media (max-width: 768px) {/* Estilos para dispositivos móveis */
-	.linha .coluna:not(:last-child):not(:nth-last-child(2)) {
+	.linha .info:not(:last-child) {
 		border-bottom: 1px solid #aaa;
 	}
-
 	.lista {
 		display: flex;
 		flex-wrap: wrap;
@@ -564,7 +563,7 @@ button .btn .Logout:hover {
 	}
 
 	/* Mostrar o rótulo antes do valor */
-	.coluna:not(:last-child)::before {
+	.coluna:not(.action)::before {
 		content: attr(data-label) ': ';
 		font-weight: bold;
 		text-align: right;

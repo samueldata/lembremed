@@ -59,7 +59,9 @@
 						</div>
 						<div class="coluna action">
 							{% if perms.lembremed.pode_medicar_morador %}
-								<button onclick="carregar_pagina_popup('administrar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Administrar {{ estoque_associado.estoque.medicamento.principio }}')">Medicar</button>
+								{% if not tem_saida_aberta %}
+									<button onclick="carregar_pagina_popup('administrar/{{ estoque_associado.estoque.codigo }}', 'GET', {}, 'Administrar {{ estoque_associado.estoque.medicamento.principio }}')">Medicar</button>
+								{% endif %}
 								<div class="dropdown">
 									<button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 										Op&ccedil;&otilde;es

@@ -1,21 +1,17 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from lembremed.models import Estoque, Horario, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao, HORA_CHOICES
+from django.db.models import Q
+from lembremed.models import Estoque, Horario, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao, HORA_CHOICES, Saida
 from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
 from django.utils import timezone
-from datetime import datetime, time
 from django.core.mail import send_mail
 from django.db import transaction
 import re
 from decimal import Decimal
 import requests
 from django.conf import settings
-
-#from pprint import pprint
-
-#teste amanda
 
 def verificar_apresentacoes():
 	qtd_apresentacoes = Apresentacao.objects.count()
@@ -46,7 +42,7 @@ def verificar_apresentacoes():
 @adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_morador')
 def medicamento_listar(request, pcpf, contexto_padrao):
-	#Verifica se tem os tipos de apresentacao cadastrados
+	#Verifica se tem os tipos de apresentacao dos medicamentos cadastrados
 	verificar_apresentacoes()
 
 	#Verifica se eh profissional ou instituicao cadastrando
@@ -57,7 +53,12 @@ def medicamento_listar(request, pcpf, contexto_padrao):
 		morador = Morador.objects.filter(cpf=pcpf, instituicao=contexto_padrao['usuario'].instituicao).first()
 
 	estoques = Estoque.objects.filter(morador=morador)
+	saidas = Saida.objects.filter(morador=morador)
+	print('\n\n\n\n')
+	from pprint import pprint
+	pprint(saidas)
 
+	print('\n\n')
 	lista_estoques = []
 	for estoque in estoques:
 		ultima_administracao = Administra.objects.filter(estoque=estoque).order_by('-dthr_administracao').first()
@@ -65,10 +66,13 @@ def medicamento_listar(request, pcpf, contexto_padrao):
 			'estoque': estoque,
 			'ultima_administracao': ultima_administracao,
 			'duracao': estoque.estimativa_duracao(),
-			'horarios': '  / '.join([HORA_CHOICES[h.hora][1] for h in estoque.horarios.all()]),
 		})
 
-	context = {'lista_estoques': lista_estoques, 'morador': morador}
+	context = {
+		'lista_estoques': lista_estoques, 'morador': morador,
+		'tem_saida_aberta': any(s.dt_fim is None for s in saidas),
+		'horarios': '  / '.join([HORA_CHOICES[h.hora][1] for h in estoque.horarios.all()]),
+		}
 
 	return render(request, 'medicamento/index.html', {**context, **contexto_padrao})
 
@@ -135,7 +139,7 @@ def medicamento_salvar(request, pcpf):
 			estoque.frequencia = pfrequencia
 			estoque.continuo = pcontinuo
 			estoque.dias_uso = pdias_uso
-			estoque.dthr_alteracao = timezone.now()
+			estoque.dthr_alteracao = timezone.localtime(timezone.now())
 			pqtd_alterar = re.findall(r'^(\+|\-)(\d+|\d+\.\d+)$', pqtd_alterar)
 
 			if (len(pqtd_alterar) == 1):
@@ -192,7 +196,7 @@ def medicamento_salvar(request, pcpf):
 				frequencia = pfrequencia,
 				continuo = pcontinuo,
 				dias_uso = pdias_uso,
-				dthr_alteracao = timezone.now(),
+				dthr_alteracao = timezone.localtime(timezone.now()),
 				qtd_disponivel = pqtd_disponivel,
 			)
 
@@ -225,25 +229,42 @@ def medicamento_excluir(request, pcpf, pcodigo):
 def medicamento_administrar(request, pcpf, pcodigo):
 	estoque = Estoque.objects.get(codigo=pcodigo, morador__cpf=pcpf)
 
-	# Pega o início e fim do dia atual (em timezone-aware datetime)
-	hoje = datetime.today().date()
-	inicio = datetime.combine(hoje, time.min)  # 00:00:00
-	fim = datetime.combine(hoje, time.max)     # 23:59:59.999999
+	# Pega o início (00:00:00) e o fim (23:59:59.999999) do dia de hoje no fuso horário local
+	agora_local = timezone.localtime(timezone.now())
+	inicio_do_dia_local = agora_local.replace(hour=0, minute=0, second=0, microsecond=0)
+	fim_do_dia_local = agora_local.replace(hour=23, minute=59, second=59, microsecond=999999)
 
-	arr_administracoes = [a for a in Administra.objects.filter(
-		estoque=estoque,
-		dthr_administracao__range=(inicio, fim)
-	)]
-	arr_h_adm = [a.horario for a in arr_administracoes]
-	horarios = [h for h in estoque.horarios.all()]
-	disponiveis = [h.hora for h in horarios if h not in arr_h_adm]
+	# Agora fazemos o filtro em UTC (que é o formato salvo no banco) pois o Django armazena em UTC e está ciente do TIME_ZONE
+	arr_administracoes = Administra.objects.filter(
+		Q(dthr_administracao__gte=inicio_do_dia_local) & Q(dthr_administracao__lte=fim_do_dia_local),
+		estoque = estoque
+	)
+
+	horarios_administrados = [a.horario for a in arr_administracoes]
+	horarios_prescricao = [h for h in estoque.horarios.all()]
+	disponiveis = [h.hora for h in horarios_prescricao if h not in horarios_administrados]
+
+
 
 	from pprint import pprint
-	pprint(hoje)
-	pprint(arr_administracoes[0].dthr_administracao if arr_administracoes else None)
-	pprint(arr_administracoes[1].dthr_administracao if arr_administracoes else None)
-	pprint(inicio)
-	pprint(fim)
+	print('\n\n\n\n\n\n\n\n\n')
+	print('inico')
+	pprint(inicio_do_dia_local)
+	print('fim')
+	pprint(fim_do_dia_local)
+	print('\n\n\n')
+	print('datas do banco')
+	pprint(arr_administracoes[0].dthr_administracao if len(arr_administracoes) > 0 else None)
+	pprint(arr_administracoes[1].dthr_administracao if len(arr_administracoes) > 1 else None)
+	pprint(arr_administracoes[2].dthr_administracao if len(arr_administracoes) > 2 else None)
+	pprint(arr_administracoes[3].dthr_administracao if len(arr_administracoes) > 3 else None)
+	pprint(arr_administracoes[4].dthr_administracao if len(arr_administracoes) > 4 else None)
+	pprint(arr_administracoes[5].dthr_administracao if len(arr_administracoes) > 5 else None)
+	pprint(arr_administracoes[6].dthr_administracao if len(arr_administracoes) > 6 else None)
+	pprint(arr_administracoes[7].dthr_administracao if len(arr_administracoes) > 7 else None)
+	pprint(arr_administracoes[8].dthr_administracao if len(arr_administracoes) > 8 else None)
+	print('\n\n\n')
+
 
 
 	context = {
@@ -258,8 +279,8 @@ def medicamento_salvar_administracao(request, pcpf, pcodigo):
 	#Verifica se o estoque existe para o cpf
 	estoque = Estoque.objects.get(codigo=pcodigo, morador__cpf=pcpf)
 	if (estoque):
-
 		try:
+			# Inicia o transaction com o banco
 			with transaction.atomic():
 
 				#Atualiza o estoque
@@ -274,7 +295,7 @@ def medicamento_salvar_administracao(request, pcpf, pcodigo):
 					profissional = Profissional.objects.get(usuario=request.user),
 					morador = estoque.morador,
 					estoque = estoque,
-					dthr_administracao = timezone.now(),
+					dthr_administracao = timezone.localtime(timezone.now()),
 					horario = horario,
 					aplicado = True
 				)
