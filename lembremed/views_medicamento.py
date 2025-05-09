@@ -45,6 +45,8 @@ def medicamento_listar(request, pcpf, contexto_padrao):
 	#Verifica se tem os tipos de apresentacao dos medicamentos cadastrados
 	verificar_apresentacoes()
 
+	print('foi')
+
 	#Verifica se eh profissional ou instituicao cadastrando
 	if (isinstance(contexto_padrao['usuario'], Instituicao)):
 		morador = Morador.objects.filter(cpf=pcpf, instituicao=contexto_padrao['usuario']).first()
