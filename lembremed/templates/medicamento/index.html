@@ -89,7 +89,9 @@
 							<!-- Última administração -->
 							<div class="ultima-admin">
 								{% if estoque_associado.ultima_administracao %}
-									Última administração: {{ estoque_associado.ultima_administracao.dthr_administracao|date:"d/m/Y H:i" }} feita por {{ estoque_associado.ultima_administracao.profissional.nome }}
+									Última administração: {{ estoque_associado.ultima_administracao.dthr_administracao|date:"d/m/Y H:i" }}
+									({{ estoque_associado.ultima_administracao.horario.hora|default:"0"|stringformat:"02d"|add:":00" }})
+									feita por {{ estoque_associado.ultima_administracao.profissional.nome }}
 								{% else %}
 									Nunca administrado
 								{% endif %}

@@ -6,12 +6,14 @@ from lembremed.models import Estoque, Horario, Medicamento, Administra, Morador,
 from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
 from django.utils import timezone
+from datetime import datetime, timedelta, time
 from django.core.mail import send_mail
 from django.db import transaction
 import re
 from decimal import Decimal
 import requests
 from django.conf import settings
+import traceback
 
 def verificar_apresentacoes():
 	qtd_apresentacoes = Apresentacao.objects.count()
@@ -63,17 +65,17 @@ def medicamento_listar(request, pcpf, contexto_padrao):
 	print('\n\n')
 	lista_estoques = []
 	for estoque in estoques:
-		ultima_administracao = Administra.objects.filter(estoque=estoque).order_by('-dthr_administracao').first()
+		ultima_administracao = Administra.objects.filter(estoque=estoque, aplicado=True).order_by('-dthr_administracao').first()
 		lista_estoques.append({ #Cria o objeto com o estoque e sua ultima administracao
 			'estoque': estoque,
 			'ultima_administracao': ultima_administracao,
 			'duracao': estoque.estimativa_duracao(),
+			'horarios': '  / '.join([HORA_CHOICES[h.hora][1] for h in estoque.horarios.all()]),
 		})
 
 	context = {
 		'lista_estoques': lista_estoques, 'morador': morador,
 		'tem_saida_aberta': any(s.dt_fim is None for s in saidas),
-		'horarios': '  / '.join([HORA_CHOICES[h.hora][1] for h in estoque.horarios.all()]),
 		}
 
 	return render(request, 'medicamento/index.html', {**context, **contexto_padrao})
@@ -284,13 +286,54 @@ def medicamento_salvar_administracao(request, pcpf, pcodigo):
 		try:
 			# Inicia o transaction com o banco
 			with transaction.atomic():
+				phora = request.POST.get('hora')
+				horario = Horario.objects.get(estoque=estoque, hora=int(phora))
+				hoje = timezone.localtime(timezone.now()).date()
 
+				###############################################################
+				# Marca os horarios anteriores sem administracao como nao aplicados, caso existam
+				limite = estoque.dthr_alteracao
+				ultima_saida = Saida.objects.filter(morador=estoque.morador).order_by('-dt_inicio').first()
+				if ultima_saida:
+					limite = max(estoque.dthr_alteracao.date(), 
+				  		ultima_saida.dt_fim,
+					)
+
+				#limite = timezone.make_aware(limite, timezone.get_current_timezone())  # Converte para um datetime "aware"
+				horarios = estoque.horarios.all()
+				
+				while limite <= hoje:
+
+					print('\n\n\n\n')
+					print(limite)
+
+					for horario_i in horarios:
+						if limite < hoje or horario_i.hora < horario.hora:
+							# Verifica se já existe uma administração nesse horário nesta data
+							existe = Administra.objects.filter(
+								morador=estoque.morador,
+								estoque=estoque,
+								horario=horario_i,
+								dthr_administracao__date=limite
+							).exists()
+
+							if not existe:
+								#Marca o horario como nao administrado
+								Administra.objects.create(
+									profissional = Profissional.objects.get(usuario=request.user),
+									morador = estoque.morador,
+									estoque = estoque,
+									dthr_administracao = datetime.combine(limite, time(horario_i.hora)),
+									horario = horario_i,
+									aplicado = False
+								)
+
+					limite += timedelta(days=1)
+
+					
 				#Atualiza o estoque
 				estoque.qtd_disponivel -= estoque.prescricao / estoque.apresentacao.razao_prescricao_comercial
 				estoque.save()
-
-				phora = request.POST.get('hora')
-				horario = Horario.objects.get(estoque=estoque, hora=int(phora))
 
 				#Registra a administracao
 				Administra.objects.create(
@@ -335,7 +378,8 @@ def medicamento_salvar_administracao(request, pcpf, pcodigo):
 
 		except Exception as e:
 			# rollback automático
-			print("Erro:", e)
+			print("Erro:", e,)
+			traceback.print_exc()  # This will print the traceback to the console
 			return HttpResponse("Erro interno", status=500)
 
 	else:
