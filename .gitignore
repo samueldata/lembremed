@@ -7,4 +7,4 @@ __pycache__/
 static_collected/
 lembremed/migrations/00*
 .vscode/
-TODO.md
+venv/
