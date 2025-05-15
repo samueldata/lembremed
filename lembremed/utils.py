@@ -3,6 +3,43 @@ from .models import Medicamento, Responsavel
 #from django.contrib.auth import get_user_model
 
 
+import requests
+import sys
+
+def checkar_tg_bot():
+	try:
+		url = f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage"
+		dados_post = {
+			'chat_id': '5095250006', #Allan
+			'text': f"Teste de funcionamento do telegram pelo alwaysdata.net"
+		}
+
+		response = requests.post(url, json = dados_post)
+
+		# Check if the response status code is 200
+		if response.status_code != 200:
+			print(1)
+			sys.exit(1)
+
+		# Try to parse the response as JSON
+		try:
+			response_json = response.json()
+		except ValueError:
+			print(1)
+			sys.exit(1)
+
+		# Check if the specified attribute exists in the JSON response
+		if response_json['ok'] == True:
+			print(0)
+			sys.exit(0)
+		else:
+			print(1)
+			sys.exit(1)
+	except requests.RequestException:
+		print(1)
+		sys.exit(1)
+
+
 def popular_tabela_com_csv():
 	#https://stackoverflow.com/questions/17912307/u-ufeff-in-python-string
 	with open('static/tabeladeremedios.csv', mode='r', encoding='utf-8-sig') as arquivo_csv:

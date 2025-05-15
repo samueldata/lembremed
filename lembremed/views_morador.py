@@ -10,22 +10,35 @@ from django.contrib.auth.decorators import permission_required
 from lembremed.decorators import adiciona_contexto
 import requests
 
+from pprint import pprint
+
+
 #Pagina principal dos moradores
 #Lista todos os moradores
 @adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_morador')
 def morador_listar(request, contexto_padrao):
-	#Verifica se eh profissional ou instituicao cadastrando
-	print("\n", (contexto_padrao['usuario']), "\n\n")
-	if (isinstance(contexto_padrao['usuario'], Instituicao)):
-		moradores = Morador.objects.filter(instituicao=contexto_padrao['usuario'])
+    # Recupera o ID da instituição da sessão
+    usuario_id = request.session.get('usuario')
+    if usuario_id:
+        try:
+            contexto_padrao['usuario'] = Instituicao.objects.get(id=usuario_id)
+        except Instituicao.DoesNotExist:
+            contexto_padrao['usuario'] = None
 
-	elif(isinstance(contexto_padrao['usuario'], Profissional)):
-		moradores = Morador.objects.filter(instituicao=contexto_padrao['usuario'].instituicao)
+    # Verifica se é profissional ou instituição cadastrando
+    print("\n", (contexto_padrao['usuario']), "\n\n")
+    if isinstance(contexto_padrao['usuario'], Instituicao):
+        moradores = Morador.objects.filter(instituicao=contexto_padrao['usuario'])
 
-	context = {'lista_moradores': moradores}
-	return render(request, 'morador/index.html', {**context, **contexto_padrao})
+    elif isinstance(contexto_padrao['usuario'], Profissional):
+        moradores = Morador.objects.filter(instituicao=contexto_padrao['usuario'].instituicao)
 
+    else:
+        moradores = Morador.objects.none()  # Caso não seja válido, retorna uma lista vazia
+
+    context = {'lista_moradores': moradores}
+    return render(request, 'morador/index.html', {**context, **contexto_padrao})
 
 @permission_required('lembremed.pode_gerenciar_morador')
 def morador_editar(request, pcpf):
@@ -145,4 +158,3 @@ def morador_procurar_responsavel(request, contexto_padrao):
 
 	else:
 		return HttpResponse("erro por GET no salvar")
-

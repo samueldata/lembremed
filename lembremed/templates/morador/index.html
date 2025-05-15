@@ -6,50 +6,69 @@
 
 {% block content %}
 <main class="main-content">
-	<section class="moradores-container">
+	<section class="list-container">
 		<h2 class="section-title">HÓSPEDES</h2>
-		<div class="moradores-filter">
+		<div class="list-filter">
 			<img class="filter-icon" src="{% static 'images/filter_7420963.png' %}" alt="Buscar">
 			<input type="text" id="searchInput" placeholder="Buscar por nome ou CPF..." onkeyup="filterMoradores()"
 				style="width: 100%; padding: 10px; margin-bottom: 20px;">
 		</div>
 		{% if lista_moradores %}
-			<div class="moradores-cards">
+			<div class="lista">
+				<div class="cabecalho">
+					<div class="coluna">Nome</div>
+					<div class="coluna d-none d-xxl-table-cell">CPF</div>
+					<div class="coluna d-none d-xl-table-cell">Dt. Nasc.</div>
+					<div class="coluna">Respons&aacute;vel</div>
+					<div class="coluna d-none d-xxl-table-cell">CPF Resp.</div>
+					<div class="coluna">Contato Resp.</div>
+					<div class="coluna"></div>
+				</div>
 				{% for morador in lista_moradores %}
-					<div class="morador-card">
-						<div class="morador-info">
-							<p>Nome: <strong>{{ morador.nome }}</strong></p>
-							<p>CPF: {{ morador.cpf }}</p>
-							<p>Data de Nascimento: {{ morador.dt_nascimento|date:"d/m/Y" }}</p>
+					<div class="linha">
+						<div class="coluna info" data-label="Nome">
+							<strong>{{ morador.nome }}</strong>
+							<dt class="visually-hidden">CPF</dt>
+							<dd class="d-xxl-none">{{ morador.cpf }}</dd>
+							<dt class="visually-hidden">Data Nascimento</dt>
+							<dd class="d-xl-none">{{ morador.dt_nascimento|date:"d/m/Y" }}</dd>
 						</div>
-
-						<!-- Informações do Responsável -->
-						<div class="responsavel-info mt-3">
-							<p><strong>Responsável:</strong></p>
-							<p>Nome: {{ morador.responsavel.nome }}</p>
-							<p>CPF: {{ morador.responsavel.cpf }}</p>
-							<p>E-mail: {{ morador.responsavel.email }}</p>
-							<p>Telefone: {{ morador.responsavel.telefone }}</p>
+						<div class="coluna info d-none d-xxl-table-cell" data-label="CPF">{{ morador.cpf }}</div>
+						<div class="coluna info d-none d-xl-table-cell" data-label="Dt. Nasc.">{{ morador.dt_nascimento|date:"d/m/Y" }}</div>
+						<div class="coluna info" data-label="Respons&aacute;vel">
+							{{ morador.responsavel.nome }}
+							<dt class="visually-hidden">CPF Respons&aacute;vel</dt>
+							<dd class="d-xxl-none">{{ morador.responsavel.cpf }}</dd>
 						</div>
-
-						<div class="morador-actions">
-							<button onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Hóspede</button>
-							<button onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</button>
+						<div class="coluna info d-none d-xxl-table-cell" data-label="CPF Resp.">{{ morador.responsavel.cpf }}</div>
+						<div class="coluna info" data-label="Contato Respons&aacute;vel">
+							{{ morador.responsavel.telefone }}
+							<span class="d-block">{{ morador.responsavel.email }}</span>
 						</div>
+						<div class="coluna action">
+							<button onclick="submitar('/medicamento/{{ morador.cpf }}', 'GET')">Medicamentos</button>
+							<button onclick="submitar('/saida/{{ morador.cpf }}', 'GET')">Sa&iacute;das</button>
 
-						{% if perms.lembremed.pode_medicar_morador %}
-							<div class="morador-actions">
-								<a href="/medicamento/{{ morador.cpf }}">Medicamentos</a>
+							{% if perms.lembremed.pode_medicar_morador %}
+							<div class="dropdown">
+								<button class="btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Op&ccedil;&otilde;es
+								</button>
+								<ul class="dropdown-menu dropdown-menu-end">
+									<li><a class="dropdown-item" href="#" onclick="carregar_pagina_popup('editar/{{ morador.cpf }}', 'GET', {}, 'Alterar {{ morador.nome }}')">Editar Hóspede</a></li>
+									<li><a class="dropdown-item" href="#" onclick="if (confirm('Confirma a exclusão de {{ morador.nome }}?')) { carregar_pagina_popuploading('excluir/{{ morador.cpf }}', 'GET', {}, 'Excluindo {{ morador.nome }}...'); }">Excluir</a></li>
+								</ul>
 							</div>
-						{% endif %}
+							{% endif %}
+						</div>
 					</div>
 				{% endfor %}
 			</div>
 		{% else %}
-			<p style="text-align: center;">Não temos nenhum hóspede cadastrado no nosso sistema ainda :(</p>
+			<p class="no-items-list">N&atilde;o temos nenhum h&oacute;spede cadastrado no nosso sistema ainda :(</p>
 		{% endif %}
-		<button class="btn-cadastrar"
-			onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar hóspede');">Cadastrar Novo Hóspede</button>
+
+		<button class="btn-cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar hóspede');">Cadastrar Novo Hóspede</button>
 	</section>
 </main>
 

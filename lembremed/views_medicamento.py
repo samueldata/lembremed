@@ -1,17 +1,19 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from lembremed.models import Estoque, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao
+from django.db.models import Q
+from lembremed.models import Estoque, Horario, Medicamento, Administra, Morador, Profissional, Apresentacao, Instituicao, HORA_CHOICES, Saida
 from lembremed.decorators import adiciona_contexto
 from django.contrib.auth.decorators import permission_required
-from datetime import datetime
+from django.utils import timezone
+from datetime import datetime, timedelta, time
 from django.core.mail import send_mail
+from django.db import transaction
 import re
 from decimal import Decimal
 import requests
 from django.conf import settings
-
-#teste amanda
+import traceback
 
 def verificar_apresentacoes():
 	qtd_apresentacoes = Apresentacao.objects.count()
@@ -42,8 +44,10 @@ def verificar_apresentacoes():
 @adiciona_contexto
 @permission_required('lembremed.pode_gerenciar_morador')
 def medicamento_listar(request, pcpf, contexto_padrao):
-	#Verifica se tem os tipos de apresentacao cadastrados
+	#Verifica se tem os tipos de apresentacao dos medicamentos cadastrados
 	verificar_apresentacoes()
+
+	print('foi')
 
 	#Verifica se eh profissional ou instituicao cadastrando
 	if (isinstance(contexto_padrao['usuario'], Instituicao)):
@@ -53,17 +57,26 @@ def medicamento_listar(request, pcpf, contexto_padrao):
 		morador = Morador.objects.filter(cpf=pcpf, instituicao=contexto_padrao['usuario'].instituicao).first()
 
 	estoques = Estoque.objects.filter(morador=morador)
+	saidas = Saida.objects.filter(morador=morador)
+	print('\n\n\n\n')
+	from pprint import pprint
+	pprint(saidas)
 
-	estoques_administrados = []
+	print('\n\n')
+	lista_estoques = []
 	for estoque in estoques:
-		ultima_administracao = Administra.objects.filter(estoque=estoque).order_by('-dthr_administracao').first()
-		estoques_administrados.append({ #Cria o objeto com o estoque e sua ultima administracao
+		ultima_administracao = Administra.objects.filter(estoque=estoque, aplicado=True).order_by('-dthr_administracao').first()
+		lista_estoques.append({ #Cria o objeto com o estoque e sua ultima administracao
 			'estoque': estoque,
 			'ultima_administracao': ultima_administracao,
-			'duracao': ((estoque.qtd_disponivel * estoque.apresentacao.razao_prescricao_comercial) / (estoque.frequencia * estoque.prescricao)) if estoque.qtd_disponivel and estoque.frequencia and estoque.apresentacao.razao_prescricao_comercial and estoque.prescricao else 0
+			'duracao': estoque.estimativa_duracao(),
+			'horarios': '  / '.join([HORA_CHOICES[h.hora][1] for h in estoque.horarios.all()]),
 		})
 
-	context = {'lista_estoques': estoques_administrados, 'morador': morador}
+	context = {
+		'lista_estoques': lista_estoques, 'morador': morador,
+		'tem_saida_aberta': any(s.dt_fim is None for s in saidas),
+		}
 
 	return render(request, 'medicamento/index.html', {**context, **contexto_padrao})
 
@@ -79,6 +92,8 @@ def medicamento_editar(request, pcpf, pcodigo):
 		'estoque': estoque,
 		'arr_medicamentos': arr_medicamentos,
 		'arr_apresentacoes': arr_apresentacoes,
+		'HORA_CHOICES': HORA_CHOICES,
+		'horarios_selecionados': [h.hora for h in estoque.horarios.all()],
 		}
 	return render(request, 'medicamento/cadastro.html', context)
 
@@ -92,6 +107,8 @@ def medicamento_cadastrar(request, pcpf):
 		'cpf': pcpf,
 		'arr_medicamentos': arr_medicamentos,
 		'arr_apresentacoes': arr_apresentacoes,
+		'HORA_CHOICES': HORA_CHOICES,
+		'horarios_selecionados': [],
 		}
 	return render(request, 'medicamento/cadastro.html', context)
 
@@ -109,7 +126,9 @@ def medicamento_salvar(request, pcpf):
 		pprescricao = pprescricao if pprescricao > 0 else 1
 		pfrequencia = Decimal(request.POST.get('frequencia'))
 		pfrequencia = pfrequencia if pfrequencia > 0 else 1
-		phorarios = request.POST.get('horarios')
+		pcontinuo = True if request.POST.get('continuo') == 'S' else False
+		pdias_uso = int(request.POST.get('dias_uso')) if pcontinuo == False else None
+		phorarios = request.POST.getlist('hora')
 		pqtd_disponivel = request.POST.get('qtd_disponivel')
 		pqtd_alterar = request.POST.get('qtd_alterar')
 
@@ -122,7 +141,9 @@ def medicamento_salvar(request, pcpf):
 			estoque.validade = pvalidade
 			estoque.prescricao = pprescricao
 			estoque.frequencia = pfrequencia
-			estoque.horarios = phorarios
+			estoque.continuo = pcontinuo
+			estoque.dias_uso = pdias_uso
+			estoque.dthr_alteracao = timezone.localtime(timezone.now())
 			pqtd_alterar = re.findall(r'^(\+|\-)(\d+|\d+\.\d+)$', pqtd_alterar)
 
 			if (len(pqtd_alterar) == 1):
@@ -133,6 +154,10 @@ def medicamento_salvar(request, pcpf):
 				else:
 					estoque.qtd_disponivel -= Decimal(pqtd_alterar)
 			estoque.save()
+
+			estoque.horarios.all().delete()
+			for h in phorarios:
+				Horario.objects.create(estoque=estoque, hora=int(h))
 
 			if (estoque.estimativa_duracao() <= 7):
 				#Verifica se o responsavel tem telegram cadastrado
@@ -147,25 +172,25 @@ def medicamento_salvar(request, pcpf):
 
 					#requests.get(f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage?chat_id={estoque.morador.responsavel.telegram_id}&text=Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque")
 				if (estoque.morador.responsavel.email):
-					
+
 					mensagem = render_to_string('email_templates/basic_email.html', {
 							'title': "Medicamento acabando - Lembremed",
-							'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}." 
+							'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}."
 										f"\n<br />O medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} foi recém administrado agora tem 7 dias ou menos de estoque disponível."
 										f"\n<br />Verifique a necessidade de uma nova aquisição."
 					})
-					
+
 					send_mail(subject="Medicamento acabando - Lembremed",
 						message = mensagem,
 						html_message = mensagem,
-						from_email=settings.EMAIL_HOST_USER,
-						recipient_list=[estoque.morador.responsavel.email],
-						fail_silently=True,  # Set to True to suppress exceptions
+						from_email = settings.EMAIL_HOST_USER,
+						recipient_list = [estoque.morador.responsavel.email],
+						fail_silently = True,  # Set to True to suppress exceptions
 					)
 
 
 		else:
-			Estoque.objects.create(
+			estoque = Estoque.objects.create(
 				morador = Morador.objects.get(cpf=pcpf),
 				medicamento = Medicamento.objects.get(codigo=pcodigo_medicamento),
 				apresentacao = papresentacao,
@@ -173,12 +198,14 @@ def medicamento_salvar(request, pcpf):
 				validade = pvalidade,
 				prescricao = pprescricao,
 				frequencia = pfrequencia,
-				horarios = phorarios,
+				continuo = pcontinuo,
+				dias_uso = pdias_uso,
+				dthr_alteracao = timezone.localtime(timezone.now()),
 				qtd_disponivel = pqtd_disponivel,
 			)
 
-
-		# Após criar o usuário, atribua o papel associado
+			for h in phorarios:
+				Horario.objects.create(estoque=estoque, hora=int(h))
 
 		return HttpResponse("medicamento salvo com sucesso")
 	else:
@@ -204,51 +231,156 @@ def medicamento_excluir(request, pcpf, pcodigo):
 
 @permission_required('lembremed.pode_medicar_morador')
 def medicamento_administrar(request, pcpf, pcodigo):
+	estoque = Estoque.objects.get(codigo=pcodigo, morador__cpf=pcpf)
+
+	# Pega o início (00:00:00) e o fim (23:59:59.999999) do dia de hoje no fuso horário local
+	agora_local = timezone.localtime(timezone.now())
+	inicio_do_dia_local = agora_local.replace(hour=0, minute=0, second=0, microsecond=0)
+	fim_do_dia_local = agora_local.replace(hour=23, minute=59, second=59, microsecond=999999)
+
+	# Agora fazemos o filtro em UTC (que é o formato salvo no banco) pois o Django armazena em UTC e está ciente do TIME_ZONE
+	arr_administracoes = Administra.objects.filter(
+		Q(dthr_administracao__gte=inicio_do_dia_local) & Q(dthr_administracao__lte=fim_do_dia_local),
+		estoque = estoque
+	)
+
+	horarios_administrados = [a.horario for a in arr_administracoes]
+	horarios_prescricao = [h for h in estoque.horarios.all()]
+	disponiveis = [h.hora for h in horarios_prescricao if h not in horarios_administrados]
+
+
+
+	from pprint import pprint
+	print('\n\n\n\n\n\n\n\n\n')
+	print('inico')
+	pprint(inicio_do_dia_local)
+	print('fim')
+	pprint(fim_do_dia_local)
+	print('\n\n\n')
+	print('datas do banco')
+	pprint(arr_administracoes[0].dthr_administracao if len(arr_administracoes) > 0 else None)
+	pprint(arr_administracoes[1].dthr_administracao if len(arr_administracoes) > 1 else None)
+	pprint(arr_administracoes[2].dthr_administracao if len(arr_administracoes) > 2 else None)
+	pprint(arr_administracoes[3].dthr_administracao if len(arr_administracoes) > 3 else None)
+	pprint(arr_administracoes[4].dthr_administracao if len(arr_administracoes) > 4 else None)
+	pprint(arr_administracoes[5].dthr_administracao if len(arr_administracoes) > 5 else None)
+	pprint(arr_administracoes[6].dthr_administracao if len(arr_administracoes) > 6 else None)
+	pprint(arr_administracoes[7].dthr_administracao if len(arr_administracoes) > 7 else None)
+	pprint(arr_administracoes[8].dthr_administracao if len(arr_administracoes) > 8 else None)
+	print('\n\n\n')
+
+
+
+	context = {
+		'estoque': estoque,
+		'disponiveis': disponiveis,
+		'HORA_CHOICES': HORA_CHOICES,
+		}
+	return render(request, 'medicamento/administrar.html', context)
+
+@permission_required('lembremed.pode_medicar_morador')
+def medicamento_salvar_administracao(request, pcpf, pcodigo):
 	#Verifica se o estoque existe para o cpf
 	estoque = Estoque.objects.get(codigo=pcodigo, morador__cpf=pcpf)
 	if (estoque):
-		#Atualiza o estoque
-		estoque.qtd_disponivel -= estoque.prescricao / estoque.apresentacao.razao_prescricao_comercial
-		estoque.save()
+		try:
+			# Inicia o transaction com o banco
+			with transaction.atomic():
+				phora = request.POST.get('hora')
+				horario = Horario.objects.get(estoque=estoque, hora=int(phora))
+				hoje = timezone.localtime(timezone.now()).date()
 
-		#Registra a administracao
-		Administra.objects.create(
-			profissional = Profissional.objects.get(usuario=request.user),
-			morador = estoque.morador,
-			estoque = estoque,
-			dthr_administracao = datetime.now(),
-		)
-		
-		if (estoque.estimativa_duracao() <= 7):
-			#Verifica se o responsavel tem telegram cadastrado
-			if (estoque.morador.responsavel.telegram_id):
-				url = f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage"
-				dados_post = {
-					'chat_id': estoque.morador.responsavel.telegram_id,
-					'text': f"Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque\nVerifique a necessidade de uma nova aquisição"
-				}
+				###############################################################
+				# Marca os horarios anteriores sem administracao como nao aplicados, caso existam
+				limite = estoque.dthr_alteracao
+				ultima_saida = Saida.objects.filter(morador=estoque.morador).order_by('-dt_inicio').first()
+				if ultima_saida:
+					limite = max(estoque.dthr_alteracao.date(), 
+				  		ultima_saida.dt_fim,
+					)
 
-				x = requests.post(url, json = dados_post)
-
-				#requests.get(f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage?chat_id={estoque.morador.responsavel.telegram_id}&text=Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque")
-			if (estoque.morador.responsavel.email):
+				#limite = timezone.make_aware(limite, timezone.get_current_timezone())  # Converte para um datetime "aware"
+				horarios = estoque.horarios.all()
 				
-				mensagem = render_to_string('email_templates/basic_email.html', {
-						'title': "Medicamento acabando - Lembremed",
-						'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}." 
-									f"\n<br />O medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} foi recém administrado agora tem 7 dias ou menos de estoque disponível."
-									f"\n<br />Verifique a necessidade de uma nova aquisição."
-				})
-				
-				send_mail(subject="Medicamento acabando - Lembremed",
-					message = mensagem,
-					html_message = mensagem,
-					from_email=settings.EMAIL_HOST_USER,
-					recipient_list=[estoque.morador.responsavel.email],
-					fail_silently=True,  # Set to True to suppress exceptions
+				while limite <= hoje:
+
+					print('\n\n\n\n')
+					print(limite)
+
+					for horario_i in horarios:
+						if limite < hoje or horario_i.hora < horario.hora:
+							# Verifica se já existe uma administração nesse horário nesta data
+							existe = Administra.objects.filter(
+								morador=estoque.morador,
+								estoque=estoque,
+								horario=horario_i,
+								dthr_administracao__date=limite
+							).exists()
+
+							if not existe:
+								#Marca o horario como nao administrado
+								Administra.objects.create(
+									profissional = Profissional.objects.get(usuario=request.user),
+									morador = estoque.morador,
+									estoque = estoque,
+									dthr_administracao = datetime.combine(limite, time(horario_i.hora)),
+									horario = horario_i,
+									aplicado = False
+								)
+
+					limite += timedelta(days=1)
+
+					
+				#Atualiza o estoque
+				estoque.qtd_disponivel -= estoque.prescricao / estoque.apresentacao.razao_prescricao_comercial
+				estoque.save()
+
+				#Registra a administracao
+				Administra.objects.create(
+					profissional = Profissional.objects.get(usuario=request.user),
+					morador = estoque.morador,
+					estoque = estoque,
+					dthr_administracao = timezone.localtime(timezone.now()),
+					horario = horario,
+					aplicado = True
 				)
 
-		return HttpResponse("Administração cadastrada com sucesso!")
+				if (estoque.estimativa_duracao() <= 7):
+					#Verifica se o responsavel tem telegram cadastrado
+					if (estoque.morador.responsavel.telegram_id):
+						url = f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage"
+						dados_post = {
+							'chat_id': estoque.morador.responsavel.telegram_id,
+							'text': f"Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque\nVerifique a necessidade de uma nova aquisição"
+						}
+
+						x = requests.post(url, json = dados_post)
+
+						#requests.get(f"https://api.telegram.org/bot{settings.TELEGRAM_TOKEN}/sendMessage?chat_id={estoque.morador.responsavel.telegram_id}&text=Medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} recém administrado tem 7 dias ou menos de estoque")
+					if (estoque.morador.responsavel.email):
+
+						mensagem = render_to_string('email_templates/basic_email.html', {
+								'title': "Medicamento acabando - Lembremed",
+								'message': f"Olá {estoque.morador.responsavel.nome.split()[0]}."
+											f"\n<br />O medicamento {estoque.medicamento.principio} {estoque.apresentacao.unidade_prescricao} foi recém administrado agora tem 7 dias ou menos de estoque disponível."
+											f"\n<br />Verifique a necessidade de uma nova aquisição."
+						})
+
+						send_mail(subject="Medicamento acabando - Lembremed",
+							message = mensagem,
+							html_message = mensagem,
+							from_email=settings.EMAIL_HOST_USER,
+							recipient_list=[estoque.morador.responsavel.email],
+							fail_silently=True,  # Set to True to suppress exceptions
+						)
+
+				return HttpResponse("Administração cadastrada com sucesso!")
+
+		except Exception as e:
+			# rollback automático
+			print("Erro:", e,)
+			traceback.print_exc()  # This will print the traceback to the console
+			return HttpResponse("Erro interno", status=500)
 
 	else:
 		return HttpResponse("Erro ao localizar estoque")

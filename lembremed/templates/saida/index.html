@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Lembre-MEd - SA&Iacute;DAS{% endblock %}
+
+{% block content %}
+
+<main class="main-content" style="padding: 20px;">
+	<section class="list-container">
+		<h2 class="section-title">SA&Iacute;DAS</h2>
+			
+		<div class="text-center mb-1">
+			<h3>
+				{{ morador.nome }}
+			</h3>
+		</div>
+		
+			{% if lista_saidas %}
+				<div class="lista">
+					<div class="cabecalho">
+						<div class="coluna">Tipo de sa&iacute;da</div>
+						<div class="coluna">Data da sa&iacute;da</div>
+						<div class="coluna">Data de retorno</div>
+						{% if tem_saida_aberta  %}
+							<div class="coluna"></div>
+						{% endif %}
+					</div>
+
+					{% for saida in lista_saidas %}
+						<div class="linha">
+							<div class="coluna info" data-label="Tipo de sa&iacute;da">{{ saida.get_tipo_display }}</div>
+							<div class="coluna info" data-label="Data da sa&iacute;da">{{ saida.dt_inicio|date:"d/m/Y" }}</div>
+							<div class="coluna info" data-label="Data de retorno">{% if saida.dt_fim %} {{ saida.dt_fim|date:"d/m/Y" }} {% else %} &mdash; {% endif %}</div>
+							{% if tem_saida_aberta  %}
+								<div class="coluna action">
+									{% if not saida.dt_fim  %}
+										<button	 onclick="carregar_pagina_popup('editar/{{ saida.codigo }}', 'GET', {}, 'Marcar fim da sa&iacute;da')">Marcar retorno</button>
+									{% endif %}
+								</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			{% else %}
+				<p class="no-items-list">N&atilde;o temos nenhuma sa&iacute;da para o h&oacute;spede</p>
+			{% endif %}
+		{% if not tem_saida_aberta  %}
+			<button class="btn-cadastrar" onclick="carregar_pagina_popup('cadastrar/', 'GET', {}, 'Cadastrar saída');">Cadastrar Nova Sa&iacute;da</button>
+		{% endif %}
+	</section>
+		
+</main>
+
+{% endblock %}

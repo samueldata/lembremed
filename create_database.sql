@@ -16,7 +16,7 @@ mkdir ambiente01
 	#Unix
 	python -m venv ./ambiente01
 	source ambiente01/bin/activate
-pip install django mysqlclient python-telegram-bot requests
+pip install Django mysqlclient python-telegram-bot requests
 */
 
 /*=======================*/

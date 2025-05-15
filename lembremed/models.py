@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+HORA_CHOICES = [(i, f"{i:02d}:00") for i in range(24)]
+
 # Entidades fortes
 class Instituicao(models.Model):
 	cnpj = models.CharField(max_length=20, primary_key=True)
@@ -30,6 +32,22 @@ class Morador(models.Model):
 			("pode_gerenciar_morador", "Pode gerenciar os moradores"),
 			("pode_medicar_morador", "Pode administrar medicamentos nos moradores"),
 		)
+
+class SaidaChoices(models.TextChoices):
+	TEMPORARIO = 'TP', 'Temporário'
+	MUDANCA = 'MD', 'Mudança'
+	MORTE = 'MO', 'Morte'
+
+class Saida(models.Model):
+	codigo = models.AutoField(primary_key=True)
+	morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
+	tipo = models.CharField(
+		max_length=2,
+		choices=SaidaChoices.choices,
+		default=SaidaChoices.TEMPORARIO,
+	)
+	dt_inicio = models.DateField()
+	dt_fim = models.DateField(null=True)
 
 class Profissional(models.Model):
 	cpf = models.CharField(max_length=14, primary_key=True)
@@ -65,17 +83,27 @@ class Estoque(models.Model):
 	prescricao = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 	qtd_disponivel = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 	frequencia = models.IntegerField(default=1)
-	horarios = models.CharField(max_length=150)
 	validade = models.DateField()
-	
-	def estimativa_duracao(self):
+	continuo = models.BooleanField(default=True)
+	dias_uso = models.IntegerField(null=True, default=0) #Caso o uso nao for continuo, indica por quantos dias usar
+	dthr_alteracao = models.DateTimeField(null=True)
+
+	def estimativa_duracao(self): #Duracao estimada em dias
 		if (self.qtd_disponivel and self.frequencia and self.apresentacao.razao_prescricao_comercial and self.prescricao):
-			return ((self.qtd_disponivel * self.apresentacao.razao_prescricao_comercial) / (self.frequencia * self.prescricao)) 
+			return ((self.qtd_disponivel * self.apresentacao.razao_prescricao_comercial) / (self.frequencia * self.prescricao))
 		else:
 			return 0
+
+class Horario(models.Model):
+	codigo = models.AutoField(primary_key=True)
+	estoque = models.ForeignKey(Estoque, on_delete=models.CASCADE, related_name='horarios')
+	hora = models.IntegerField(choices=HORA_CHOICES)
 
 class Administra(models.Model):
 	profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE)
 	morador = models.ForeignKey(Morador, on_delete=models.CASCADE)
 	estoque = models.ForeignKey(Estoque, on_delete=models.CASCADE)
+	horario = models.ForeignKey(Horario, on_delete=models.CASCADE)
 	dthr_administracao = models.DateTimeField(null=True)
+	aplicado = models.BooleanField(default=True)
+

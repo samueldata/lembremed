@@ -1,0 +1,133 @@
+<form id="form_estoque" action="salvar_administracao/{{ estoque.codigo }}/" method="post" class="form-custom" enctype="multipart/form-data">
+	{% csrf_token %}
+
+	<div class="form-group">
+		<label for="nome_medicamento">Medicamento:</label>
+		<strong id="nome_medicamento">{{ estoque.medicamento.principio }} {{ estoque.concentracao }} {{ estoque.apresentacao.unidade_comercial }}</strong>
+	</div>
+
+	<div class="form-group">
+		<label for="prescricao">Dosagem prescrita:</label>
+		<strong id="prescricao">{{ estoque.prescricao|stringformat:".2f" }} {{ estoque.apresentacao.unidade_prescricao }}</strong>
+	</div>
+
+	<div class="form-group">
+		<label for="horarios">Hor&aacute;rio da administra&ccedil;&atilde;o:</label>
+		<div class="checkbox-grid">
+			{% for value, label in HORA_CHOICES %}
+				<input type="radio" name="hora" id="horario-{{ value }}" class="btn-check" value="{{ value }}" autocomplete="off" {% if value not in disponiveis %} disabled {% endif %} />
+				<label class="btn btn-outline-secondary d-inline" for="horario-{{ value }}" {% if value not in disponiveis %} style="opacity: 0.2" {% endif %}>{{ label }}</label>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="qtd_disponivel">Quantidade disponível:</label>
+		<strong id="qtd_disponivel">{{ estoque.qtd_disponivel|stringformat:".2f" }} {{ estoque.apresentacao.unidade_comercial }}</strong>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Salvar administracao</button>
+</form>
+
+<style>
+.checkbox-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	gap: 0.5rem;
+}
+.checkbox-grid label {
+	display: flex;
+	align-items: center;   /* vertical centering */
+	justify-content: center; /* horizontal centering */
+	gap: 0.5rem; /* optional: space between checkbox and text */
+	padding: 0.5rem; /* optional: adds some clickable area */
+	text-align: center;
+	cursor: pointer;
+}
+
+</style>
+
+<script>
+
+/*document.getElementById('form_estoque').addEventListener('submit', teste_feririxXo);
+
+function teste_feririxXo(e) {
+	alert('foi');
+	e.preventDefault();
+	e.stopPropagation();
+}
+*/
+
+$( "form_estoque" ).on( "submit", function( event ) {
+	event.preventDefault();
+	event.stopPropagation();
+	// Do something
+});
+
+// Troca o submit para enviar no popup
+document.getElementById('form_estoque').addEventListener('submit', envia_e_recarregar);
+
+function selecionou_medicamento(input, option) {
+	input.value = option.attributes['data-bs-principiomedicamento'].value;
+	$('#codigo_medicamento').val(option.attributes['data-bs-codigomedicamento'].value);
+}
+
+$("#nome_medicamento").on("keydown", function(e){
+	if(e.key){ // in case of mouse event e.key is 'undefined'
+		if (e.key === "Enter") { // looks like user wants to confirm the choice
+			//Verifica se tem valor no campo (selecionou alguma coisa do datalist)
+			if (this.value.length > 0) {
+				var opts = $("#nomes_medicamentos option").map(function(){return  this.value;}).get();
+				var idx = opts.indexOf(this.value);
+				if(idx >= 0){
+					selecionou_medicamento(this, $("#nomes_medicamentos option")[idx]);
+				}
+			}
+		} else {
+			this.setAttribute("data-keyboardinput", "true"); // remember that it's keyboard event
+
+			setTimeout(function(){ //and keep it in memory for 100ms
+				this.removeAttribute("data-keyboardinput");
+			}.bind(this), 100);
+		}
+	}
+});
+
+$("#nome_medicamento").on("input", function(){
+	if(!this.dataset.keyboardinput) { // if it's not a key press followed event
+		//Verifica se tem valor no campo (selecionou alguma coisa do datalist)
+		if (this.value.length > 0) {
+			var opts = $("#nomes_medicamentos option").map(function(){return  this.value;}).get();
+			var idx = opts.indexOf(this.value);
+			if(idx >= 0){
+				selecionou_medicamento(this, $("#nomes_medicamentos option")[idx]);
+			}
+		}
+	}
+});
+
+$("#apresentacao").on("change", function(){
+	var option = $("#apresentacao option:selected")[0];
+	var tipagem = $('#tipagem_dosagem');
+	tipagem.html(option.attributes['data-bs-prescricao'].value);
+	tipagem.addClass('d-none');
+	tipagem.fadeIn(5000);
+	tipagem.removeClass('d-none');
+	$('#tipagem_qtddisponivel').html(option.attributes['data-bs-comercial'].value);
+});
+
+$( document ).ready(function() {
+	$("#apresentacao").trigger("change");
+});
+
+// Aplica ao mudar a seleção
+$('input[name="continuo"]').on('change', function() {
+	
+	var uso = $('input[name="continuo"]:checked').val();
+	if (uso === 'N') {
+		$('#campo_dias_uso').fadeIn(500);
+	} else {
+		$('#campo_dias_uso').fadeOut(500);
+	}
+});
+
+</script>

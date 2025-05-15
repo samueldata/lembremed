@@ -1,10 +1,29 @@
-<form id="form_estoque" action="salvar/" method="post" class="form-custom">
+<form id="form_estoque" action="salvar/" method="post" class="form-custom" enctype="multipart/form-data">
 	{% csrf_token %}
 
 	{% if estoque %}
 		<input type="hidden" name="codigo" value="{{ estoque.codigo }}" />
 		<input type="hidden" name="edit" value="1" />
 	{% endif %}
+
+
+	<div class="form-group">
+		<label>Tipo de uso:</label>
+
+		<input type="radio" name="continuo" id="continuo-S" class="btn-check" value="S" autocomplete="off" {% if estoque and estoque.continuo %} checked {% endif %} />
+		<label class="btn btn-outline-secondary d-inline" for="continuo-S">Cont&iacute;nuo</label>
+
+		<input type="radio" name="continuo" id="continuo-N" class="btn-check" value="N" autocomplete="off" {% if estoque and not estoque.continuo %} checked {% endif %} />
+		<label class="btn btn-outline-secondary d-inline" for="continuo-N">Espor&aacute;dico</label><br>
+	</div>
+
+
+	<div id="campo_dias_uso" class="form-group" {% if not estoque or estoque.continuo %} style="display: none;" {% endif %}>
+		<label for="dias_uso">Tempo de uso:</label>
+		<input name="dias_uso" type="text" id="dias_uso" value="{% if estoque and estoque.dias_uso is not None %}{{ estoque.dias_uso }}{% endif %}" class="form-control" />
+		<small class="form-text">Quantidade de dias de uso do medicamento</small>
+	</div>
+
 
 	<div class="form-group">
 		<label for="nome_medicamento">Medicamento:</label>
@@ -23,7 +42,7 @@
 	<div class="form-group">
 		<label for="nome">Apresentação:</label>
 		<select name="apresentacao" id="apresentacao" class="form-control form-select">
-		<option data-bs-tipagem="&nbsp;"></option>
+		<option data-bs-prescricao="" data-bs-comercial="" ></option>
 		{% for apresentacao in arr_apresentacoes %}
 			<option value="{{ apresentacao.codigo }}"
 			{% if estoque.apresentacao == apresentacao %} selected {% endif %}
@@ -33,32 +52,41 @@
 		{% endfor %}
 		</select>
 	</div>
+
 	<div class="form-group">
 		<label for="concentracao">Concentração:</label>
 		<input name="concentracao" type="text" id="concentracao" value="{{ estoque.concentracao }}" class="form-control" />
 	</div>
+
 	<div class="form-group">
 		<label for="validade">Validade:</label>
 		<input name="validade" type="date" id="validade" value="{{ estoque.validade|date:'Y-m-d' }}" class="form-control" />
 	</div>
+
 	<div class="form-group">
 		<label for="prescricao">Dosagem prescrita:</label>
 		<input name="prescricao" type="text" id="prescricao" value="{{ estoque.prescricao|stringformat:".2f" }}" class="form-control" />
-		<span id="tipagem_dosagem">&nbsp;</span>
+		<small class="form-text" id="tipagem_dosagem">&nbsp;</small>
 	</div>
+
 	<div class="form-group">
 		<label for="frequencia">Frequência:</label>
 		<input name="frequencia" type="number" id="frequencia" value="{{ estoque.frequencia }}" class="form-control" />
-		<span>vez(es) por dia</span>
+		<small class="form-text">vez(es) por dia</small>
 	</div>
 	<div class="form-group">
 		<label for="horarios">Horários:</label>
-		<input name="horarios" type="text" id="horarios" value="{{ estoque.horarios }}" class="form-control" />
+		<div class="checkbox-grid">
+			{% for value, label in HORA_CHOICES %}
+				<input type="checkbox" name="hora" id="horario-{{ value }}" class="btn-check" value="{{ value }}" autocomplete="off" {% if value in horarios_selecionados %} checked {% endif %} />
+				<label class="btn btn-outline-secondary d-inline" for="horario-{{ value }}">{{ label }}</label>
+			{% endfor %}
+		</div>
 	</div>
 	<div class="form-group">
 		<label for="qtd_disponivel">Quantidade disponível:</label>
 		<input name="qtd_disponivel" type="text" id="qtd_disponivel" value="{{ estoque.qtd_disponivel|stringformat:".2f" }}" class="form-control" {% if estoque %} disabled {% endif %} />
-		<span id="tipagem_qtddisponivel">&nbsp;</span>
+		<small class="form-text" id="tipagem_qtddisponivel">&nbsp;</small>
 	</div>
 	{% if estoque %}
 		<div class="form-group">
@@ -72,6 +100,24 @@
 	<button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
+<style>
+.checkbox-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	gap: 0.5rem;
+}
+.checkbox-grid label {
+	display: flex;
+	align-items: center;   /* vertical centering */
+	justify-content: center; /* horizontal centering */
+	gap: 0.5rem; /* optional: space between checkbox and text */
+	padding: 0.5rem; /* optional: adds some clickable area */
+	text-align: center;
+	cursor: pointer;
+}
+
+</style>
+
 <script>
 
 /*document.getElementById('form_estoque').addEventListener('submit', teste_feririxXo);
@@ -84,9 +130,9 @@ function teste_feririxXo(e) {
 */
 
 $( "form_estoque" ).on( "submit", function( event ) {
-  event.preventDefault();
-  event.stopPropagation();
-  // Do something
+	event.preventDefault();
+	event.stopPropagation();
+	// Do something
 });
 
 // Troca o submit para enviar no popup
@@ -133,12 +179,24 @@ $("#nome_medicamento").on("input", function(){
 
 $("#apresentacao").on("change", function(){
 	var option = $("#apresentacao option:selected")[0];
-	$('#tipagem_dosagem').html(option.attributes['data-bs-prescricao'].value);
+	var tipagem = $('#tipagem_dosagem');
+	tipagem.html(option.attributes['data-bs-prescricao'].value);
 	$('#tipagem_qtddisponivel').html(option.attributes['data-bs-comercial'].value);
 });
 
 $( document ).ready(function() {
 	$("#apresentacao").trigger("change");
+});
+
+// Aplica ao mudar a seleção
+$('input[name="continuo"]').on('change', function() {
+	
+	var uso = $('input[name="continuo"]:checked').val();
+	if (uso === 'N') {
+		$('#campo_dias_uso').removeClass('d-none').fadeIn(500);
+	} else {
+		$('#campo_dias_uso').fadeOut(500);
+	}
 });
 
 </script>
