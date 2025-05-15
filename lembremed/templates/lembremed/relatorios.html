@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Relatórios</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Medicamentos por Morador
+                </div>
+                <div class="card-body">
+                    <canvas id="medicamentosPorMoradorChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Estoque de Medicamentos
+                </div>
+                <div class="card-body">
+                    <canvas id="estoqueMedicamentosChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gráfico de Medicamentos por Morador
+    fetch('{% url "dados_medicamentos_por_morador" %}')
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('medicamentosPorMoradorChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(item => item.morador),
+                    datasets: [{
+                        label: 'Quantidade de Medicamentos',
+                        data: data.map(item => item.quantidade_medicamentos),
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    
+    // Gráfico de Estoque de Medicamentos
+    fetch('{% url "dados_estoque_medicamentos" %}')
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('estoqueMedicamentosChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(item => item.medicamento),
+                    datasets: [{
+                        label: 'Quantidade em Estoque',
+                        data: data.map(item => item.quantidade),
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',  // Horizontal bar chart
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+});
+</script>
+{% endblock %}x'

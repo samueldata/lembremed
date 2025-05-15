@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 
 from django.shortcuts import render
 
+from lembremed import views_relatorios
 
 
 #Pagina principal do site
@@ -44,4 +45,7 @@ urlpatterns = [
 	path('saida/', include('lembremed.urls_saida')),
 	path('instituicao/', include('lembremed.urls_instituicao')),
 	path('notificacao/', include('lembremed.urls_notificacao')),
+	path('relatorios/', views_relatorios.relatorios, name='relatorios'),
+    path('api/medicamentos-por-morador/', views_relatorios.obter_dados_medicamentos_por_morador, name='dados_medicamentos_por_morador'),
+    path('api/estoque-medicamentos/', views_relatorios.obter_dados_estoque_medicamentos, name='dados_estoque_medicamentos'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
