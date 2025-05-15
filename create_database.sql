@@ -29,8 +29,10 @@ USE lembremed;
 /*===============*/
 /*Criando usuario*/
 
+DROP USER IF EXISTS 'lembremed'@'localhost';
 CREATE USER 'lembremed'@'localhost' IDENTIFIED BY 'g14UNIVESP';
-GRANT ALL PRIVILEGES ON lembremed.* to 'lembremed'@'localhost' WITH GRANT OPTION;
+ALTER USER 'lembremed'@'localhost' IDENTIFIED WITH mysql_native_password BY 'g14UNIVESP'; 
+GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 
