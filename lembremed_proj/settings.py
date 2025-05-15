@@ -89,7 +89,7 @@ DATABASES = {
 		'NAME': 'lembremed',
 		'USER': 'lembremed',
 		'PASSWORD': 'g14UNIVESP',
-		'HOST': '127.0.0.1',
+		'HOST': 'localhost',
 		'PORT': '3306',
 	}
 }

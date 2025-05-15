@@ -1,24 +1,28 @@
-<h1 align="center"> Grupo 14 - UNIVESP Projeto Integrador :) </h1>
+<h1 align="center"> Grupo 14 - UNIVESP Projeto Integrador</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/PI-concluído_com_sucesso-green" alt="PI concluído com sucesso"/>
+  <img src="https://img.shields.io/badge/PI%20I-Conclu%C3%ADdo%20com%20sucesso-2ecc71?style=for-the-badge&logo=checkmarx&logoColor=white" alt="Projeto Integrador I concluído"/>
+  <img src="https://img.shields.io/badge/PI%20II-Conclu%C3%ADdo%20com%20sucesso-2ecc71?style=for-the-badge&logo=checkmarx&logoColor=white" alt="Projeto Integrador II concluído"/>
   <br>
-  <img src="https://img.shields.io/badge/PII-Em_Desenvolvimento-blue" alt="PII em desenvolvimento"/>
+  <img src="https://img.shields.io/badge/PI%20III-Em%20desenvolvimento-3498db?style=for-the-badge&logo=progress&logoColor=white" alt="Projeto Integrador III em desenvolvimento"/>
 </p>
 
 
 
 <p align="center">
-<img loading="lazy" src=https://img.shields.io/badge/Codes-yellow>
-<img loading="lazy" src=https://img.shields.io/badge/PYTHON-blue>
-<img loading="lazy" src=https://img.shields.io/badge/Django-red>
-<img loading="lazy" src=https://img.shields.io/badge/SQL-magenta>
-<img loading="lazy" src=https://img.shields.io/badge/HTML-green>
-<img loading="lazy" src=https://img.shields.io/badge/CSS-purple>
-<img loading="lazy" src=https://img.shields.io/badge/JavaScript-orange>  
-</p>
+  <p align="center">
+    <img src="https://img.shields.io/badge/Stack-FFD600?style=for-the-badge&logo=stackshare&logoColor=black" alt="Stack"/>
+    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+    <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django"/>
+    <img src="https://img.shields.io/badge/SQL-CC0066?style=for-the-badge&logo=postgresql&logoColor=white" alt="SQL"/>
+    <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/>
+    <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"/>
+    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript"/>
+  </p>
 
-![GitHub Org's stars](https://img.shields.io/github/stars/samueldata/lembremed)
+  <p align="center">
+    <img src="https://img.shields.io/github/stars/samueldata/lembremed?style=for-the-badge&logo=github" alt="GitHub Stars"/>
+  </p>
 
 # LembreMEd
 
