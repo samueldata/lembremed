@@ -8,3 +8,6 @@ static_collected/
 lembremed/migrations/00*
 .vscode/
 venv/
+
+/*.csv
+/cache/*.json

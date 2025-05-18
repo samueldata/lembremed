@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 
 from django.shortcuts import render
 
+from lembremed import views_relatorios
 
 
 #Pagina principal do site
@@ -41,7 +42,12 @@ urlpatterns = [
 	path('morador/', include('lembremed.urls_morador')),
 	path('profissional/', include('lembremed.urls_profissional')),
 	path('medicamento/', include('lembremed.urls_medicamento')),
-	path('saida/', include('lembremed.urls_saida')),
-	path('instituicao/', include('lembremed.urls_instituicao')),
+	path('saida/', include('lembremed.urls_saida')),	path('instituicao/', include('lembremed.urls_instituicao')),
 	path('notificacao/', include('lembremed.urls_notificacao')),
+	path('relatorios/', views_relatorios.relatorios, name='relatorios'),
+    path('relatorios/exportar-csv/', views_relatorios.exportar_csv, name='exportar_csv'),
+    path('api/medicamentos-por-morador/', views_relatorios.obter_dados_medicamentos_por_morador, name='dados_medicamentos_por_morador'),
+    path('api/estoque-medicamentos/', views_relatorios.obter_dados_estoque_medicamentos, name='dados_estoque_medicamentos'),
+    path('api/administracoes-por-periodo/', views_relatorios.obter_dados_administracoes_por_periodo, name='dados_administracoes_por_periodo'),
+    path('api/administracoes-por-profissional/', views_relatorios.obter_dados_administracoes_por_profissional, name='dados_administracoes_por_profissional'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
