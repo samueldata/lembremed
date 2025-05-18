@@ -60,6 +60,7 @@ class Profissional(models.Model):
 		permissions = (
 			("pode_gerenciar_profissional", "Pode gerenciar os profissionais"),
 		)
+		unique_together = ('nome', 'instituicao', 'coren')
 
 class Medicamento(models.Model):
 	codigo = models.AutoField(primary_key=True)

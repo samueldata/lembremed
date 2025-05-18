@@ -12,16 +12,15 @@ def obter_dados_medicamentos_por_morador(request):
         cursor.execute("""
         SELECT 
             m.nome as morador,
-            COUNT(med.id) as quantidade_medicamentos
+            COUNT(DISTINCT e.medicamento_id) as quantidade_medicamentos
         FROM lembremed_morador m
-        LEFT JOIN lembremed_medicamento med ON med.morador_id = m.id
-        GROUP BY m.id, m.nome
+        LEFT JOIN lembremed_estoque e ON e.morador_id = m.cpf
+        GROUP BY m.cpf, m.nome
         ORDER BY quantidade_medicamentos DESC
         LIMIT 10
         """)
         columns = [col[0] for col in cursor.description]
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
-    
     return JsonResponse(data, safe=False)
 
 def obter_dados_estoque_medicamentos(request):
@@ -29,13 +28,14 @@ def obter_dados_estoque_medicamentos(request):
     with connection.cursor() as cursor:
         cursor.execute("""
         SELECT 
-            med.nome as medicamento,
-            med.quantidade_atual as quantidade
-        FROM lembremed_medicamento med
-        ORDER BY med.quantidade_atual ASC
+            med.principio as medicamento,
+            SUM(e.qtd_disponivel) as quantidade
+        FROM lembremed_estoque e
+        JOIN lembremed_medicamento med ON med.codigo = e.medicamento_id
+        GROUP BY med.principio
+        ORDER BY quantidade ASC
         LIMIT 10
         """)
         columns = [col[0] for col in cursor.description]
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
-    
     return JsonResponse(data, safe=False)
