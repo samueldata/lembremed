@@ -29,11 +29,24 @@ USE lembremed;
 /*===============*/
 /*Criando usuario*/
 
+SELECT PLUGIN_NAME, PLUGIN_STATUS 
+FROM INFORMATION_SCHEMA.PLUGINS 
+WHERE PLUGIN_NAME = 'mysql_native_password';
+
+
 DROP USER IF EXISTS 'lembremed'@'localhost';
 CREATE USER 'lembremed'@'localhost' IDENTIFIED BY 'g14UNIVESP';
 ALTER USER 'lembremed'@'localhost' IDENTIFIED WITH mysql_native_password BY 'g14UNIVESP'; 
+
+ALTER USER 'lembremed'@'localhost' IDENTIFIED WITH 'caching_sha2_password' BY 'g14UNIVESP';
 GRANT ALL PRIVILEGES ON lembremed.* TO 'lembremed'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+
+
+
+
+
+
 
 
 /*
@@ -52,7 +65,7 @@ cd lembremed
 	rm lembremed/migrations/00*
 
 #Criando os migrations
-python manage.py makemigrations
+
 
 #Pre-configurado, alterar se desejar
 > configurar o usuario do banco em lembremed_proj/settings.py

@@ -1,14 +1,16 @@
 from django.shortcuts import render
+import pandas as pd
+import plotly.express as px
+import os
 from django.http import JsonResponse
 from django.db import connection
 import json
-import os
 from datetime import datetime
 import time
 from django.conf import settings
 from decimal import Decimal
 
-# Caminho onde os arquivos de cache serão armazenados
+# Caminho onde os arquivos de cache serão armazenhados
 CACHE_DIR = os.path.join(settings.BASE_DIR, 'cache')
 # Tempo máximo de cache em segundos (4 horas)
 CACHE_MAX_AGE = 4 * 60 * 60
@@ -415,3 +417,140 @@ def exportar_csv(request, contexto_padrao):
         
         messages.error(request, f"Erro ao gerar o arquivo CSV: {str(e)}")
         return redirect('relatorios')
+
+def grafico_heatmap(request):
+    """Gera o gráfico de heatmap para administrações por horário e profissional."""
+    try:
+        # Consulta os dados necessários
+        dados = consultar_administracoes_por_horario_profissional()
+        
+        # Cria o DataFrame para o gráfico
+        df = pd.DataFrame(dados)
+        
+        # Gera o gráfico de heatmap
+        fig = px.density_heatmap(df, x="hora", y="profissional", z="quantidade",
+                                  labels={"hora": "Hora do Dia", "profissional": "Profissional", "quantidade": "Quantidade de Administrações"},
+                                  title="Heatmap de Administrações por Horário e Profissional")
+        
+        # Salva o gráfico como uma imagem estática
+        caminho_imagem = os.path.join(CACHE_DIR, "heatmap_administracoes.png")
+        fig.write_image(caminho_imagem)
+        
+        # Retorna a imagem gerada
+        return JsonResponse({"url_imagem": request.build_absolute_uri(caminho_imagem)})
+    except Exception as e:
+        print(f"Erro ao gerar gráfico de heatmap: {str(e)}")
+        return JsonResponse({"erro": str(e)}, status=500)
+
+def consultar_administracoes_por_horario_profissional():
+    """Executa consulta SQL para obter administrações por horário e profissional."""
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+            SELECT 
+                TO_CHAR(a.dthr_administracao, 'HH24:MI') as hora,
+                p.nome as profissional,
+                COUNT(*) as quantidade
+            FROM lembremed_administra a
+            JOIN lembremed_profissional p ON p.cpf = a.profissional_id
+            WHERE a.dthr_administracao IS NOT NULL
+            GROUP BY hora, p.nome
+            ORDER BY hora, p.nome
+            """)
+            columns = [col[0] for col in cursor.description]
+            results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            
+            return results
+    except Exception as e:
+        # Em caso de erro, retorna lista vazia
+        return []
+
+@adiciona_contexto
+@permission_required('lembremed.pode_gerenciar_profissional')
+def heatmap_erro_turno(request, contexto_padrao):
+    """Gera um heatmap mostrando a proporção de tipos de erro por turno."""
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT 
+                    CASE 
+                        WHEN EXTRACT(HOUR FROM h.hora) BETWEEN 0 AND 5 THEN 'Madrugada (0h-5h)'
+                        WHEN EXTRACT(HOUR FROM h.hora) BETWEEN 6 AND 11 THEN 'Manhã (6h-11h)'
+                        WHEN EXTRACT(HOUR FROM h.hora) BETWEEN 12 AND 17 THEN 'Tarde (12h-17h)'
+                        WHEN EXTRACT(HOUR FROM h.hora) BETWEEN 18 AND 23 THEN 'Noite (18h-23h)'
+                    END as turno,
+                    CASE
+                        WHEN a.dthr_administracao IS NULL THEN 'Não Administrado'
+                        WHEN EXTRACT(HOUR FROM a.dthr_administracao) > h.hora THEN 'Atraso'
+                        WHEN EXTRACT(HOUR FROM a.dthr_administracao) < h.hora THEN 'Antecipado'
+                        ELSE 'No Horário'
+                    END as tipo_erro,
+                    COUNT(*) as contagem
+                FROM lembremed_administra a
+                JOIN lembremed_horario h ON h.codigo = a.horario_id
+                GROUP BY turno, tipo_erro
+                ORDER BY 
+                    CASE 
+                        WHEN turno = 'Madrugada (0h-5h)' THEN 1
+                        WHEN turno = 'Manhã (6h-11h)' THEN 2
+                        WHEN turno = 'Tarde (12h-17h)' THEN 3
+                        WHEN turno = 'Noite (18h-23h)' THEN 4
+                    END,
+                    tipo_erro
+            """)
+            
+            dados = [
+                {
+                    'turno': row[0],
+                    'Tipo de Erro': row[1],
+                    'Contagem': row[2]
+                }
+                for row in cursor.fetchall()
+            ]
+
+        # Se não houver dados, criar dados de exemplo
+        if not dados:
+            turnos = ['Madrugada (0h-5h)', 'Manhã (6h-11h)', 'Tarde (12h-17h)', 'Noite (18h-23h)']
+            tipos_erro = ['Não Administrado', 'Atraso', 'Antecipado', 'No Horário']
+            dados = [
+                {
+                    'turno': turno,
+                    'Tipo de Erro': tipo,
+                    'Contagem': 0
+                }
+                for turno in turnos
+                for tipo in tipos_erro
+            ]
+
+        # Criar DataFrame
+        df = pd.DataFrame(dados)
+        
+        # Calcular proporções
+        total_por_turno = df.groupby('turno')['Contagem'].transform('sum')
+        df['Proporcao'] = df['Contagem'] / total_por_turno
+        df['Proporcao'] = df['Proporcao'].fillna(0)  # Substituir NaN por 0
+
+        # Criar o heatmap
+        fig = px.density_heatmap(
+            df,
+            x='Tipo de Erro',
+            y='turno',
+            z='Proporcao',
+            color_continuous_scale='Blues',
+            text_auto='.1%',
+            title='Proporção de Tipos de Erro por Turno',
+            labels={'turno': 'Turno', 'Proporcao': 'Proporção'}
+        )
+
+        fig.update_layout(
+            yaxis_title='Turno',
+            xaxis_title='Tipo de Erro',
+            height=400
+        )
+
+        html_grafico = fig.to_html(full_html=False)
+        return render(request, 'lembremed/heatmap_turno_erro.html', {**contexto_padrao, 'grafico': html_grafico})
+        
+    except Exception as e:
+        print(f"Erro ao gerar heatmap de erros por turno: {str(e)}")
+        return JsonResponse({"erro": str(e)}, status=500)
