@@ -90,6 +90,16 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
   - Registro da hora da última dose administrada
   - Responsável pela administração
 
+7. Relatórios e Exportação de Dados
+- Descrição: Dashboard visual com métricas importantes e função de exportação de dados.
+- Detalhes:
+  - Gráficos de medicamentos por morador
+  - Gráficos de estoque de medicamentos
+  - Administrações por período
+  - Administrações por profissional
+  - Exportação de dados em formato CSV (compatível com importação)
+  - Filtragem por período para exportação
+
 <p align="center">
   <a href="https://github.com/britocps"><img src="https://github.com/samueldata/lembremed/assets/163072898/a0a9c7f0-6515-4e85-ba65-5b36f2bd4ca8" width="516" height="300" ></a><br><sub> Tela Inicial</sub>
 </div>
@@ -117,6 +127,9 @@ Seu desenvolvimento busca representar um avanço na gestão de medicamentos nas 
   - API de notificação
   - Melhorar responsividade  
   - Tela nova de login
+  - Exportação de dados para CSV
+  - Dashboard de relatórios aprimorado
+  - Importação/exportação de dados históricos
 
  <p align="center">
   <a href="https://github.com/britocps"><img src="https://github.com/user-attachments/assets/b4ab253a-5907-4e6a-a4e0-0ab1b641ed9b" width="516" height="200" ></a><br><sub> Notificação de estoque baixo E-mail</sub>
@@ -196,10 +209,19 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
     </td>
     <td align="center">
       <a href="https://github.com/graciela-oliveira"><img src="https://github.com/samueldata/lembremed/assets/163072898/157ea53b-a436-4fa4-b6e8-870992057d58" width="115" height="140"><br><sub>Graciela Oliveira</sub></a>
-    </td>
-    <td align="center">
+    </td>    <td align="center">
       <a href="https://github.com/qbamanda"><img src="https://github.com/samueldata/lembremed/assets/163072898/bdbff197-5b1e-4c0d-b08e-5d0f64d2642f" width="115" height="140"><br><sub>Amanda Queçada</sub></a>
     </td>
+  </tr>
+</table>
+
+## Documentação Adicional
+
+- [Guia de Importação e Exportação de Dados](docs_importacao_exportacao.md)
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT - consulte o arquivo LICENSE para obter detalhes.
     <td align="center">
       <a href="https://github.com/samueldata"><img src="https://github.com/samueldata/lembremed/assets/163072898/5e027315-3fc9-40f1-b7aa-3d5ad94405e5" width="115" height="140"><br><sub>Samuel Leite</sub></a>
     </td>

@@ -337,16 +337,81 @@ def obter_dados_administracoes_por_profissional(request):
         
         # Debug: registra dados que serão retornados
         print(f"Dados administracoes_por_profissional: {dados}")
-        
-        # Força a conversão explícita de todos os valores numéricos para float
+          # Força a conversão explícita de todos os valores numéricos para float
         for item in dados:
             if 'quantidade_administracoes' in item:
                 item['quantidade_administracoes'] = float(item['quantidade_administracoes'])
         
         return JsonResponse(dados, safe=False)
     except Exception as e:
-        # Em caso de erro, retorna dados de exemplo
+        # Em caso de erro, retorna dados de exemplo        
         print(f"Erro ao obter dados de administrações por profissional: {str(e)}")
         return JsonResponse([
             {"profissional": "Sem dados disponíveis", "quantidade_administracoes": 0}
         ], safe=False)
+
+@adiciona_contexto
+@permission_required('lembremed.pode_gerenciar_profissional')
+def exportar_csv(request, contexto_padrao):
+    """Gera e disponibiliza para download um arquivo CSV com dados de administrações."""
+    import tempfile
+    import os
+    from django.http import FileResponse
+    from django.core.management import call_command
+    from django.contrib import messages
+    from django.shortcuts import redirect
+    from io import StringIO
+    
+    # Obter parâmetros do request
+    instituicao = contexto_padrao.get('usuario')
+    periodo_inicio = request.GET.get('inicio')
+    periodo_fim = request.GET.get('fim')
+    
+    # Criar arquivo temporário para armazenar o CSV
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as temp_file:
+        temp_path = temp_file.name
+    
+    try:
+        # Capturar a saída do comando
+        output = StringIO()
+        
+        # Construir argumentos para o comando
+        args = [temp_path]
+        if instituicao and instituicao.cnpj:
+            args.append(instituicao.cnpj)
+        
+        kwargs = {'stdout': output}
+        if periodo_inicio:
+            kwargs['periodo_inicio'] = periodo_inicio
+        if periodo_fim:
+            kwargs['periodo_fim'] = periodo_fim
+        
+        # Incluir todos os dados mesmo sem administrações
+        kwargs['incluir_todos_dados'] = True
+        
+        # Executar o comando de exportação
+        call_command('exportar_administracoes', *args, **kwargs)
+        
+        # Nome do arquivo para download
+        filename = 'administracoes'
+        if periodo_inicio:
+            filename += f"_de_{periodo_inicio}"
+        if periodo_fim:
+            filename += f"_ate_{periodo_fim}"
+        filename += '.csv'
+        
+        # Retornar o arquivo como uma resposta para download
+        response = FileResponse(open(temp_path, 'rb'), as_attachment=True, filename=filename)
+        
+        # Configurar para deletar o arquivo temporário após enviar a resposta
+        response._resource_closers.append(lambda: os.unlink(temp_path))
+        
+        return response
+        
+    except Exception as e:
+        # Em caso de erro, deletar o arquivo temporário e mostrar mensagem
+        if os.path.exists(temp_path):
+            os.unlink(temp_path)
+        
+        messages.error(request, f"Erro ao gerar o arquivo CSV: {str(e)}")
+        return redirect('relatorios')
