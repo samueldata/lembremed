@@ -10,3 +10,4 @@ lembremed/migrations/00*
 venv/
 
 /*.csv
+/cache/*.json

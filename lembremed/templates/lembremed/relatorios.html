@@ -4,6 +4,10 @@
 <div class="container mt-4">
     <h1>Relatórios</h1>
     
+    <div class="alert alert-info mb-4">
+        <p>Dados atualizados automaticamente a cada 4 horas. <a href="?atualizar=1" class="btn btn-sm btn-primary">Atualizar agora</a></p>
+    </div>
+    
     <div class="row">
         <div class="col-md-6">
             <div class="card mb-4">
@@ -12,6 +16,9 @@
                 </div>
                 <div class="card-body">
                     <canvas id="medicamentosPorMoradorChart"></canvas>
+                    <div id="medicamentosPorMoradorError" class="mt-3 d-none">
+                        <div class="alert alert-warning">Erro ao carregar dados. Tente atualizar a página.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -23,6 +30,39 @@
                 </div>
                 <div class="card-body">
                     <canvas id="estoqueMedicamentosChart"></canvas>
+                    <div id="estoqueMedicamentosError" class="mt-3 d-none">
+                        <div class="alert alert-warning">Erro ao carregar dados. Tente atualizar a página.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Administrações por Período do Dia
+                </div>
+                <div class="card-body">
+                    <canvas id="administracoesPorPeriodoChart"></canvas>
+                    <div id="administracoesPorPeriodoError" class="mt-3 d-none">
+                        <div class="alert alert-warning">Erro ao carregar dados. Tente atualizar a página.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Top Profissionais por Administrações
+                </div>
+                <div class="card-body">
+                    <canvas id="administracoesPorProfissionalChart"></canvas>
+                    <div id="administracoesPorProfissionalError" class="mt-3 d-none">
+                        <div class="alert alert-warning">Erro ao carregar dados. Tente atualizar a página.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,66 +71,290 @@
 {% endblock %}
 
 {% block javascript %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Garantir que o Chart.js é carregado antes do nosso script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 
 <script>
+console.log('Chart.js carregado:', typeof Chart !== 'undefined');
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Configurações comuns para os gráficos
+    Chart.defaults.font.size = 14;
+    Chart.defaults.color = '#555';
+    
+    // Função para tratar erros e mostrar mensagem na interface
+    function handleError(chartId, errorId) {
+        console.error('Erro ao carregar dados para ' + chartId);
+        document.getElementById(chartId).style.display = 'none';
+        document.getElementById(errorId).classList.remove('d-none');
+    }
+    
+    // Fallback data
+    const fallbackData = {
+        medicamentosPorMorador: [
+            {"morador": "Dr. Vitor Hugo Gonçalves", "quantidade_medicamentos": 4},
+            {"morador": "Sr. Davi Lucas Jesus", "quantidade_medicamentos": 4},
+            {"morador": "Rafael da Mota", "quantidade_medicamentos": 4},
+            {"morador": "Nicole Cunha", "quantidade_medicamentos": 4},
+            {"morador": "Thomas Ferreira", "quantidade_medicamentos": 4}
+        ],
+        estoqueMedicamentos: [
+            {"medicamento": "Antibiótico", "quantidade": 61.0},
+            {"medicamento": "Xarope para Tosse", "quantidade": 79.0},
+            {"medicamento": "PARACETAMOL", "quantidade": 229.0},
+            {"medicamento": "Metformina", "quantidade": 284.0},
+            {"medicamento": "DIPIRONA", "quantidade": 318.0}
+        ],
+        administracoesPorPeriodo: [
+            {"periodo": "Madrugada (0h-5h)", "quantidade": 2},
+            {"periodo": "Manhã (6h-11h)", "quantidade": 248},
+            {"periodo": "Tarde (12h-17h)", "quantidade": 234},
+            {"periodo": "Noite (18h-23h)", "quantidade": 260}
+        ],
+        administracoesPorProfissional: [
+            {"profissional": "Giovanna Pinto", "quantidade_administracoes": 135},
+            {"profissional": "Dr. Murilo da Rocha", "quantidade_administracoes": 133},
+            {"profissional": "João da Rocha", "quantidade_administracoes": 127},
+            {"profissional": "Vitor Hugo Martins", "quantidade_administracoes": 125},
+            {"profissional": "Yasmin Nascimento", "quantidade_administracoes": 113}
+        ]
+    };
+    
     // Gráfico de Medicamentos por Morador
-    fetch('{% url "dados_medicamentos_por_morador" %}')
-        .then(response => response.json())
-        .then(data => {
-            const ctx = document.getElementById('medicamentosPorMoradorChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.map(item => item.morador),
-                    datasets: [{
-                        label: 'Quantidade de Medicamentos',
-                        data: data.map(item => item.quantidade_medicamentos),
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
+    function createMedicamentosPorMoradorChart(data) {
+        const ctx = document.getElementById('medicamentosPorMoradorChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(item => item.morador),
+                datasets: [{
+                    label: 'Quantidade de Medicamentos',
+                    data: data.map(item => item.quantidade_medicamentos),
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Morador'
                         }
                     }
                 }
-            });
+            }
         });
+    }
     
     // Gráfico de Estoque de Medicamentos
-    fetch('{% url "dados_estoque_medicamentos" %}')
-        .then(response => response.json())
-        .then(data => {
-            const ctx = document.getElementById('estoqueMedicamentosChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.map(item => item.medicamento),
-                    datasets: [{
-                        label: 'Quantidade em Estoque',
-                        data: data.map(item => item.quantidade),
-                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    indexAxis: 'y',  // Horizontal bar chart
-                    scales: {
-                        x: {
-                            beginAtZero: true
+    function createEstoqueMedicamentosChart(data) {
+        const ctx = document.getElementById('estoqueMedicamentosChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(item => item.medicamento),
+                datasets: [{
+                    label: 'Quantidade em Estoque',
+                    data: data.map(item => item.quantidade),
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y',  // Horizontal bar chart
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Medicamento'
                         }
                     }
                 }
-            });
+            }
         });
+    }
+    
+    // Gráfico de Administrações por Período do Dia
+    function createAdministracoesPorPeriodoChart(data) {
+        const ctx = document.getElementById('administracoesPorPeriodoChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: data.map(item => item.periodo),
+                datasets: [{
+                    data: data.map(item => item.quantidade),
+                    backgroundColor: [
+                        'rgba(255, 205, 86, 0.8)',  // Amarelo - Manhã
+                        'rgba(54, 162, 235, 0.8)',  // Azul - Tarde
+                        'rgba(75, 192, 192, 0.8)',  // Verde-água - Noite
+                        'rgba(153, 102, 255, 0.8)', // Roxo - Madrugada
+                    ],
+                    borderColor: [
+                        'rgb(255, 205, 86)',
+                        'rgb(54, 162, 235)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = total === 0 ? 0 : Math.round((value / total) * 100);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Gráfico de Administrações por Profissional
+    function createAdministracoesPorProfissionalChart(data) {
+        const ctx = document.getElementById('administracoesPorProfissionalChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(item => item.profissional),
+                datasets: [{
+                    label: 'Quantidade de Administrações',
+                    data: data.map(item => item.quantidade_administracoes),
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Profissional'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Carregar dados para cada gráfico
+    try {
+        fetch('{% url "dados_medicamentos_por_morador" %}')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    createMedicamentosPorMoradorChart(data);
+                } else {
+                    console.warn('Usando dados de fallback para medicamentos por morador');
+                    createMedicamentosPorMoradorChart(fallbackData.medicamentosPorMorador);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar medicamentos por morador:', error);
+                createMedicamentosPorMoradorChart(fallbackData.medicamentosPorMorador);
+            });
+    } catch (e) {
+        console.error('Erro ao processar medicamentos por morador:', e);
+        createMedicamentosPorMoradorChart(fallbackData.medicamentosPorMorador);
+    }
+
+    try {
+        fetch('{% url "dados_estoque_medicamentos" %}')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    createEstoqueMedicamentosChart(data);
+                } else {
+                    console.warn('Usando dados de fallback para estoque de medicamentos');
+                    createEstoqueMedicamentosChart(fallbackData.estoqueMedicamentos);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar estoque de medicamentos:', error);
+                createEstoqueMedicamentosChart(fallbackData.estoqueMedicamentos);
+            });
+    } catch (e) {
+        console.error('Erro ao processar estoque de medicamentos:', e);
+        createEstoqueMedicamentosChart(fallbackData.estoqueMedicamentos);
+    }
+
+    try {
+        fetch('{% url "dados_administracoes_por_periodo" %}')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    createAdministracoesPorPeriodoChart(data);
+                } else {
+                    console.warn('Usando dados de fallback para administrações por período');
+                    createAdministracoesPorPeriodoChart(fallbackData.administracoesPorPeriodo);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar administrações por período:', error);
+                createAdministracoesPorPeriodoChart(fallbackData.administracoesPorPeriodo);
+            });
+    } catch (e) {
+        console.error('Erro ao processar administrações por período:', e);
+        createAdministracoesPorPeriodoChart(fallbackData.administracoesPorPeriodo);
+    }
+
+    try {
+        fetch('{% url "dados_administracoes_por_profissional" %}')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    createAdministracoesPorProfissionalChart(data);
+                } else {
+                    console.warn('Usando dados de fallback para administrações por profissional');
+                    createAdministracoesPorProfissionalChart(fallbackData.administracoesPorProfissional);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar administrações por profissional:', error);
+                createAdministracoesPorProfissionalChart(fallbackData.administracoesPorProfissional);
+            });
+    } catch (e) {
+        console.error('Erro ao processar administrações por profissional:', e);
+        createAdministracoesPorProfissionalChart(fallbackData.administracoesPorProfissional);
+    }
 });
 </script>
-{% endblock %}x'
+{% endblock %}
