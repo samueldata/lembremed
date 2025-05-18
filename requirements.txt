@@ -6,3 +6,7 @@ pytest
 python-telegram-bot
 requests
 cryptography
+# Dependências adicionadas para melhoria do projeto
+django-debug-toolbar
+django-extensions
+coverage
