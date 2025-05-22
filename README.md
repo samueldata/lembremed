@@ -221,7 +221,7 @@ Essas tecnologias foram selecionadas com o objetivo de garantir eficiência, seg
 
 ## Documentação Adicional
 
-- [Guia de Importação e Exportação de Dados](docs_importacao_exportacao.md)
+- [Guia de Importação e Exportação de Dados](lembremed_docs_import_export.md)
 
 ## Licença
 
