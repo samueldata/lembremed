@@ -2,11 +2,6 @@
 
 {% block content %}
 
-  {% if form.errors %}
-  <div class="popUp-failLogin">
-    <p>Your username and password didn't match. Please try again.</p>
-  </div>
-  {% endif %}
 
   {% if next %}
     {% if user.is_authenticated %}
@@ -17,43 +12,55 @@
     {% endif %}
   {% endif %}
   
+<div id="loginContainer" style="width: 500px;" class="mx-auto">
+	{% if form.errors %}
+	<div class="alert alert-danger d-none" id="loginError" role="alert">
+		<p>Credenciais incorretas. Por favor, tente novamente.</p>
+	</div>
+	{% endif %}  
   <div class="login">
-    <form method="post" class="formLogin" action="{% url 'login' %}">
+    <form id="loginForm" method="post" class="formLogin" action="{% url 'login' %}">
       {% csrf_token %}
-        <h1>Login</h1>
-        <p>Digite os seus dados de acesso no campo abaixo.</p>
+        <p class="text-muted">Digite os seus dados de acesso no campo abaixo.</p>
         
         <!-- Campo select obrigatório -->
-        <label for="user_type">Selecione o tipo de usuário:</label>
-        <select id="user_type" name="user_type" required onchange="applyMaskAndShowFields()">
-          <option value="" disabled selected>Selecione...</option>
-          <option value="administrador">Administrador</option>
-          <option value="instituicao">Instituição</option>
-          <option value="profissional">Profissional</option>
+        <label for="user_type" class="form-label">Selecione o tipo de usuário:</label>
+        <select id="user_type" name="user_type" class="form-select mb-3" required
+            onchange="applyMaskAndShowFields()">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="administrador">Administrador</option>
+            <option value="instituicao">Instituição</option>
+            <option value="profissional">Profissional</option>
         </select>
         <br>
+
         <!-- Ocultar inicialmente os campos de usuário e senha -->
-        <div id="loginFields" style="display:none;">
-          <table>
-            <tr>
-              <td>{{ form.username.label_tag }}</td>
-            </tr>
-            <tr>
-              <td><input type="text" id="username" name="username" value="{{ form.username.value }}" required></td>
-            </tr>
-            <tr>
-              <td>{{ form.password.label_tag }}</td>
-            </tr>
-            <tr>
-              <td>{{ form.password }}</td>
-            </tr>
-          </table>
+        <div id="loginFields" class="mt-3" style="display:none;">
+            <div class="mb-3">
+                <label for="username" class="form-label">{{ form.username.label_tag }}</label>
+                <input type="text" id="username" name="username" class="form-control rounded-3"
+                    value="{{ form.username.value }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">{{ form.password.label_tag }}</label>
+                <div class="position-relative">
+                    <input type="password" id="password" name="password"
+                        class="form-control rounded-3 pe-5" required>
+                    <i class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer"
+                        id="togglePassword" onclick="togglePasswordVisibility()"
+                        style="cursor: pointer; font-size: 1.2rem;"></i>
+                </div>
+            </div>
         </div>
 
-        <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
-        <input type="submit" value="Acessar" class="btn" />
+        <div class="d-flex flex-column justify-content-center align-items-center gap-3">
+            <a href="{% url 'password_reset' %}" class="text-primary">Esqueci minha senha</a>
+            <button type="submit"
+                class="btn btn-custom btn-text-color px-4 w-100 rounded-3">Acessar</button>
+        </div>
     </form>
   </div>
+</div>
 
   <!-- Script para aplicar máscaras e exibir os campos -->
   <script>
@@ -94,9 +101,5 @@
       }
     };
   </script>
-
-  <!-- Importar jQuery e jQuery Mask Plugin -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 {% endblock %}

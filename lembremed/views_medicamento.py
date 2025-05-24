@@ -292,11 +292,11 @@ def medicamento_salvar_administracao(request, pcpf, pcodigo):
 
 				###############################################################
 				# Marca os horarios anteriores sem administracao como nao aplicados, caso existam
-				limite = estoque.dthr_alteracao
+				limite = estoque.dthr_alteracao.date()
 				ultima_saida = Saida.objects.filter(morador=estoque.morador).order_by('-dt_inicio').first()
 				if ultima_saida:
-					limite = max(estoque.dthr_alteracao.date(), 
-				  		ultima_saida.dt_fim,
+					limite = max(estoque.dthr_alteracao, 
+						ultima_saida.dt_fim,
 					)
 
 				#limite = timezone.make_aware(limite, timezone.get_current_timezone())  # Converte para um datetime "aware"

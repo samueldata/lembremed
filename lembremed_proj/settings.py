@@ -124,9 +124,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-	('images', os.path.join(BASE_DIR, 'static', 'img')),
-	('styles', os.path.join(BASE_DIR, 'static', 'styles')),
-	('scripts', os.path.join(BASE_DIR, 'static', 'scripts')),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 #Quando descomentar esta linha deve-se tbm descomentar a linha depois do array em urls.py

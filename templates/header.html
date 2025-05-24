@@ -1,24 +1,22 @@
 {% load static %}
-<header>
-	<div class="brand-container">
-		<a href="/" class="brand-container"><img src="{% static 'images/logo.png' %}" alt="Lembre-MEd Logo" /></a>
-		<h1>Lembre-MEd</h1>
-	</div>
+<header class="bg-custom-1">
+    <nav class="container navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo e Nome -->
+	<a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+		<img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+		<span class="fw-bold text-custom">Lembre-MEd</span>
+     </a>
 
-	<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+<!-- Botão Hamburguer (Mobile) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-	<nav id="navbar">
-		<div class="nav-user">
-			{% if user.is_authenticated %}
-			Olá,
-			{% block nome_usuario %}
-			{{ usuario.nome }}!
-			{% endblock %}
-			{% endif %}
-		</div>
-		<div class="nav-buttons">
-			<ul>
-				{% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+            <!-- Itens do Menu(navegação) -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav align-items-center me-auto">
+                    {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
 				{% if estoque_acabando or estoque_vencendo %}
 				<li>
 					<a href="{% url 'notificacao_listar' %}"><img style="width: 1em;"
@@ -26,49 +24,80 @@
 				</li>
 				{% endif %}
 				{% endif %}
-				<li>
-					<a href="{% url 'index' %}">HOME</a>
-				</li>
-				{% if perms.lembremed.pode_gerenciar_instituicao %}
-				{# o super usuario tem todas as permissoes #}
-				{# % if request.user.is_superuser % #}
-				<li>
-					<a href="{% url 'instituicao_listar' %}">INSTITUIÇÕES</a>
-				</li>
-				{% endif %}
-				{% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
-				{% if not request.user.is_superuser %}
-				<li>
-					<a href="{% url 'morador_listar' %}">HÓSPEDES</a>
-				</li>
-				{% endif %}
-				{% endif %}
-				{% if perms.lembremed.pode_gerenciar_profissional %}
-				{% if not request.user.is_superuser %}
-				<li>
-					<a href="{% url 'profissional_listar' %}">PROFISSIONAIS</a>
-				</li>
-				{% endif %}
-				{% endif %}
-				{% if perms.lembremed.pode_gerenciar_profissional %}
-				<li>
-					<a href="{% url 'relatorios' %}">RELATÓRIOS</a>
-				</li>
-				{% endif %}
+
+                    {% if perms.lembremed.pode_gerenciar_instituicao %}
+                        <li class="nav-item">
+                            <a class="nav-link text-custom {% if request.resolver_match.url_name == 'instituicao_listar' %}fw-bold{% endif %}" href="{% url 'instituicao_listar' %}">Instituições</a>
+                        </li>
+                    {% endif %}
+
+
+                    {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+                        {% if not request.user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link text-custom {% if request.resolver_match.url_name == 'morador_listar' %}fw-bold{% endif %}" href="{% url 'morador_listar' %}">Hóspedes</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if perms.lembremed.pode_gerenciar_profissional %}
+                        {% if not request.user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link text-custom {% if request.resolver_match.url_name == 'profissional_listar' %}fw-bold{% endif %}" href="{% url 'profissional_listar' %}">Profissionais</a>
+                            </li>
+							<li>
+								<a class="nav-link text-custom {% if request.resolver_match.url_name == 'relatorios' %}fw-bold{% endif %}" href="{% url 'relatorios' %}">Relatórios</a>
+								<a href="{% url 'relatorios' %}"></a>
+							</li>
+                        {% endif %}
+
+                    {% endif %}
+                </ul>
+
+                <!-- Itens menu(Login) -->
+                <ul class="navbar-nav align-items-center ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown d-flex align-items-center justify-content-center flex-wrap">
+                            {% comment %} Notificações {% endcomment %}
+                            {% with estoque_acabando=0 estoque_vencendo=0 %}
+                                {% for estoque in lista_estoques %}
+                                    {% if estoque.estoque.quantidade <= 2 %}
+                                        {% with estoque_acabando=1 %}{% endwith %}
+                                    {% endif %}
+                                    {% if estoque.estoque.data_validade < today|date:"Y-m-d" %}
+                                        {% with estoque_vencendo=1 %}{% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                            {% if perms.lembremed.pode_gerenciar_morador or perms.lembremed.pode_medicar_morador %}
+                                {% if estoque_acabando or estoque_vencendo %}
+                                    <a class="nav-link" href="{% url 'notificacao_listar' %}" style="margin-right: 10px;">
+                                        <img src="{% static 'images/notification.svg' %}" alt="Notificação" style="width: 1.5em;">
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                                <img src="{% static 'images/default-user.svg' %}" alt="Usuário" class="rounded-circle" style="width: 30px; height: 30px; margin-right: 5px;">
+                                {% block nome_usuario %}{{ usuario.nome }}{% endblock %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end w-100" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="document.getElementById('logout_form').submit();">Sair</a>
+                                    <form id="logout_form" method="post" action="/accounts/logout/?next=/" style="display: none;">
+                                        {% csrf_token %}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-success mb-2" href="{% url 'login' %}" >Login</a>
+                        </li>
 				
-				{% if user.is_authenticated %}
-				<li>
-					<a href="#" onclick="$('#logout_form')[0].submit()">SAIR</a>
-				</li>
-				<form id="logout_form" style="display: none;" method="post" action="/accounts/logout/">
-					{% csrf_token %}
-				</form>
-				{% else %}
-				<li>
-					<a href="{% url 'login' %}">LOGIN</a>
-				</li>
-				{% endif %}
-			</ul>
+                    {% endif %}
+                </ul>
+            </div>
 		</div>
 	</nav>
 	<script>
